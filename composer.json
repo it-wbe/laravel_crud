@@ -19,5 +19,5 @@
             "Wbe\\Crud\\": "/src"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
