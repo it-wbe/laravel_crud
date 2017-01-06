@@ -1,0 +1,23 @@
+{
+    "name": "wbe/crud",
+    "description": "Admin panel with CRUD generator, based on Rapyd",
+    "type": "project",
+    "require": {
+        "zofe/rapyd": "^2.2",
+        "laravel/framework": "^5.3",
+        "php": "^5.6",
+        "barryvdh/laravel-elfinder": "^0.3.8"
+    },
+    "authors": [
+        {
+            "name": "Taras",
+            "email": "tgudyma@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Wbe\\Crud\\": "/src"
+        }
+    },
+    "minimum-stability": "dev"
+}
