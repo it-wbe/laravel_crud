@@ -18,6 +18,18 @@ class CrudServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
         $this->loadViewsFrom(__DIR__ . '/views', 'crud');
+
+        //\Zofe\Rapyd\RapydServiceProvider->public_path()
+
+        $this->publishes([
+            __DIR__.'/../public/assets' => public_path('packages/wbe/crud/assets'),
+        ], 'public');
+
+        $this->registerHelper(__DIR__.'/helpers.php');
+
+        //assets
+        //$this->publishes([__DIR__.'/../public/assets' => public_path('packages/zofe/rapyd/assets')], 'assets');
+
     }
 
     /**
@@ -32,5 +44,17 @@ class CrudServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
         $this->loadViewsFrom(__DIR__ . '/views/', 'crud');*/
+    }
+
+    /**
+     * Register helpers file
+     */
+    public function registerHelper($fn)
+    {
+        // Load the helpers in app/Http/helpers.php
+        if (file_exists($file = $fn))
+        {
+            require $file;
+        } else die('no helper found: ' . $file);
     }
 }

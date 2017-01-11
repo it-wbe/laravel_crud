@@ -13,24 +13,24 @@
     <title>@yield('title') - Admin</title>
 
     <!-- Bootstrap core CSS -->
-{!!Html::style('/css/bootstrap.min.css')!!}
+{!!Html::style('packages/wbe/crud/assets/bootstrap/bootstrap.min.css')!!}
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!--<link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">-->
 
     <!-- Custom styles for this template -->
-    {!!Html::style('/css/custom.css')!!}
+    {!!Html::style('packages/wbe/crud/assets/crud.css')!!}
 
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery/3.1.1/jquery.min.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    {!! Html::script('/js/custom.js') !!}
+    {!! Html::script('packages/wbe/crud/assets/crud.js') !!}
 
     {!! Rapyd::styles() !!}
 </head>
@@ -109,8 +109,8 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-{!! Html::script('/js/bootstrap.min.js') !!}
-{!! Html::script('/js/datepicker/bootstrap-datepicker.js') !!}
+{!! Html::script('packages/wbe/crud/assets/bootstrap/bootstrap.min.js') !!}
+{{--!! Html::script('/js/datepicker/bootstrap-datepicker.js') !!--}}
 
 
 
