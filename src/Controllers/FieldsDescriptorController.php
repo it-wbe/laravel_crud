@@ -27,7 +27,7 @@ class FieldsDescriptorController extends Controller
     {
         $content_types = ContentType::orderBy('sort')->get();
         foreach ($content_types as $ctk => $ct) {
-            $content_types[$ctk]->descripted_fileds = \DB::table('crud_content_type_fields')->where('crud_content_type_id', $ct->id)->count();
+            $content_types[$ctk]->descripted_fileds = \DB::table('content_type_fields')->where('content_type_id', $ct->id)->count();
         }
         return view('crud::crud.fd_content_types', compact('content_types'));
     }
@@ -51,7 +51,7 @@ class FieldsDescriptorController extends Controller
                 if (\Request::exists('btn-save-fields')) {
 
                     //!!!
-                    \DB::table('crud_content_type_fields')->where(['crud_content_type_id' => $content_type])->delete();
+                    \DB::table('content_type_fields')->where(['content_type_id' => $content_type])->delete();
 
                     if (\Request::input('name')) {
 
@@ -65,7 +65,7 @@ class FieldsDescriptorController extends Controller
                         foreach ($names as $k => $f) {
                             $field = [
                                 'name' => $names[$k],
-                                'crud_content_type_id' => $content_type,
+                                'content_type_id' => $content_type,
                                 'type' => \Request::input('type')[$k],
                                 'display_column' => \Request::input('display_column')[$k],
                                 'search_columns' => \Request::input('search_columns')[$k],
@@ -307,7 +307,7 @@ class FieldsDescriptorController extends Controller
         $default_field = ContentTypeFields::find(0);
 
         $fields = ContentTypeFields
-            ::where('crud_content_type_id', $content_type)
+            ::where('content_type_id', $content_type)
             ->orderBy('sort')
             ->get()
             ->keyBy('name');

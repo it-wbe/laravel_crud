@@ -23,7 +23,7 @@ class BackendHomeController extends Controller
                 $content_types[$ctk]->records_count = \DB::table($ct->table)->count();
             else
                 $content_types[$ctk]->records_count = '<span style="color:red">table not found</span>';
-            $content_types[$ctk]->descripted_fileds = \DB::table('crud_content_type_fields')->where('crud_content_type_id', $ct->id)->count();
+            $content_types[$ctk]->descripted_fileds = \DB::table('content_type_fields')->where('content_type_id', $ct->id)->count();
         }
         return view('crud::crud.fd_content_types', compact('content_types'));
     }
@@ -38,12 +38,12 @@ class BackendHomeController extends Controller
             //\Schema::dropIfExists($content_type->table);
             //\Schema::dropIfExists($content_type->table . '_description');
 
-            $ct_fields_query = ContentTypeFields::where('crud_content_type_id', $content_id);
+            $ct_fields_query = ContentTypeFields::where('content_type_id', $content_id);
             //todo: видаляти _description полів, але потрібно щоб при збереженні описів писались нормальні ІД
             //$ct_fields_query->pluck('id');
             $ct_fields_query->delete();
             //\DB::table('crud_content_type_fields_description')->where('content_id', $content_id)->delete();
-            \DB::table('crud_content_type_description')->where('content_id', $content_id)->delete();
+            \DB::table('content_type_description')->where('content_id', $content_id)->delete();
             @unlink(ModelGenerator::getModelFilename($content_type->model));
             $content_type->delete();
         } else {

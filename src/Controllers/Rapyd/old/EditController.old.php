@@ -30,13 +30,13 @@ class EditController extends Controller
             $desc_table = $content->table . '_description';
             $desc_table_exists = \Schema::hasTable($desc_table);
 
-            // from crud_content_type_fields
+            // from content_type_fields
             $ct_fields = ContentTypeFields::getFieldsFromDB($content_type, [['grid_show', '=', 1]]);
 
             $fields_schema = \Schema::getColumnListing($content->table);
             $fields_desc_schema = \Schema::getColumnListing($content->table . '_description');
 
-            // збірка полів на основі описів у crud_content_type_fields та тих, які дійсно наявні у таблиці
+            // збірка полів на основі описів у content_type_fields та тих, які дійсно наявні у таблиці
 
             foreach ($fields_schema as $field) {
                 //if ($field == 'content_id' || $field == 'lang_id') {

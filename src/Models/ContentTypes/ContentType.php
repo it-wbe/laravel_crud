@@ -10,7 +10,7 @@ class ContentType extends \Eloquent
     use Translatable;
 
     public $timestamps = false;
-    protected $table = 'crud_content_type';
+    protected $table = 'content_type';
 
     /*public $messages = [0 => [], 1 => [], 2 => [], 3 => []];
     public $message_class = [0 => 'info', 1 => 'success', 2 => 'warning', 3 => 'danger'];*/
@@ -42,6 +42,7 @@ class ContentType extends \Eloquent
 
     static public function getClassFilename($classname)
     {
+        //ToDo: newly created class cannot autoload (writing model "..."-> Reflection: Class does not exist)
         $reflector = new \ReflectionClass($classname);
         return $reflector->getFileName();
     }

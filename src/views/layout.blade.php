@@ -63,7 +63,7 @@
                     <li><a href="{{ url('admin/register/') }}">{{ trans('crud::common.register') }}</a></li>
                 @else
                     <li><a href="{{ url('admin/logout/') }}">{{ trans('crud::common.logout') }}</a></li>
-                    <li><a href="{{ url('admin/account') }}">{{ trans('crud::common.hello') }} {{ isset(Auth::guard('admin')->user()->name) ? Auth::guard('admin')->user()->name : Auth::guard('admin')->user()->email }}</a> </li>
+                    <li><a href="{{ url('admin/account') }}">{{ trans('crud::common.hello') }}, {{ isset(Auth::guard('admin')->user()->name) ? Auth::guard('admin')->user()->name : Auth::guard('admin')->user()->email }}</a> </li>
                 @endif
 
             </ul>

@@ -9,7 +9,7 @@ class ContentTypeFields extends \Eloquent
     use Translatable;
 
     public $timestamps = false;
-    protected $table = 'crud_content_type_fields';
+    protected $table = 'content_type_fields';
 
     /*static public function getFields($id) {
         return self::find($id)->toArray();
@@ -21,7 +21,7 @@ class ContentTypeFields extends \Eloquent
 
     static public function getFieldsFromDB($content_type, $custom_where = [])
     {
-        $where = [['crud_content_type_id', '=', $content_type]]; // ['grid_show', '=', '1']
+        $where = [['content_type_id', '=', $content_type]]; // ['grid_show', '=', '1']
         $where = array_merge($where, $custom_where);
 
         // from crud_content_type_fields
@@ -41,7 +41,7 @@ class ContentTypeFields extends \Eloquent
 
     public function contentType()
     {
-        return $this->belongsTo('Wbe\Crud\Models\ContentType', 'crud_content_type_id', 'id');
+        return $this->belongsTo('Wbe\Crud\Models\ContentType', 'content_type_id', 'id');
     }
 
 }

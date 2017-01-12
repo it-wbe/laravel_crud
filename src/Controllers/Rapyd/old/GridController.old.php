@@ -43,7 +43,7 @@ class GridController extends Controller
 
         if (!$content) abort('500', 'Content type #' . $content_type . ' not found!');
 
-        // from crud_content_type_fields
+        // from content_type_fields
         $ct_fields = ContentTypeFields::getFieldsFromDB($content_type, [['grid_show', '=', \DB::raw(1)]]);
 
 

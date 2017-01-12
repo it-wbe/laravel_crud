@@ -12,14 +12,16 @@ class CrudServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
+
     {
         // load routes
         //include __DIR__.'/routes.php';
 
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
         $this->loadViewsFrom(__DIR__ . '/views', 'crud');
-
         $this->loadTranslationsFrom( __DIR__.'/../lang', 'crud');
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        //$this->loadMigrationsFrom(__DIR__ . '/../migrations');
 
         $this->publishes([
             __DIR__ . '/../config/crud.php' => config_path('crud.php'),

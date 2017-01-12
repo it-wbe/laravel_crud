@@ -136,7 +136,8 @@ class ModelGenerator
         if (\Schema::hasTable($table)) {
 
             // $content_description_model_template
-            $cdm_template = \File::get(storage_path('generator/ContentModel.txt'));
+            ///$cdm_template = \File::get(storage_path('generator/ContentModel.txt'));
+            $cdm_template = \File::get(__DIR__ . '/generator/ContentModel.txt');
 
 
             //$classname = $content_type->model;
@@ -208,7 +209,7 @@ class ModelGenerator
         $new_field = $default_field->replicate();
         $new_field->name = $field->Field;
         $new_field->sort = -9999;
-        $new_field->crud_content_type_id = $content_type_id;
+        $new_field->content_type_id = $content_type_id;
 
         //$new_field->type = $field->Type;
 
@@ -324,7 +325,7 @@ class ModelGenerator
             return ContentType::where('model', $model)->first();
         } else {
             $model = trim(str_replace('::class', '', $model));
-            $sql = '((crud_content_type.model = "'.$model.'") OR (crud_content_type.model LIKE "%\\'.$model.'"))';
+            $sql = '((content_type.model = "'.$model.'") OR (content_type.model LIKE "%\\'.$model.'"))';
             //echo $sql;
             return ContentType::whereRaw($sql)->first();
         }
@@ -363,7 +364,8 @@ class ModelGenerator
             ) {
 
                 // $content_description_model_template
-                $cdm_template = \File::get(storage_path('generator/ContentModel.txt'));
+                ///$cdm_template = \File::get(storage_path('generator/ContentModel.txt'));
+                $cdm_template = \File::get(__DIR__ . '/generator/ContentModel.txt');
 
                 $fields = \Schema::getColumnListing($table);
                 $no_timestamps = !(in_array('created_at', $fields) && in_array('updated_at', $fields) && in_array('deleted_at', $fields));

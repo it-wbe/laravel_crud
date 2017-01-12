@@ -128,7 +128,7 @@ class SettingsController extends Controller
 
 
             $fields_desc = ContentTypeFields
-                ::where('crud_content_type_id', $content_type_k)
+                ::where('content_type_id', $content_type_k)
                 ->orderBy('sort')
                 ->get()
                 ->keyBy('name')
@@ -152,7 +152,7 @@ class SettingsController extends Controller
                         $new_field = $default_field->replicate();
                         $new_field->name = $field->Field;
                         $new_field->sort = -9999;
-                        $new_field->crud_content_type_id = $content_type_k;
+                        $new_field->content_type_id = $content_type_k;
 
                         //$new_field->type = $field->Type;
 
