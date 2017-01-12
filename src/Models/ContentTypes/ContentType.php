@@ -18,7 +18,6 @@ class ContentType extends \Eloquent
 
     static public function getFilePathByModel($model)
     {
-        //echo $model;
         $divider = 'Models\\';
         $part1 = before($divider, $model);
         $part2 = after($divider, $model);
@@ -30,8 +29,13 @@ class ContentType extends \Eloquent
 
         $model = str_replace('wbe/crud', 'wbe/crud/src', $model);
 
+        if (starts_with($model, 'app/'))
+            $dir = '/';
+        else
+            $dir = '/packages/';
+
         // '/app/Models/' .
-        $fn = base_path() . '/packages/' . $model . '.php';
+        $fn = base_path() . $dir . $model . '.php';
 
         return $fn;
     }
@@ -42,18 +46,12 @@ class ContentType extends \Eloquent
         return $reflector->getFileName();
     }
 
-    public function getCTModelFilename()
+    /*public function getCTModelFilename()
     {
-
-    }
+    }*/
 
     static public function getCTModel($model_name)
     {
-        /*if (!$model_name)
-            if (!defined('this'))
-                return false;
-            $model_name = $this->model;*/
-
         if (class_exists($model_name))
             return $model_name;
 

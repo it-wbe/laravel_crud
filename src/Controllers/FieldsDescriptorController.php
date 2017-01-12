@@ -118,7 +118,8 @@ class FieldsDescriptorController extends Controller
                             Globals::$messages[2][] = 'Зв\'язок ' . $ex_rel . ' видалено';
                         }
                     }
-                    ModelGenerator::write_content_model($content, $left_relations);
+                    if ($left_relations)
+                        ModelGenerator::write_content_model($content, $left_relations);
                 }
 
                 $left_relations = [];
@@ -140,7 +141,13 @@ class FieldsDescriptorController extends Controller
                             'rel_table_to' => trim(\Request::input('rel_table_to')[$k]),
                         ];
 
-                        $right_content = ContentType::find($rp['right_content_id']);
+                        if ($rp['rel_type'] == 'belongsTo') {
+                            $tmp = $rp['left_column'];
+                            $rp['left_column'] = $rp['right_column'];
+                            $rp['right_column'] = $tmp;
+                        }
+
+                            $right_content = ContentType::find($rp['right_content_id']);
 
                         ModelGenerator::get_content_model_relation($content, $right_content, $rp, $left_relation);
 
@@ -215,12 +222,15 @@ class FieldsDescriptorController extends Controller
             }
         }
 
-        $model_filename = $content->getClassFilename($content::getCTModel($content->model));
+
+        $classname = $content::getCTModel($content->model);
+        //if (!$classname) echo '!$classname';
+        $model_filename = $content->getClassFilename($classname);
         if (!$model_filename)
             die('model not found: ' . $content->model);
         //base_path() . '\app\Models\\' . ltrim($content->model, '\\/') . '.php';
         $relation_methods = ModelGenerator::getModelRelationsMethods(file_get_contents($model_filename));
-        //print_r($relation_methods);
+        //print_r($relation_methods); die();
 
 
         $existing_relations = [];
@@ -325,7 +335,7 @@ class FieldsDescriptorController extends Controller
                 $fields[$f->Field]->exists_in_table = true;
         }
 
-        $field_types = [
+        /*$field_types = [
             'text' => 'Text',
             'textarea' => 'Textarea',
             'hidden' => 'Hidden',
@@ -351,11 +361,11 @@ class FieldsDescriptorController extends Controller
             'container' => 'Container',
             'auto' => 'Auto',
             'redactor' => 'Redactor',
-            /*'rel:select' => 'Rel:Select',
-            'rel:autocomplete' => 'Rel:Autocomplete',
-            'rel:tags' => 'Rel:Tags',
-            'rel:multiselect' => 'Rel:Multiselect',*/
-        ];
+            //'rel:select' => 'Rel:Select',
+            //'rel:autocomplete' => 'Rel:Autocomplete',
+            //'rel:tags' => 'Rel:Tags',
+            //'rel:multiselect' => 'Rel:Multiselect',
+        ];*/
 
         //print_r($fields);
 
@@ -367,7 +377,7 @@ class FieldsDescriptorController extends Controller
         return view('crud::crud.fieldsdescriptor', [
             'default_field' => $default_field,
             'fields' => $fields,
-            'field_types' => $field_types,
+            'field_types' => config('crud.field_types'),
             'content' => $content,
             'content_types' => $content_types,
             'relations' => $relations,

@@ -179,6 +179,17 @@
 
 
 
+    <div class="pull-right">
+        {{--<a href="{!! url('admin/fields_descriptor/content/' . $content->id) !!}" class="btn btn-default">Редагувати поля</a>--}}
+        <a href="{!! url('admin/crud/grid/' . $content->id) !!}" class="btn btn-default">
+            <span class="glyphicon glyphicon-edit"></span>
+            Дані
+        </a>
+        <a href="{!! url('admin/crud/edit/1?insert=1') !!}" class="btn btn-default" title="Додати">
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>
+    </div>
+
     <ul class="nav nav-tabs">
         <li{!! (!\Request::has('active_tab') || (\Request::input('active_tab') == 'fields')) ? ' class="active"' : '' !!}><a data-toggle="tab" href="#fields">Поля</a></li>
         <li{!! (\Request::input('active_tab') == 'relations') ? ' class="active"' : '' !!}><a data-toggle="tab" href="#relations">Зв'язки</a></li>

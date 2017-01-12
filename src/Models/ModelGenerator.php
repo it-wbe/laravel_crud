@@ -145,9 +145,12 @@ class ModelGenerator
             if (!$classname)
                 die('model not found: ' . $content_type->model);
 
-            $filename = ContentType::getFilePathByModel($classname);
-            //$filename = $content_type->getClassFilename($classname);
+            //$filename = ContentType::getFilePathByModel($classname);
+            $filename = $content_type->getClassFilename($classname); //!!!
 
+            //echo ContentType::getFilePathByModel($classname);
+            //echo '---';
+            //echo $content_type->getClassFilename($classname);
 
             //base_path() . '\app\Models\\' . ltrim($classname, '\\/') . '.php';
 
@@ -178,7 +181,8 @@ class ModelGenerator
                 //file_put_contents($filename, $cdm_template);
                 Globals::$messages[0][] = 'writing model "' . $classname . '" to "' . $filename . '"';
             } else {
-                Globals::$messages[0][] = 'file "' . $filename . '" already exists, writing relations...';
+
+                Globals::$messages[0][] = 'file "' . $filename . '" already exists, removing and writing relations...';
                 $cdm_template = file_get_contents($filename);
             }
 
@@ -304,7 +308,7 @@ class ModelGenerator
         }
 
         if ($search_for_method)
-            return isset($methods[$search_for_method]) ? $methods[$search_for_method] : 'method not found';
+            return isset($methods[$search_for_method]) ? $methods[$search_for_method] : false; //'method not found'
         else
             return $methods;
     }
@@ -352,9 +356,9 @@ class ModelGenerator
             //$classname = $content->model;
 
             $filename = self::getModelFilename($classname);
-
+           //!!! echo $filename.'-';echo ContentType::getCTModel($classname);echo '123';
             //(!class_exists('App\Models\\' . $classname)) ||
-            if ((!(ContentType::getCTModel($classname))) ||
+            if ((! ContentType::getCTModel($classname)) ||
                 (file_exists($filename) && (strpos(file_get_contents($filename), '[leave this text to regenerate]') !== false))
             ) {
 

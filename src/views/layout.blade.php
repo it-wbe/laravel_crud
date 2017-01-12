@@ -59,11 +59,11 @@
 
             <ul class="nav navbar-nav navbar-right">
                 @if (!Auth::guard('admin')->check())
-                    <li><a href="{{ url('admin/login/') }}">{{ trans('common.login') }}</a></li>
-                    <li><a href="{{ url('admin/register/') }}">{{ trans('common.register') }}</a></li>
+                    <li><a href="{{ url('admin/login/') }}">{{ trans('crud::common.login') }}</a></li>
+                    <li><a href="{{ url('admin/register/') }}">{{ trans('crud::common.register') }}</a></li>
                 @else
-                    <li><a href="{{ url('admin/logout/') }}">{{ trans('common.logout') }}</a></li>
-                    <li><a href="{{ url('admin/account') }}">{{ trans('common.hello') }} {{ isset(Auth::guard('admin')->user()->name) ? Auth::guard('admin')->user()->name : Auth::guard('admin')->user()->email }}</a> </li>
+                    <li><a href="{{ url('admin/logout/') }}">{{ trans('crud::common.logout') }}</a></li>
+                    <li><a href="{{ url('admin/account') }}">{{ trans('crud::common.hello') }} {{ isset(Auth::guard('admin')->user()->name) ? Auth::guard('admin')->user()->name : Auth::guard('admin')->user()->email }}</a> </li>
                 @endif
 
             </ul>
@@ -71,7 +71,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        {{ trans('common.languages') }}
+                        {{ trans('crud::common.languages') }}
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">

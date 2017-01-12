@@ -1,10 +1,10 @@
 @extends('crud::layout')
-@section('title', trans('common.home'))
-@section('header', trans('common.home'))
+@section('title', trans('crud::common.home'))
+@section('header', trans('crud::common.home'))
 
 @section('content')
 
-    <h1>{{ trans('common.home') }} Admin</h1>
+    <h1>{{ trans('crud::common.home') }} Admin</h1>
     <br>
 
 @stop

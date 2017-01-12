@@ -142,13 +142,17 @@ if (!function_exists('bind_string')) {
 if (!function_exists('is_admin_panel')) {
     function is_admin_panel()
     {
-        return starts_with(\Request::path(), 'admin/') || ends_with(\Request::path(), '/admin');
+        return starts_with(\Request::path() . '/', 'admin/') || ends_with(\Request::path(), '/admin');
     }
 }
 
 if (!function_exists('get_current_lang')) {
     function get_current_lang()
     {
-        return session((is_admin_panel() ? 'admin_lang_id' : 'lang_id'));
+        //print_r(session()); die();
+        $session_key = (is_admin_panel() ? 'admin_lang_id' : 'lang_id');
+        if (!session($session_key)) return 1;
+
+        return session($session_key);
     }
 }

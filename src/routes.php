@@ -71,9 +71,11 @@ Route::get('admin/setlocale/{locale}', function ($locale) {
     }
     return redirect()->back();
 });
-if(!session('admin_lang_id')) {
+/* 11.1.17
+ * if(!session('admin_lang_id')) {
     Session::put('admin_lang_id', \Wbe\Crud\Models\ContentTypes\Languages::where('code', Config::get('app.locale'))->value('id'));
-}
+}*/
+
 /*Route::group(['domain' => '{lang}.bethintua'], function()
 {
     Route::get('/', function($lang)

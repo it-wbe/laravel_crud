@@ -158,14 +158,6 @@ class FieldsProcessor
                     if (isset($rel[2][0])) {
                         $relation_model = new $rel[2][0];
 
-                        /*if ($relation_model &&
-                            in_array('App\Models\Crud\Translatable', class_uses($relation_model))
-                        ) {
-                            $query_builder = $relation_model->translate(session('admin_lang_id'));
-                        } else {
-                            $query_builder = $relation_model;
-                        }*/
-
                         $f->options(array_merge(
                             [0 => '- Select -'],
                             $relation_model->pluck(
@@ -173,7 +165,7 @@ class FieldsProcessor
                                 $relation_model->getQualifiedKeyName()
                             )->toArray()
                         ));
-                    } else echo '!isset($rel[2][0]) (model)';
+                    } else echo 'Relation not found! ('.$field->relation.')';
                     //} else {
                     //    $f->options(['no relation "' . $field->relation . '" found']);
                     //}
