@@ -330,10 +330,10 @@ class FieldsDescriptorController extends Controller
                     $fields[$f->Field] = ModelGenerator::autofield($f, $content_type, $default_field);
             }
 
-        foreach ($fields as $k => $f) {
+        /*foreach ($fields as $k => $f) {
             if (isset($fields[$f->Field]))
                 $fields[$f->Field]->exists_in_table = true;
-        }
+        }*/
 
         /*$field_types = [
             'text' => 'Text',

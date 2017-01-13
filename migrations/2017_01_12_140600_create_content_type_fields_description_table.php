@@ -52,25 +52,25 @@ class CreateContentTypeFieldsDescriptionTable extends Migration
                 array(
                     'content_id' => '1',
                     'lang_id' => '2',
-                    'title' => '���',
+                    'title' => 'Имя',
                 ),
             5 =>
                 array(
                     'content_id' => '2',
                     'lang_id' => '2',
-                    'title' => '�����',
+                    'title' => 'Email',
                 ),
             6 =>
                 array(
                     'content_id' => '3',
                     'lang_id' => '2',
-                    'title' => '������',
+                    'title' => 'Пароль',
                 ),
             7 =>
                 array(
                     'content_id' => '4',
                     'lang_id' => '2',
-                    'title' => '����������� ������',
+                    'title' => 'Підтвердіть пароль',
                 ),
             8 =>
                 array(

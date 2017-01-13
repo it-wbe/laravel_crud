@@ -181,6 +181,10 @@
 
     <div class="pull-right">
         {{--<a href="{!! url('admin/fields_descriptor/content/' . $content->id) !!}" class="btn btn-default">Редагувати поля</a>--}}
+        <a href="{!! url('admin/crud/edit/1?modify=' . $content->id . '&to=' . urlencode(url()->full())) !!}" class="btn btn-default">
+            <span class="glyphicon glyphicon-edit"></span>
+            Тип Контенту
+        </a>
         <a href="{!! url('admin/crud/grid/' . $content->id) !!}" class="btn btn-default">
             <span class="glyphicon glyphicon-edit"></span>
             Дані

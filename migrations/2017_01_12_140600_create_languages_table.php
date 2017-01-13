@@ -35,14 +35,14 @@ class CreateLanguagesTable extends Migration
             1 =>
                 array(
                     'id' => '2',
-                    'name' => '�������',
+                    'name' => 'Русский',
                     'code' => 'ru',
                     'sort' => '2',
                 ),
             2 =>
                 array(
                     'id' => '3',
-                    'name' => '���������',
+                    'name' => 'Українська',
                     'code' => 'uk',
                     'sort' => '3',
                 ),

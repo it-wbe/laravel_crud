@@ -16,29 +16,6 @@ class GridController extends Controller
 {
     public function index($content_type)
     {
-
-        /*$filter = DataFilter::source(Hints::query());
-        $filter->add('market_option','market_option','text');
-        $filter->add('outcome','outcome','text');
-        $filter->add('value','value','text');
-        $filter->add('hint','hint','text');
-        $filter->submit('Знайти');
-        $filter->reset('Очистити');
-        $filter->build();
-
-        $grid = DataGrid::source($filter);
-        $grid->attributes(array("class"=>"table table-striped"));
-        $grid->add('id','ID', true)->style("width:70px");
-        $grid->add('market_option','market_option', 'market_option');
-        $grid->add('outcome','outcome','outcome');
-        $grid->add('value','value','value');
-        $grid->add('hint|strip_tags|mb_substr[0,50]','hint','hint');
-        $grid->edit(url('/admin/crud/' . $content_type . '/'), 'Edit','modify|delete');
-        $grid->paginate(10);
-
-        return view('crud::crud.grid', compact('filter', 'grid'));*/
-
-
         $content = ContentType::find($content_type);
 
         if (!$content) abort('500', 'Content type #' . $content_type . ' not found!');
@@ -74,12 +51,6 @@ class GridController extends Controller
 
         $new_content_type_model = new $content_type_model;
 
-        /*if (in_array('App\Models\Crud\Translatable', class_uses($content_type_model))) {
-            $new_content_type_model = $new_content_type_model::translate(session('admin_lang_id'));
-        }*/
-
-        //print_r($new_content_type_model->get()->toArray());
-
         $filter = DataFilter::source($new_content_type_model);
 
         FieldsProcessor::addFields($content, $filter, 'filter');
@@ -102,6 +73,7 @@ class GridController extends Controller
             }
         }
 
+        $grid->link(url('admin/crud/edit/1?modify=' . $content_type . '&to=' . urlencode(url()->full())), "Тип Контенту", "TR");
         $grid->link(url('admin/fields_descriptor/content/' . $content_type), "Редагувати поля", "TR");
         $grid->link(url('/admin/crud/edit/' . $content_type . '?insert=1'), "Додати", "TR");
 

@@ -12,7 +12,6 @@ class CrudServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-
     {
         // load routes
         //include __DIR__.'/routes.php';
@@ -25,6 +24,9 @@ class CrudServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../config/crud.php' => config_path('crud.php'),
+            __DIR__ . '/../config/elfinder.php' => config_path('elfinder.php'),
+            //__DIR__ . '/../../../vendor/barryvdh/config/elfinder.php' => config_path('elfinder.php'),
+
         ], 'config');
 
         //\Zofe\Rapyd\RapydServiceProvider->public_path()

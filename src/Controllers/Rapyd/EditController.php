@@ -25,8 +25,6 @@ class EditController extends Controller
 {
     public function index(Request $r, $content_type, $lang_id = 0)
     {
-        //dd(News::find(1)->desc(2)->get()); return 1;
-
         if ($r->exists('modify') || $r->exists('insert')) {
 
             $content = ContentType::find($content_type);
@@ -50,11 +48,7 @@ class EditController extends Controller
                     $new_content_model = new $content_model;
             } else {
                 $new_content_model = (new $content_model);
-                //$new_content_model = $new_content_model::translate(session('admin_lang_id'));
             }
-
-
-            //dd($new_content_model->toArray());
 
 
             $desc_table = $content->table . '_description';
@@ -74,14 +68,6 @@ class EditController extends Controller
                 }
             });
 
-            //if (in_array('App\Models\Crud\Translatable', class_uses($new_content_model))) {
-                //$new_content_model = $new_content_model::translate(session('admin_lang_id'));
-            //}
-
-            //$new_content_model->outcomes()->translate(0);
-
-            //dd($new_content_model);
-
             $edit = DataForm::source($new_content_model);
             $edit->attributes(array("class" => "table table-striped"));
 
@@ -89,10 +75,8 @@ class EditController extends Controller
 
             FieldsProcessor::addFields($content, $edit, 'form');
 
-            //if (!$lang_id) {
             $edit->link(url('admin/crud/grid/' . $content_type . '/'), "Cancel and Back to the grid", "TR");
-            $edit->submit('Save', 'BL'); //, ['onclick' => 'form_submit=true;$("iframe.langs").each(function(){$(this).contents().find("form").submit();});return false;']
-            //} else $edit->submit('Save', 'BL');
+            $edit->submit('Save', 'BL');
 
             $edit->saved(function () use ($edit, $content_type, $lang_id) {
                 //\Redirect::to(url('admin/'));
@@ -104,7 +88,10 @@ class EditController extends Controller
                     $back_url = \Request::input('to');
                 else
                     $back_url = url('admin/crud/grid/' . $content_type . '/');
-                die('<meta http-equiv="refresh" content="0; URL=\'' . $back_url . '\'" />');
+
+                header('Location: ' . $back_url);
+                die();
+                //die('<meta http-equiv="refresh" content="0; URL=\'' . $back_url . '\'" />');
             });
 
             $return = (string)$edit;
