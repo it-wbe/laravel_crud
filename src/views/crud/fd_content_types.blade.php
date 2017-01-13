@@ -22,6 +22,10 @@
             background-color: #E8E8E8;
         }
 
+        .content_type_delete {
+            display: inline-block;
+        }
+
     </style>
     <script>
         /*$(function () {
@@ -88,4 +92,7 @@
             @endforeach
         </table>
     </form>
+    <a href="{{ url('admin/crud/edit/1?insert=1') }}" class="btn btn-default">
+        Додати Тип Контенту
+    </a>
 @endsection

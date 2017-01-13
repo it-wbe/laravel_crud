@@ -183,13 +183,13 @@
         {{--<a href="{!! url('admin/fields_descriptor/content/' . $content->id) !!}" class="btn btn-default">Редагувати поля</a>--}}
         <a href="{!! url('admin/crud/edit/1?modify=' . $content->id . '&to=' . urlencode(url()->full())) !!}" class="btn btn-default">
             <span class="glyphicon glyphicon-edit"></span>
-            Тип Контенту
+            {{ trans('crud::common.content_type') }}
         </a>
         <a href="{!! url('admin/crud/grid/' . $content->id) !!}" class="btn btn-default">
             <span class="glyphicon glyphicon-edit"></span>
-            Дані
+            {{ trans('crud::common.content_data') }}
         </a>
-        <a href="{!! url('admin/crud/edit/1?insert=1') !!}" class="btn btn-default" title="Додати">
+        <a href="{!! url('admin/crud/edit/1?insert=1') !!}" class="btn btn-default" title="{{ trans('crud::common.content_add') }}">
             <span class="glyphicon glyphicon-plus"></span>
         </a>
     </div>

@@ -73,11 +73,11 @@ class GridController extends Controller
             }
         }
 
-        $grid->link(url('admin/crud/edit/1?modify=' . $content_type . '&to=' . urlencode(url()->full())), "Тип Контенту", "TR");
-        $grid->link(url('admin/fields_descriptor/content/' . $content_type), "Редагувати поля", "TR");
-        $grid->link(url('/admin/crud/edit/' . $content_type . '?insert=1'), "Додати", "TR");
+        $grid->link(url('admin/crud/edit/1?modify=' . $content_type . '&to=' . urlencode(url()->full())), trans('crud::common.content_type'), "TR");
+        $grid->link(url('admin/fields_descriptor/content/' . $content_type), trans('crud::common.content_fields'), "TR");
+        $grid->link(url('/admin/crud/edit/' . $content_type . '?insert=1'), trans('crud::common.content_add'), "TR");
 
-        $grid->edit(url('/admin/crud/edit/' . $content_type . '/'), 'Edit', 'modify|delete');
+        $grid->edit(url('/admin/crud/edit/' . $content_type . '/'), trans('crud::common.grid_actions'), 'modify|delete');
 
         /*$grid->add('mybutton','mybutton')->cell( function ($value, $row) {
 

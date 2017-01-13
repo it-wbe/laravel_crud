@@ -71,11 +71,11 @@ class EditController extends Controller
             $edit = DataForm::source($new_content_model);
             $edit->attributes(array("class" => "table table-striped"));
 
-            $edit->label($content->name);
+            $edit->label($content->name . ' > ' .  trans('crud::common.content_add'));
 
             FieldsProcessor::addFields($content, $edit, 'form');
 
-            $edit->link(url('admin/crud/grid/' . $content_type . '/'), "Cancel and Back to the grid", "TR");
+            $edit->link(url('admin/crud/grid/' . $content_type . '/'), trans('crud::common.cancel'), "TR");
             $edit->submit('Save', 'BL');
 
             $edit->saved(function () use ($edit, $content_type, $lang_id) {

@@ -11,6 +11,12 @@ return [
     'filemanager' => 'Files',
     'content_types' => 'Content Types',
     'languages' => 'Languages',
+    'content_add' => 'Add',
+    'content_data' => 'Data',
+    'content_fields' => 'Fields',
+    'content_type' => 'Content Type',
+    'grid_actions' => 'Actions',
+    'cancel' => 'Cancel',
 ];
 
 ?>

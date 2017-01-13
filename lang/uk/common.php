@@ -11,6 +11,12 @@ return [
     'filemanager' => 'Файли',
     'content_types' => 'Типи Контенту',
     'languages' => 'Мова',
+    'content_add' => 'Додати',
+    'content_data' => 'Дані',
+    'content_fields' => 'Поля',
+    'content_type' => 'Тип Контенту',
+    'grid_actions' => 'Дії',
+    'cancel' => 'Відмінити',
 ];
 
 ?>
