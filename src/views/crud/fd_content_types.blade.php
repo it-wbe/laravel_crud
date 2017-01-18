@@ -42,12 +42,12 @@
         <table class="table table-condensed table-fdcontenttypes table-hover">
             <thead>
             <tr>
-                <th>Назва</th>
-                <th>Таблиця</th>
-                <th>Модель</th>
-                <th>Записів</th>
-                <th>Описано полів</th>
-                <th>Дії</th>
+                <th>{{ trans('crud::common.ct_name') }}</th>
+                <th>{{ trans('crud::common.ct_table') }}</th>
+                <th>{{ trans('crud::common.ct_model') }}</th>
+                <th>{{ trans('crud::common.ct_records') }}</th>
+                <th>{{ trans('crud::common.ct_descripted_fields') }}</th>
+                <th>{{ trans('crud::common.ct_actions') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -65,24 +65,24 @@
                     <td><a class="content_type_row_link" href="{{ $link_list }}">{!! $ct->records_count !!}</a></td>
                     <td><a class="content_type_row_link" href="{{ $link_fields }}">{{ $ct->descripted_fileds }}</a></td>
                     <td>
-                        <a href="{{ $link_insert }}" class="btn btn-default btn-sm" title="">
+                        <a href="{{ $link_insert }}" class="btn btn-default btn-sm" title="{{ trans('crud::common.content_add') }}">
                             <span class="glyphicon glyphicon-plus"></span>
                         </a>
                         <a href="{{ $link_list }}" class="btn btn-default btn-sm" title="">
                             <span class="glyphicon glyphicon-edit"></span>
-                            Дані
+                            {{ trans('crud::common.content_data') }}
                         </a>
                         <a href="{{ $link_fields }}" class="btn btn-primary btn-sm" title="">
                             <span class="glyphicon glyphicon-th-list"></span>
-                            Поля
+                            {{ trans('crud::common.content_fields') }}
                         </a>
-                        <a href="{{ $link_edit_ct }}" class="btn btn-warning btn-sm" title="Редагувати тип контенту">
+                        <a href="{{ $link_edit_ct }}" class="btn btn-warning btn-sm" title="{{ trans('crud::common.content_type') }}">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a>
                         <form method="POST" action="{{ url('admin/crud/delete/') }}" style="display: inline-block;" class="content_type_delete">
                             {{ csrf_field() }}
                             <input type="hidden" name="content_id" value="{{ $ct->id }}">
-                            <button type="submit" class="btn btn-danger btn-sm" title="Видалити">
+                            <button type="submit" class="btn btn-danger btn-sm" title="{{ trans('crud::common.delete') }}">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
                         </form>
@@ -93,6 +93,6 @@
         </table>
     </form>
     <a href="{{ url('admin/crud/edit/1?insert=1') }}" class="btn btn-default">
-        Додати Тип Контенту
+        {{ trans('crud::common.content_add') }}
     </a>
 @endsection

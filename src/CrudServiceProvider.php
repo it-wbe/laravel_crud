@@ -18,7 +18,7 @@ class CrudServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/routes.php');
         $this->loadViewsFrom(__DIR__ . '/views', 'crud');
-        $this->loadTranslationsFrom( __DIR__.'/../lang', 'crud');
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'crud');
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');
         //$this->loadMigrationsFrom(__DIR__ . '/../migrations');
 
@@ -32,11 +32,11 @@ class CrudServiceProvider extends ServiceProvider
         //\Zofe\Rapyd\RapydServiceProvider->public_path()
 
         $this->publishes([
-            __DIR__.'/../public/assets' => public_path('packages/wbe/crud/assets'),
-            __DIR__.'/../public/rapyd' => public_path('packages/zofe/rapyd/assets'),
+            __DIR__ . '/../public/assets' => public_path('packages/wbe/crud/assets'),
+            __DIR__ . '/../public/rapyd' => public_path('packages/zofe/rapyd/assets'),
         ], 'public');
 
-        $this->registerHelper(__DIR__.'/helpers.php');
+        $this->registerHelper(__DIR__ . '/helpers.php');
 
         //assets
         //$this->publishes([__DIR__.'/../public/assets' => public_path('packages/zofe/rapyd/assets')], 'assets');
@@ -63,8 +63,7 @@ class CrudServiceProvider extends ServiceProvider
     public function registerHelper($fn)
     {
         // Load the helpers in app/Http/helpers.php
-        if (file_exists($file = $fn))
-        {
+        if (file_exists($file = $fn)) {
             require $file;
         } else die('no helper found: ' . $file);
     }

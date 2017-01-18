@@ -14,11 +14,11 @@ use Zofe\Rapyd\DataForm\DataForm;
 class FieldsProcessor
 {
     /**
-     * Збірка полів на основі описів у crud_content_type_fields та тих, які дійсно наявні у таблиці
-     * @param $content
-     * @param $rapyd
+     * Створення Rapyd полів на основі записів у crud_content_type_fields ($rapyd->add)
+     * @param $content ContentType
+     * @param $rapyd DataForm
      * @param $type string filter|table
-     * @return null
+     * @return bool
      */
     static public function addFields($content, DataForm $rapyd, $type)
     {
@@ -43,6 +43,7 @@ class FieldsProcessor
         $fields_desc_schema = \Schema::getColumnListing($content->table . '_description');
 
 
+        // для фільтра: відображати багатострічкові тектові поля в одну стрічку
         if ($type == 'filter') {
             foreach ($ct_fields as $ct_field_k => $ct_field) {
                 if (isset($ct_fields[$ct_field_k])) {
@@ -59,6 +60,7 @@ class FieldsProcessor
             }
         }
 
+        // додавання полів
         foreach ($ct_fields as $field) {
             if ((!in_array($field->name, $fields_desc_schema)) &&
                 (($type != 'filter') || in_array($field->name, $fields_schema)) &&
@@ -132,6 +134,7 @@ class FieldsProcessor
         }
 
 
+        // пост-обробка доданих полів
         foreach ($rapyd->fields as $f_name => $f)
             if (isset($ct_fields[$f_name])) {
                 $field = $ct_fields[$f_name];
@@ -146,9 +149,7 @@ class FieldsProcessor
                 }
 
 
-                /*
-                 * Обробка Rapyd полів перед виводом
-                 * */
+                // тип поля "select": заповнення
                 if ($field->relation && ($field->type == 'select')) {
                     //if (method_exists($data_source, $field->relation))
                     //{
@@ -169,6 +170,8 @@ class FieldsProcessor
                     //} else {
                     //    $f->options(['no relation "' . $field->relation . '" found']);
                     //}
+
+                // тип поля "tags": задяння ajax обробника
                 } elseif ($field->relation && ($field->type == 'tags')) {
                     $model_filename = ContentType::getFilePathByModel($content->model);
                     $rel = ModelGenerator::getModelRelationsMethods(file_get_contents($model_filename), $field->relation);
@@ -193,5 +196,6 @@ class FieldsProcessor
         //$rapyd->add('test','test tags','tags')->remote("name", "id", "/admin/autocomplete/Crud_User/0/0/"); //. urldecode($content->model) . "");
         //$form->add('users.email','Users','tags')->remote("fullname", "id", "/admin/users/autocomplete");
 
+        return true;
     }
 }

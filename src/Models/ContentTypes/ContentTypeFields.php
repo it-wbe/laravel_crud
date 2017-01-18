@@ -2,6 +2,7 @@
 
 namespace Wbe\Crud\Models\ContentTypes;
 
+use Illuminate\Database\Eloquent\Collection;
 use Wbe\Crud\Models\Translatable;
 
 class ContentTypeFields extends \Eloquent
@@ -19,6 +20,12 @@ class ContentTypeFields extends \Eloquent
         return $this->hasOne(ContentTypeFieldsDescription::class, 'content_type_field_id', 'id');
     }*/
 
+    /**
+     * Отримати поля для типу контенту $content_type, із опціональним фільтром $custom_where
+     * @param $content_type int ID типу контенту
+     * @param array $custom_where
+     * @return Collection
+     */
     static public function getFieldsFromDB($content_type, $custom_where = [])
     {
         $where = [['content_type_id', '=', $content_type]]; // ['grid_show', '=', '1']

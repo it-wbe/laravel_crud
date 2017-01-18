@@ -15,6 +15,11 @@ use View;
 
 class BackendHomeController extends Controller
 {
+    /**
+     * Вивід типів контенту на головній адмінки
+     * @param Request $r
+     * @return View
+     */
     public function index(Request $r)
     {
         $content_types = ContentType::orderBy('sort')->get();
@@ -28,6 +33,11 @@ class BackendHomeController extends Controller
         return view('crud::crud.fd_content_types', compact('content_types'));
     }
 
+    /**
+     * Видалання типу контенту
+     * @param Request $r
+     * @return \Illuminate\Http\RedirectResponse|string
+     */
     public function delete(Request $r)
     {
         if (!\Request::has('content_id'))
@@ -52,8 +62,9 @@ class BackendHomeController extends Controller
         return redirect()->back();
     }
 
-
-
+    /**
+     * Отримання та кешування списку мов
+     */
     public function language_select()
     {
         if (!Cache::get('languages')) {
@@ -65,6 +76,10 @@ class BackendHomeController extends Controller
         View::share('languages', $languages);
     }
 
+    /**
+     * Файловий менеджер
+     * @return View
+     */
     public function file_manager()
     {
         return view('crud::filemanager');

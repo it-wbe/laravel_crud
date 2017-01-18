@@ -9,6 +9,9 @@ use View;
 
 class MenuController extends Controller
 {
+    /**
+     * Заповнення масиву з головним меню
+     */
     static public function index()
     {
         /*$menu = DataGrid::source(new TypeContent());
@@ -35,16 +38,21 @@ class MenuController extends Controller
         }
         foreach ($content_types as $ct) {
             $menu['<span class="glyphicon glyphicon-cog">'][$ct->name] = [
-                    '<span class="glyphicon glyphicon-edit"></span> Дані' =>
+                    '<span class="glyphicon glyphicon-edit"></span> ' . trans('crud::common.content_data') =>
                         url('admin/crud/grid/' . $ct->id),
-                    '<span class="glyphicon glyphicon-th-list" style="color: #337ab7;"></span> Поля' =>
+                    '<span class="glyphicon glyphicon-th-list" style="color: #337ab7;"></span> ' . trans('crud::common.content_fields') =>
                         url('admin/fields_descriptor/content/' . $ct->id),
-                    '<span class="glyphicon glyphicon-edit"></span> Тип контенту' =>
+                    '<span class="glyphicon glyphicon-edit"></span> ' . trans('crud::common.content_type') =>
                         url('admin/crud/edit/1?modify=' . $ct->id . '&to=' . urlencode(url()->full())),
                     //'<span class="glyphicon glyphicon-trash" style="color: #d9534f;"></span> Видалити' =>
                     //    url('admin/crud/delete/' . $ct->id),
                 ];
         }
+
+        $menu[trans('crud::common.phpdoc')] = [
+            'PHPDoc' => url('docs'),
+            'Schema' => 'https://i.imgur.com/8xPv5rY.png'
+        ];
 
         $menu = self::outputMenu($menu);
 
@@ -52,6 +60,11 @@ class MenuController extends Controller
     }
 
     //, $level = 1
+    /**
+     * Рекурсивна генерація меню на основі масиву
+     * @param $menu
+     * @return string
+     */
     static public function outputMenu($menu)
     {
         $string = '';

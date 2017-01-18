@@ -14,26 +14,24 @@ use Zofe\Rapyd\DataForm\Field\Ckeditor;
 
 class FieldsDescriptorController extends Controller
 {
-    //private $regenerate_entire_model_ident = '[leave this text to regenerate entire model]';
-    //private $rel_model_delimiter_begin = '/* GENERATED RELATIONS BEGIN */' . PHP_EOL;
-    //private $rel_model_delimiter_end = '/* GENERATED RELATIONS END */';
-    //public $messages = [0 => [], 1 => [], 2 => [], 3 => []];
-    //public $message_class = [0 => 'info', 1 => 'success', 2 => 'warning', 3 => 'danger'];
-    public $relations = ['hasOne','hasMany','belongsTo','belongsToMany'];
-    public $relations_descriptions = ['hasOne','hasMany','belongsTo (інверсія hasMany)','belongsToMany'];
-    public $excluded_fields = ['lang_id','content_id'];
+    /** @var string Строка для визначення, чи перегенеровувати всю модель */
+    //const regenerate_entire_model_ident = '[leave this text to regenerate entire model]';
+    /** @var array Масив відношень */
+    const relations = ['hasOne', 'hasMany', 'belongsTo', 'belongsToMany'];
+    /** @var array Масив описів відношень */
+    const relations_descriptions = ['hasOne', 'hasMany', 'belongsTo (інверсія hasMany)', 'belongsToMany'];
+    /** @var array Масив виключених з генерації колонок */
+    const excluded_fields = ['lang_id', 'content_id'];
 
-    public function index(Request $r)
-    {
-        $content_types = ContentType::orderBy('sort')->get();
-        foreach ($content_types as $ctk => $ct) {
-            $content_types[$ctk]->descripted_fileds = \DB::table('content_type_fields')->where('content_type_id', $ct->id)->count();
-        }
-        return view('crud::crud.fd_content_types', compact('content_types'));
-    }
-
+    /**
+     * Поля контенту (admin/fields_descriptor/content/*)
+     * @param Request $r запит із роутів
+     * @param int $content_type ID типу контенту
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function content_types(Request $r, $content_type)
     {
+        echo 'content_types';
         $unknown_methods = [];
 
         $content = ContentType::find($content_type);
@@ -304,7 +302,10 @@ class FieldsDescriptorController extends Controller
         $desc_table = $content->table . '_description';
         $desc_table_exists = \Schema::hasTable($desc_table);
 
-        $default_field = ContentTypeFields::find(0);
+        //$default_field = ContentTypeFields::find(0);
+        $default_field = ContentTypeFields::where(['content_type_id' => -2])->first();
+        if (!$default_field || !isset($default_field->name))
+            die('Cannot find default field! Check field "_default" into "content_type_fields".');
 
         $fields = ContentTypeFields
             ::where('content_type_id', $content_type)

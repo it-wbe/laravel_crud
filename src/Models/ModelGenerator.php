@@ -9,34 +9,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class ModelGenerator
 {
-    const regenerate_entire_model_ident = '[leave this text to regenerate entire model]';
-    //private $rel_model_delimiter_begin = '/* GENERATED RELATIONS BEGIN */' . PHP_EOL;
-    //private $rel_model_delimiter_end = '/* GENERATED RELATIONS END */';
-    //public $messages = [0 => [], 1 => [], 2 => [], 3 => []];
-    //public $message_class = [0 => 'info', 1 => 'success', 2 => 'warning', 3 => 'danger'];
-    const relations = ['hasOne','hasMany','belongsTo','belongsToMany'];
-    const relations_descriptions = ['hasOne','hasMany','belongsTo (інверсія hasMany)','belongsToMany'];
-    const excluded_fields = ['lang_id','content_id'];
-
-
     /*public function get_model_relation_method($left_content, $right_content)
     {
         $fn = ContentType::getFilePathByModel($right_content->model);
         return $this->getModelRelationsMethod($left_content->table, file_get_contents($fn));
     }*/
 
-
-
     //static public function get_content_model_relation($k, $left_content_type_id, &$left_relation /*//[right], &$right_relation*/)
+
     /**
      * Генерація методу відношення на основі параметрів із POST запиту форми FieldsDescriptor
      * @param $left_content object контент зліва
      * @param $right_content object контент справа
-     * @param $rp array масив POST параметрів запиту форми FieldsDescriptor
-     * @param $left_relation
+     * @param $post array масив POST параметрів запиту форми FieldsDescriptor
+     * @param $left_relation string
      * @return bool
      */
-    static public function get_content_model_relation($left_content, $right_content, $rp, &$left_relation)
+    static public function get_content_model_relation($left_content, $right_content, $post, &$left_relation)
     {
         //$rel_type, $right_name, $left_column, $right_column, $req_table_to,  $left_content_type_id
 
@@ -54,12 +43,14 @@ class ModelGenerator
         //$right_name = trim(\Request::input('rel_method_name')[$k]); //$right_content->table;
 
         //$left_model = 'App\Models\\' . $left_content->model;
-        $right_model = /*'App\Models\\' .*/ $right_content->model;
+        $right_model = $right_content->model;
 
         //$left_model_table = $left_content->table;
         //$right_model_table = $right_content->table;
         //$req_table_to = trim(\Request::input('rel_table_to')[$k]);
-        $l_to_r_model_table = $rp['rel_table_to'] ? $rp['rel_table_to'] : $left_content->table . '_to_' . $right_content->table;
+        $l_to_r_model_table = $post['rel_table_to']
+            ? $post['rel_table_to']
+            : $left_content->table . '_to_' . $right_content->table;
 
         //$left_column = \Request::input('rel_left_column')[$k];
         //$right_column = \Request::input('rel_right_column')[$k];
@@ -72,35 +63,48 @@ class ModelGenerator
         }*/
 
 
-        switch ($rp['rel_type']) {
+        switch ($post['rel_type']) {
             case 'hasOne':
                 $left_relation =
-                    self::generate_relation_method($rp['right_name'],
-                        $rp['rel_type'], $right_model, [$rp['right_column'], $rp['left_column']]
+                    self::generate_relation_method(
+                        $post['right_name'],
+                        $post['rel_type'],
+                        $right_model,
+                        [$post['right_column'], $post['left_column']]
                     );
                 break;
             case 'hasMany':
                 $left_relation =
-                    self::generate_relation_method($rp['right_name'],
-                        $rp['rel_type'], $right_model, [$rp['right_column'], $rp['left_column']]
+                    self::generate_relation_method(
+                        $post['right_name'],
+                        $post['rel_type'],
+                        $right_model,
+                        [$post['right_column'], $post['left_column']]
                     );
                 break;
             case 'belongsToMany':
                 $left_relation =
-                    self::generate_relation_method($rp['right_name'],
-                        $rp['rel_type'], $right_model, [$l_to_r_model_table, $rp['left_column'], $rp['right_column']]
+                    self::generate_relation_method(
+                        $post['right_name'],
+                        $post['rel_type'],
+                        $right_model,
+                        [$l_to_r_model_table, $post['left_column'], $post['right_column']]
                     );
                 break;
             case 'belongsTo':
                 $left_relation =
-                    self::generate_relation_method($rp['right_name'],
-                        $rp['rel_type'], $right_model, [$rp['right_column'], $rp['left_column']]
+                    self::generate_relation_method(
+                        $post['right_name'],
+                        $post['rel_type'],
+                        $right_model,
+                        [$post['right_column'], $post['left_column']]
                     );
                 break;
             default:
-                $left_relation = '/* undefined relation: ' . $rp['rel_type'] . ' */';
+                $left_relation = '/* undefined relation: ' . $post['rel_type'] . ' */';
 
         }
+        return true;
     }
 
     /**
@@ -108,7 +112,7 @@ class ModelGenerator
      * @param $method_name
      * @param $rel_type
      * @param $rel_model_name
-     * @param array $params
+     * @param $params array
      * @return string
      */
     static public function generate_relation_method($method_name, $rel_type, $rel_model_name, $params = [])
@@ -125,8 +129,9 @@ class ModelGenerator
 
     /**
      * Записати масив зв'язків $new_relations у модель $content_type
-     * @param $content_type string тип контенту
+     * @param $content_type ContentType тип контенту
      * @param $new_relations array масив зв'язків
+     * @return bool
      */
     static public function write_content_model(ContentType $content_type, $new_relations = [])
     {
@@ -139,8 +144,6 @@ class ModelGenerator
             ///$cdm_template = \File::get(storage_path('generator/ContentModel.txt'));
             $cdm_template = \File::get(__DIR__ . '/generator/ContentModel.txt');
 
-
-            //$classname = $content_type->model;
 
             $classname = $content_type::getCTModel($content_type->model);
             if (!$classname)
@@ -161,14 +164,20 @@ class ModelGenerator
             ) {
 
                 $fields = \Schema::getColumnListing($table);
-                $no_timestamps = !(in_array('created_at', $fields) && in_array('updated_at', $fields) && in_array('deleted_at', $fields));
+                $no_timestamps = !(
+                    in_array('created_at', $fields) &&
+                    in_array('updated_at', $fields) &&
+                    in_array('deleted_at', $fields)
+                );
                 $translate = (\Schema::hasTable($desc_table));
 
                 $content = ''; //$this->rel_model_delimiter_begin . PHP_EOL . $this->rel_model_delimiter_end;
 
                 $classname_namespace = before_last('\\', $classname, 1);
                 $cdm_template = bind_string($cdm_template, [
-                    'namespace' => $classname_namespace ? /*'App\Models\ContentTypes\\' .*/ $classname_namespace : 'App\Models\ContentTypes',
+                    'namespace' => $classname_namespace
+                        ? /*'App\Models\ContentTypes\\' .*/ $classname_namespace
+                        : 'App\Models\ContentTypes',
                     'classname' => after_last('\\', $classname),
                     'table' => $table,
                     'translate' => $translate,
@@ -178,7 +187,6 @@ class ModelGenerator
 
                 //$filename = self::getClassFilename('App\Models\\' . $classname);
 
-
                 //file_put_contents($filename, $cdm_template);
                 Globals::$messages[0][] = 'writing model "' . $classname . '" to "' . $filename . '"';
             } else {
@@ -187,24 +195,24 @@ class ModelGenerator
                 $cdm_template = file_get_contents($filename);
             }
 
-
             foreach ($new_relations as $new_relation_k => $new_relation) {
                 $cdm_template = self::createOrUpdateMethod($new_relation_k, $new_relation, $cdm_template);
             }
 
             file_put_contents($filename, $cdm_template);
         } else Globals::$messages[3][] = 'table "' . $content_type->table . '" not found! cannot write model';
+        return true;
     }
 
 
     /**
-     * Генерація опису поля на основі даних з таблиці
+     * Генерація опису поля на основі даних зі схеми таблиці БД
      * @param $field \stdClass \DB::select('SHOW COLUMNS FROM ' . $table);
-     * @param $content_type_id int
-     * @param $default_field ContentTypeFields
-     * @return mixed
+     * @param $content_type_id int ID типу контенту
+     * @param $default_field ContentTypeFields шаблон поля, знаходиться у БД
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    static public function autofield($field, $content_type_id, $default_field)
+    static public function autofield($field, $content_type_id, ContentTypeFields $default_field)
     {
         $new_field = $default_field->replicate();
         $new_field->name = $field->Field;
@@ -245,7 +253,7 @@ class ModelGenerator
             $new_field->validators .= 'date|';
         }
 
-        if (($field->Null == 'NO') && (!in_array($field->Field, ['created_at','updated_at','deleted_at']))) {
+        if (($field->Null == 'NO') && (!in_array($field->Field, ['created_at', 'updated_at', 'deleted_at']))) {
             $new_field->validators .= 'required|';
         }
 
@@ -257,10 +265,10 @@ class ModelGenerator
 
     /**
      * Створення чи оновлення методу в моделі
-     * @param $method_name
-     * @param $method
-     * @param $filestring
-     * @return mixed
+     * @param $method_name string назва методу
+     * @param $method string тіло методу
+     * @param $filestring string тіло моделі
+     * @return string
      */
     static public function createOrUpdateMethod($method_name, $method, $filestring)
     {
@@ -268,7 +276,11 @@ class ModelGenerator
         //print_r($method_match);
         //echo '[[[' . $method_name . '; ' . $method . '; ' . $filestring . ']]]';
         if (isset($method_match[0][0])) {
-            return preg_replace('~\s*public\sfunction\s' . $method_name . '\(.+?\}\s*~s', PHP_EOL . trim($method, ' ') . PHP_EOL, $filestring);
+            return preg_replace(
+                '~\s*public\sfunction\s' . $method_name . '\(.+?\}\s*~s',
+                PHP_EOL . trim($method, ' ') . PHP_EOL,
+                $filestring
+            );
         } else {
             return preg_replace('~\}\s*\Z~', $method . '}', $filestring);
         }
@@ -282,18 +294,24 @@ class ModelGenerator
     }*/
 
     /**
-     * Отримати масив всіх відношень у моделі
-     * @param $filestring
-     * @param string $search_for_method
+     * Отримати масив всіх зв'язків у моделі
+     * @param $filestring string тіло моделі
+     * @param $search_for_method string фільтр за назвою методу
      * @return array|mixed|string
      */
     static public function getModelRelationsMethods($filestring, $search_for_method = '')
     {
-        preg_match_all('~public\sfunction\s' . ($search_for_method ? $search_for_method . '\(' : '') . '.*\}~sU', $filestring, $methods_str);
+        preg_match_all('~public\sfunction\s' . ($search_for_method ? $search_for_method . '\(' : '') . '.*\}~sU',
+            $filestring,
+            $methods_str
+        );
         //echo '~public\sfunction\s' . $search_for_method . '.*\}~sU';
         $methods = [];
         foreach ($methods_str[0] as $method) {
-            preg_match_all('~(?<=public\sfunction\s).*(?=\()|(?<=\$this\-\>).*(?=\()|(?<=\().*(?=\);)~', $method, $method_params);
+            preg_match_all('~(?<=public\sfunction\s).*(?=\()|(?<=\$this\-\>).*(?=\()|(?<=\().*(?=\);)~',
+                $method,
+                $method_params
+            );
             $methods[$method_params[0][0]] = $method_params[0];
         }
 
@@ -315,9 +333,9 @@ class ModelGenerator
     }
 
     /**
-     * Отримати тип контенту з моделі
-     * @param $model
-     * @return
+     * Отримати тип контенту за моделлю. Використовується для отримання типу контенту зі зв'язків
+     * @param $model string
+     * @return ContentType
      */
     static public function getContentTypeByModel($model)
     {
@@ -325,27 +343,33 @@ class ModelGenerator
             return ContentType::where('model', $model)->first();
         } else {
             $model = trim(str_replace('::class', '', $model));
-            $sql = '((content_type.model = "'.$model.'") OR (content_type.model LIKE "%\\'.$model.'"))';
+            $sql = '((content_type.model = "' . $model . '") OR (content_type.model LIKE "%\\' . $model . '"))';
             //echo $sql;
             return ContentType::whereRaw($sql)->first();
         }
     }
 
+    /**
+     * Отримати *приблизну* назву файлу на назвою класу
+     * @param $classname string назва класу
+     * @return string
+     */
     static public function getModelFilename($classname)
     {
         //return '../app/Models/' . ltrim($classname, '\\/') . '.php';
         \File::makeDirectory(base_path() . '/app/Models/ContentTypes/', 0777, true, true);
         //return base_path() . '/app/Models/ContentTypes/' . str_replace('\\', '/', ltrim($classname, '\\/')) . '.php';
 
-        return base_path() . '\\' . str_replace('\\', '/', str_replace('App\\', 'app\\', ltrim($classname, '\\/'))) . '.php';
+        return base_path() . '\\'
+        . str_replace('\\', '/', str_replace('App\\', 'app\\', ltrim($classname, '\\/'))) . '.php';
     }
 
     /**
-     * Згенерувати файл моделі на основі таблиці
-     * @param $table
-     * @param string $desc_table
-     * @param string $classname
-     * @return int
+     * Згенерувати файл моделі на основі таблиці $table, якщо вона існує
+     * @param $table string таблиця, на основі якої генерувати
+     * @param $desc_table string табилця з перекладом (якщо існує)
+     * @param $classname string назва класу (якщо потрібно інший)
+     * @return bool
      */
     static public function generateModelByTable($table, $desc_table = '', $classname = '')
     {
@@ -357,10 +381,13 @@ class ModelGenerator
             //$classname = $content->model;
 
             $filename = self::getModelFilename($classname);
-           //!!! echo $filename.'-';echo ContentType::getCTModel($classname);echo '123';
+            //!!! echo $filename.'-';echo ContentType::getCTModel($classname);echo '123';
             //(!class_exists('App\Models\\' . $classname)) ||
-            if ((! ContentType::getCTModel($classname)) ||
-                (file_exists($filename) && (strpos(file_get_contents($filename), '[leave this text to regenerate]') !== false))
+            if ((!ContentType::getCTModel($classname)) ||
+                (
+                    file_exists($filename) &&
+                    (strpos(file_get_contents($filename), '[leave this text to regenerate]') !== false)
+                )
             ) {
 
                 // $content_description_model_template
@@ -368,14 +395,19 @@ class ModelGenerator
                 $cdm_template = \File::get(__DIR__ . '/generator/ContentModel.txt');
 
                 $fields = \Schema::getColumnListing($table);
-                $no_timestamps = !(in_array('created_at', $fields) && in_array('updated_at', $fields) && in_array('deleted_at', $fields));
+                $no_timestamps = !(
+                    in_array('created_at', $fields) &&
+                    in_array('updated_at', $fields) &&
+                    in_array('deleted_at', $fields)
+                );
                 $translate = (\Schema::hasTable($desc_table));
 
                 $model_content = '';
 
                 $classname_namespace = before_last('\\', $classname, 1);
                 $cdm_template = bind_string($cdm_template, [
-                    'namespace' => $classname_namespace ? /*'App\Models\\' .*/ $classname_namespace : 'App\Models\ContentTypes',
+                    'namespace' => $classname_namespace ? /*'App\Models\\' .*/
+                        $classname_namespace : 'App\Models\ContentTypes',
                     'classname' => after_last('\\', $classname),
                     'table' => $table,
                     'translate' => $translate,
@@ -400,5 +432,6 @@ class ModelGenerator
         } else {
             die('no table ' . $table);
         }
+        return true;
     }
 }

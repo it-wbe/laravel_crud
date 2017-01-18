@@ -23,6 +23,10 @@ class SettingsController extends Controller
         return $reflector->getFileName();
     }
 
+    /**
+     * deprecated
+     * @return bool|int
+     */
     static public function generate()
     {
         return false;

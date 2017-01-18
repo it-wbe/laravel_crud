@@ -12,10 +12,12 @@ class ContentType extends \Eloquent
     public $timestamps = false;
     protected $table = 'content_type';
 
-    /*public $messages = [0 => [], 1 => [], 2 => [], 3 => []];
-    public $message_class = [0 => 'info', 1 => 'success', 2 => 'warning', 3 => 'danger'];*/
 
-
+    /**
+     * Отримати шлях до файлу моделі
+     * @param $model
+     * @return string
+     */
     static public function getFilePathByModel($model)
     {
         $divider = 'Models\\';
@@ -40,6 +42,11 @@ class ContentType extends \Eloquent
         return $fn;
     }
 
+    /**
+     * Отримати шлях до файлу класу за його назвою
+     * @param $classname
+     * @return string
+     */
     static public function getClassFilename($classname)
     {
         //ToDo: newly created class cannot autoload (writing model "..."-> Reflection: Class does not exist)
@@ -51,6 +58,12 @@ class ContentType extends \Eloquent
     {
     }*/
 
+    /**
+     * Автодоповнення назви моделі, якщо повний неймспейс не вказано.
+     * Використовується для створення моделі на основі запису в content_type.model
+     * @param $model_name
+     * @return bool|string
+     */
     static public function getCTModel($model_name)
     {
         if (class_exists($model_name))

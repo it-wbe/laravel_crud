@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'field_types2' => [
+    'field_types' => [
         'text' => 'Text',
         'textarea' => 'Textarea',
         'hidden' => 'Hidden',

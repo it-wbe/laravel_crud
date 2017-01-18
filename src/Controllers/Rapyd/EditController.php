@@ -23,6 +23,13 @@ use Zofe\Rapyd\DataForm\DataForm;
 
 class EditController extends Controller
 {
+    /**
+     * Форма редагування запису поточного типу контенту, його видалення
+     * @param Request $r
+     * @param $content_type
+     * @param int $lang_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View|string
+     */
     public function index(Request $r, $content_type, $lang_id = 0)
     {
         if ($r->exists('modify') || $r->exists('insert')) {

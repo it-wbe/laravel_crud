@@ -43,7 +43,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::any('admin/crud/edit/{content_type}/', 'Wbe\Crud\Controllers\Rapyd\EditController@index');
     Route::any('admin/crud/edit/{content_type}/lang/{lang_id}/', 'Wbe\Crud\Controllers\Rapyd\EditController@index');
     Route::any('admin/type_content', 'Wbe\Crud\Controllers\TypeContentController@index');
-    Route::any('admin/fields_descriptor', 'Wbe\Crud\Controllers\FieldsDescriptorController@index');
     Route::any('admin/fields_descriptor/content/{content_type}', 'Wbe\Crud\Controllers\FieldsDescriptorController@content_types');
     Route::any('admin/settings', 'Wbe\Crud\Controllers\SettingsController@index');
     //Route::any('admin/settings/generate', 'Wbe\Crud\Controllers\SettingsController@generate');

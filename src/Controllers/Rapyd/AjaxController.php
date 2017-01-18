@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Input;
 
 class AjaxController extends Controller
 {
+    /**
+     * Кастомне ajax автодоповнення для Rapyd\Tags
+     * @param Request $r
+     * @param $model
+     * @param $fields
+     * @param $limit
+     * @return string
+     */
     public function getAutocomplete(Request $r, $model, $fields, $limit)
     {
         if (!$r->exists("q"))

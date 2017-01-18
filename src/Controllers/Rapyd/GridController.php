@@ -14,6 +14,11 @@ use Zofe\Rapyd\DataGrid\DataGrid;
 
 class GridController extends Controller
 {
+    /**
+     * Таблиця із записами для поточного типу контенту та фільтрами по них
+     * @param $content_type
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index($content_type)
     {
         $content = ContentType::find($content_type);

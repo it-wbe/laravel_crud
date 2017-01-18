@@ -15,8 +15,16 @@ return [
     'content_data' => 'Данные',
     'content_fields' => 'Поля',
     'content_type' => 'Тип Контента',
+    'delete' => 'Удалить',
     'grid_actions' => 'Действия',
     'cancel' => 'Отмена',
+    'phpdoc' => 'Документация',
+    'ct_name' => 'Название',
+    'ct_table' => 'Таблица',
+    'ct_model' => 'Модель',
+    'ct_records' => 'Записей',
+    'ct_descripted_fields' => 'Описано полей',
+    'ct_actions' => 'Действия',
 ];
 
 ?>
