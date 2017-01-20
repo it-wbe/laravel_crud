@@ -31,7 +31,6 @@ class FieldsDescriptorController extends Controller
      */
     public function content_types(Request $r, $content_type)
     {
-        echo 'content_types';
         $unknown_methods = [];
 
         $content = ContentType::find($content_type);
@@ -235,8 +234,10 @@ class FieldsDescriptorController extends Controller
         $relations = [];
 
         foreach ($relation_methods as $rel_m_k => $rel_m) {
+            //print_r($rel_m[1]);
             ///$right_content = ContentType::where('table', $rel_m[0])->first()
-            if (isset($rel_m[2]) && isset($rel_m[2][0]) && (in_array($rel_m[1], $this->relations))) {
+
+            if (isset($rel_m[2]) && isset($rel_m[2][0]) && (in_array($rel_m[1], self::relations))) {
                 //print_r($rel_m);
                 //$relation_methods[$rel_m_k]
 

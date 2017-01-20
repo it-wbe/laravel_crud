@@ -20,24 +20,26 @@ class MenuController extends Controller
         $menu->add('name', 'Content Type', false);
         View::share('menu',compact('menu')['menu']);*/
 
-        $menu = [
-            trans('crud::common.to_site') => url('/'),
-            trans('crud::common.filemanager') => url('/admin/filemanager/'),
-            /*'menu0' => ['menu1' => ['menu2' => ['menu3' => url('/admin/filemanager/')],
-                    'menu22' => ['menu33' => url('/admin/filemanager/')]],
-                'menu11' => ['menu22' => ['menu33' => url('/admin/filemanager/')]]],*/
+        $menu = [];
+        if (\Auth::guard('admin')->check()) {
+            $menu = [
+                trans('crud::common.to_site') => url('/'),
+                trans('crud::common.filemanager') => url('/admin/filemanager/'),
+                /*'menu0' => ['menu1' => ['menu2' => ['menu3' => url('/admin/filemanager/')],
+                        'menu22' => ['menu33' => url('/admin/filemanager/')]],
+                    'menu11' => ['menu22' => ['menu33' => url('/admin/filemanager/')]]],*/
 
-            //'Настройки' => url('/admin/settings/'),
-            //'Fields Descriptor' => url('/admin/fields_descriptor/'),
-            //'t' => ['a'=>'']
-        ];
-        $content_types = ContentType::orderBy('sort')->get();
-        //print_r($content_types);
-        foreach ($content_types as $ct) {
-            $menu[trans('crud::common.content_types')][$ct->name] = url('admin/crud/grid/' . $ct->id . '/');
-        }
-        foreach ($content_types as $ct) {
-            $menu['<span class="glyphicon glyphicon-cog">'][$ct->name] = [
+                //'Настройки' => url('/admin/settings/'),
+                //'Fields Descriptor' => url('/admin/fields_descriptor/'),
+                //'t' => ['a'=>'']
+            ];
+            $content_types = ContentType::orderBy('sort')->get();
+            //print_r($content_types);
+            foreach ($content_types as $ct) {
+                $menu[trans('crud::common.content_types')][$ct->name] = url('admin/crud/grid/' . $ct->id . '/');
+            }
+            foreach ($content_types as $ct) {
+                $menu['<span class="glyphicon glyphicon-cog">'][$ct->name] = [
                     '<span class="glyphicon glyphicon-edit"></span> ' . trans('crud::common.content_data') =>
                         url('admin/crud/grid/' . $ct->id),
                     '<span class="glyphicon glyphicon-th-list" style="color: #337ab7;"></span> ' . trans('crud::common.content_fields') =>
@@ -47,12 +49,13 @@ class MenuController extends Controller
                     //'<span class="glyphicon glyphicon-trash" style="color: #d9534f;"></span> Видалити' =>
                     //    url('admin/crud/delete/' . $ct->id),
                 ];
-        }
+            }
 
-        $menu[trans('crud::common.phpdoc')] = [
-            'PHPDoc' => url('docs'),
-            'Schema' => 'https://i.imgur.com/8xPv5rY.png'
-        ];
+            $menu[trans('crud::common.phpdoc')] = [
+                'PHPDoc' => url('docs'),
+                'Schema' => 'https://i.imgur.com/8xPv5rY.png'
+            ];
+        }
 
         $menu = self::outputMenu($menu);
 
