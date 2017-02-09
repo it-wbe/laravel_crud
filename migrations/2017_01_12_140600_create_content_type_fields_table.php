@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -35,12 +35,12 @@ class CreateContentTypeFieldsTable extends Migration
             });
 
 
-        \DB::table('content_type_fields')->delete();
+        \DB::table('content_type_fields')->truncate();
 
         \DB::table('content_type_fields')->insert(array(
             0 =>
                 array(
-                    'id' => '0',
+                    'id' => '1',
                     'content_type_id' => '-2',
                     'sort' => '9999',
                     'name' => '_default',
@@ -154,7 +154,7 @@ class CreateContentTypeFieldsTable extends Migration
                 ),
             6 =>
                 array(
-                    'id' => '34',
+                    'id' => '35',
                     'content_type_id' => '4',
                     'sort' => '3',
                     'name' => 'sort',
@@ -306,7 +306,7 @@ class CreateContentTypeFieldsTable extends Migration
                 ),
             14 =>
                 array(
-                    'id' => '1',
+                    'id' => '34',
                     'content_type_id' => '1',
                     'sort' => '0',
                     'name' => 'id',
