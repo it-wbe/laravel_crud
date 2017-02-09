@@ -33,13 +33,23 @@ class TranslateScope implements Scope
                 $sel_raw[] = 'COALESCE(' . $desc_table . '.' . $c . ', "[translation not set for \"' . $c . '\"]") as "' . $c . '"';
         }
 
-        //->addSelect('COALESCE(name, DEFAULT("name"))')   $sel_raw => $cols
+
+        $description_field_content_id = (property_exists($model, 'description_field_content_id') ? $model->description_field_content_id : 'content_id');
+        $description_field_lang_id = (property_exists($model, 'description_field_lang_id') ? $model->description_field_lang_id : 'lang_id');
+        $primaryKey = (isset($model->primaryKey)) ? $model->primaryKey : 'id'; //(isset($model->primaryKey)) ? $model->primaryKey :
+
+
+
         $builder->selectRaw($table . '.*, ' . implode(',', $sel_raw))
             ->leftJoin($table . '_description', [
-                [$table . '.id', '=', $table . '_description.content_id'],
-                ['lang_id', '=', \DB::raw(get_current_lang()) ]
+                [$table . '.' . $primaryKey, '=', $table . '_description.' . $description_field_content_id],
+                [$table . '_description.' . $description_field_lang_id, '=', \DB::raw(get_current_lang()) ]
             ])
-            ->groupBy($table . '.id');
+            ->groupBy($table . '.' . $primaryKey);
+
+        //echo $table . '_description '. $table . '.id', '=', $table . '_description.content_id && lang_id'. '='.get_current_lang();
+
+
         //['lang_id', '=', \DB::raw(session('admin_lang_id'))]
     }
 }

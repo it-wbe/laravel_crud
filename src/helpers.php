@@ -6,36 +6,36 @@
 	BEGIN some string utils
 */
 if (!function_exists('after')) {
-    function after($this, $inthat, $else_empty = false)
+    function after($_this, $inthat, $else_empty = false)
     {
-        if (!is_bool(strpos($inthat, $this)))
-            return substr($inthat, strpos($inthat, $this) + strlen($this));
+        if (!is_bool(strpos($inthat, $_this)))
+            return substr($inthat, strpos($inthat, $_this) + strlen($_this));
         else
             if (!$else_empty) return $inthat;
     }
 }
 
 if (!function_exists('after_last')) {
-    function after_last($this, $inthat, $else_empty = false)
+    function after_last($_this, $inthat, $else_empty = false)
     {
-        if (!is_bool(strrevpos($inthat, $this)))
-            return substr($inthat, strrevpos($inthat, $this) + strlen($this));
+        if (!is_bool(strrevpos($inthat, $_this)))
+            return substr($inthat, strrevpos($inthat, $_this) + strlen($_this));
         else
             if (!$else_empty) return $inthat;
     }
 }
 
 if (!function_exists('before')) {
-    function before($this, $inthat)
+    function before($_this, $inthat)
     {
-        return substr($inthat, 0, strpos($inthat, $this));
+        return substr($inthat, 0, strpos($inthat, $_this));
     }
 }
 
 if (!function_exists('before_last')) {
-    function before_last($this, $inthat, $else_empty = false)
+    function before_last($_this, $inthat, $else_empty = false)
     {
-        $p = strrevpos($inthat, $this);
+        $p = strrevpos($inthat, $_this);
         if ($p !== false)
             return substr($inthat, 0, $p);
         else
@@ -44,16 +44,16 @@ if (!function_exists('before_last')) {
 }
 
 if (!function_exists('between')) {
-    function between($this, $that, $inthat)
+    function between($_this, $that, $inthat)
     {
-        return before($that, after($this, $inthat));
+        return before($that, after($_this, $inthat));
     }
 }
 
 if (!function_exists('between_last')) {
-    function between_last($this, $that, $inthat)
+    function between_last($_this, $that, $inthat)
     {
-        return after_last($this, before_last($that, $inthat));
+        return after_last($_this, before_last($that, $inthat));
     }
 }
 

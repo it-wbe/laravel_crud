@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ModelGenerator
 {
+    /** @var string Строка для визначення, чи перегенеровувати всю модель */
+    const regenerate_entire_model_ident = '[leave this text to regenerate entire model]';
+
     /*public function get_model_relation_method($left_content, $right_content)
     {
         $fn = ContentType::getFilePathByModel($right_content->model);
@@ -246,7 +249,7 @@ class ModelGenerator
             if ($maxlen)
                 $new_field->validators .= 'max:' . $maxlen . '|';
         } elseif (starts_with($field->Type, 'text')) {
-            $new_field->type = 'redactor';
+            $new_field->type = 'Wbe\Crud\Models\Rapyd\Fields\Ckeditor'; //radactor
             $new_field->validators .= 'max:4096|';
         } elseif ($field->Type == 'datetime') {
             $new_field->type = 'date';

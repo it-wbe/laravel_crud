@@ -273,6 +273,8 @@ class FieldsDescriptorController extends Controller
                         $relations[$rel_key]['rel_table_to'] = $content->table . '_to_' . $right_content->table;
                     $relations[$rel_key]['rel_left_column'] = isset($rel_m[2][2]) ? $rel_m[2][2] : 'id';
                     $relations[$rel_key]['rel_right_column'] = isset($rel_m[2][3]) ? $rel_m[2][3] : 'id';
+                    //print_r($rel_m[2][2]);
+
                     //$relations[$rel_key]['rel_table_to'] = $rel_m[2][3];
                 } elseif ($rel_type == 'belongsTo') {
                     $relations[$rel_key]['rel_table_to'] = $content->table . '_to_' . $right_content->table;
@@ -328,7 +330,7 @@ class FieldsDescriptorController extends Controller
         }
         if ($generate_fields)
             foreach ($table_all_fields as $f) {
-                if (!isset($fields[$f->Field]) && (!in_array($f->Field, $this->excluded_fields)))
+                if (!isset($fields[$f->Field]) && (!in_array($f->Field, self::excluded_fields)))
                     $fields[$f->Field] = ModelGenerator::autofield($f, $content_type, $default_field);
             }
 
