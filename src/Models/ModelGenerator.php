@@ -363,7 +363,7 @@ class ModelGenerator
         \File::makeDirectory(base_path() . '/app/Models/ContentTypes/', 0777, true, true);
         //return base_path() . '/app/Models/ContentTypes/' . str_replace('\\', '/', ltrim($classname, '\\/')) . '.php';
 
-        return base_path() . '\\'
+        return base_path() . '/'
         . str_replace('\\', '/', str_replace('App\\', 'app\\', ltrim($classname, '\\/'))) . '.php';
     }
 
