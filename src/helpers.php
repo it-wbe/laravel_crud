@@ -156,3 +156,14 @@ if (!function_exists('get_current_lang')) {
         return session($session_key);
     }
 }
+
+if (!function_exists('array_chunks_fixed')) {
+    function array_chunks_fixed($input_array, $chunks) {
+        if (sizeof($input_array) > 0) {
+            $chunks = 3;
+            return array_chunk($input_array, intval(ceil(sizeof($input_array) / $chunks)));
+        }
+
+        return array();
+    }
+}

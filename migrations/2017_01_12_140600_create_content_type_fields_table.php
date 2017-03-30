@@ -18,7 +18,7 @@ class CreateContentTypeFieldsTable extends Migration
                 $table->integer('id', true);
                 $table->integer('content_type_id');
                 $table->integer('sort');
-                $table->string('name');
+                $table->string('name', 128);
                 $table->string('type');
                 $table->string('display_column');
                 $table->string('search_columns');
