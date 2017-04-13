@@ -30,7 +30,8 @@ class TranslateScope implements Scope
         $sel_raw = [];
         foreach ($cols as $c) {
             if ($c != 'id' && $c != 'lang_id')
-                $sel_raw[] = 'COALESCE(' . $desc_table . '.' . $c . ', "[translation not set for \"' . $c . '\"]") as "' . $c . '"';
+//                $sel_raw[] = 'COALESCE(' . $desc_table . '.' . $c . ', "[translation not set for \"' . $c . '\"]") as "' . $c . '"';
+                $sel_raw[] = 'COALESCE(' . $desc_table . '.' . $c . ', "not set") as "' . $c . '"';
         }
 
 

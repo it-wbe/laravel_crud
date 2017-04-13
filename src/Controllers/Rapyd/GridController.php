@@ -71,7 +71,8 @@ class GridController extends Controller
         foreach ($fields as $field) {
             if ($field->grid_show && ($field->name != 'lang_id') && ($field->name != 'content_id')) {
                 $display = $field->grid_custom_display ? $field->grid_custom_display : $field->name;
-                $f = $grid->add($display, $field->caption ? $field->caption : $field->name, $field->name);
+                // $f = $grid->add($display, $field->caption ? $field->caption : $field->name, $field->name);
+                $f = $grid->add($display, $field->title != "not set" ? $field->title : $field->name, $field->name);
 
                 if ($field->grid_attributes)
                     eval($field->grid_attributes);
