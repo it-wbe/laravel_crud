@@ -1,5 +1,5 @@
 {
-    "name": "wbe/crud",
+    "name": "it-wbe/laravel_crud",
     "description": "Admin panel with CRUD generator, based on Rapyd",
     "type": "project",
     "require": {
@@ -11,8 +11,8 @@
     },
     "authors": [
         {
-            "name": "Taras",
-            "email": "tgudyma@gmail.com"
+            "name": "WBE team",
+            "email": "wbe.it.lviv@gmail.com"
         }
     ],
     "autoload": {
