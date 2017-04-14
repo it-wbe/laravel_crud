@@ -1,5 +1,5 @@
 {
-    "name": "it-wbe/laravel_crud",
+    "name": "wbe/crud",
     "description": "Admin panel with CRUD generator, based on Rapyd",
     "type": "project",
     "require": {
