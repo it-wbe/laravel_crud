@@ -32,18 +32,24 @@ class GridController extends Controller
         $fields_schema = \Schema::getColumnListing($content->table);
         $fields_desc_schema = \Schema::getColumnListing($content->table . '_description');
 
-
-        $fields = [];
+        $unsorted_fields = [];
 
         foreach ($fields_schema as $field) {
             if (isset($ct_fields[$field])) {
-                $fields[$field] = $ct_fields[$field];
+                $unsorted_fields[$field] = $ct_fields[$field];
             }
         }
 
         foreach ($fields_desc_schema as $field) {
             if (isset($ct_fields[$field])) {
-                $fields[$field] = $ct_fields[$field];
+                $unsorted_fields[$field] = $ct_fields[$field];
+            }
+        }
+
+        $fields = [];
+        foreach ($ct_fields as $name => $ct_field) {
+            if (isset($unsorted_fields[$name])) {
+                $fields[$name] = $unsorted_fields[$name];
             }
         }
 
