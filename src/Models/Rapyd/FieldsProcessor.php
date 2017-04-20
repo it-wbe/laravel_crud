@@ -68,7 +68,8 @@ class FieldsProcessor
             ) {
                 $display = $field->grid_custom_display ? $field->grid_custom_display : $field->name;
 
-                $f = $rapyd->add($display, $field->caption ? $field->caption : $field->name, $field->type);
+//                $f = $rapyd->add($display, $field->caption ? $field->caption : $field->name, $field->type);
+                $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
 
                 if ($field->validators) {
                     $f->rule($field->validators);
