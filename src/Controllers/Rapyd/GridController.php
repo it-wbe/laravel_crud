@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Wbe\Crud\Models\ContentTypes\ContentType;
 use Wbe\Crud\Models\ContentTypes\ContentTypeFields;
+use Wbe\Crud\Models\ModelGenerator;
 
 use Zofe\Rapyd\DataFilter\DataFilter;
 use Zofe\Rapyd\DataGrid\DataGrid;
@@ -28,9 +29,14 @@ class GridController extends Controller
         // from content_type_fields
         $ct_fields = ContentTypeFields::getFieldsFromDB($content_type, [['grid_show', '=', \DB::raw(1)]]);
 
-
         $fields_schema = \Schema::getColumnListing($content->table);
         $fields_desc_schema = \Schema::getColumnListing($content->table . '_description');
+
+        $classname = $content::getCTModel($content->model);
+        $model_filename = $content->getClassFilename($classname);
+        $relation_methods = ModelGenerator::getModelRelationsMethods(file_get_contents($model_filename));
+
+//        print_r($relation_methods);
 
         $unsorted_fields = [];
 
@@ -53,23 +59,26 @@ class GridController extends Controller
             }
         }
 
-        //$content_type_model = 'App\Models\\' . $content->model;
         $content_type_model = $content::getCTModel($content->model);
-        //echo '['.$content_type_model.']';
 
         if (!$content_type_model)
             die('model not found: ' . $content->model);
 
         $new_content_type_model = new $content_type_model;
 
-        $filter = DataFilter::source($new_content_type_model);
+        //add relations to content model
+        $relations = [];
+        foreach ($relation_methods as $relation_name => $relation) {
+            $relations[] = $relation_name;
+        }
+
+        $filter = DataFilter::source($new_content_type_model::with($relations));
 
         FieldsProcessor::addFields($content, $filter, 'filter');
 
         $filter->submit('Знайти');
         $filter->reset('Очистити');
         $filter->build();
-
 
         $grid = DataGrid::source($filter);
         $grid->attributes(array("class" => "table table-striped"));

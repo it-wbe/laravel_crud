@@ -66,7 +66,8 @@ class FieldsProcessor
                 (($type != 'filter') || in_array($field->name, $fields_schema)) &&
                 (($field->name != 'id') && ($field->name != 'lang_id') && ($field->name != 'content_id'))
             ) {
-                $display = $field->grid_custom_display ? $field->grid_custom_display : $field->name;
+//                $display = $field->grid_custom_display ? $field->grid_custom_display : $field->name;
+                $display = $field->name;
 
 //                $f = $rapyd->add($display, $field->caption ? $field->caption : $field->name, $field->type);
                 $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
