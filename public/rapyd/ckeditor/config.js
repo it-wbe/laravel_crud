@@ -38,5 +38,5 @@ CKEDITOR.editorConfig = function( config ) {
     //config.extraPlugins = 'imageuploader';
 	// config.filebrowserImageBrowseUrl  = '../../../packages/zofe/rapyd/assets/ckeditor/plugins/imageuploader/imgbrowser.php';
 	//config.filebrowserBrowseUrl = '/laravel_server/public/admin/filemanager';
-	config.filebrowserBrowseUrl = '/laravel_server/public/elfinder/ckeditor';
+	config.filebrowserBrowseUrl = '/public/elfinder/ckeditor';
 };
