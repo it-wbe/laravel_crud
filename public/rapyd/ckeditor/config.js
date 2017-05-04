@@ -35,6 +35,7 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+	config.extraPlugins = 'font,justify,colorbutton,panelbutton';
     //config.extraPlugins = 'imageuploader';
 	// config.filebrowserImageBrowseUrl  = '../../../packages/zofe/rapyd/assets/ckeditor/plugins/imageuploader/imgbrowser.php';
 	//config.filebrowserBrowseUrl = '/laravel_server/public/admin/filemanager';
