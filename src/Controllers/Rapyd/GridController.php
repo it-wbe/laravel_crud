@@ -69,7 +69,8 @@ class GridController extends Controller
         //add relations to content model
         $relations = [];
         foreach ($relation_methods as $relation_name => $relation) {
-            if(isset($relation[1]) && $relation[1] == 'hasOne')$relations[] = $relation_name;
+            //if relation type hasOne an relation not lang description
+            if(isset($relation[1]) && $relation[1] == 'hasOne' && $relation_name != 'description')$relations[] = $relation_name;
         }
 
         $filter = DataFilter::source($new_content_type_model::with($relations));
