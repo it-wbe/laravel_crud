@@ -50,7 +50,11 @@ class EditController extends Controller
                 die('model not found: ' . $content->model);
 
             if ($r->exists('modify') || $r->exists('content')) {
-                $new_content_model = $content_model::where('id', $r->input('modify'))->first();
+                if(\Schema::hasColumn($content->table, 'id')) {
+                    $new_content_model = $content_model::where('id', $r->input('modify'))->first();
+                } else {
+                    $new_content_model = $content_model::where(\Schema::getColumnListing($content->table)[0], $r->input('modify'))->first();
+                }
                 if (!$new_content_model)
                     $new_content_model = new $content_model;
             } else {
