@@ -160,14 +160,12 @@ class FieldsProcessor
                     $rel = ModelGenerator::getModelRelationsMethods(file_get_contents($model_filename), $field->relation);
                     if (isset($rel[2][0])) {
                         $relation_model = new $rel[2][0];
-
-                        $f->options(array_merge(
-                            [0 => '- Select -'],
-                            $relation_model->pluck(
-                                $field->display_column ? $field->display_column : 'name',
-                                $relation_model->getQualifiedKeyName()
-                            )->toArray()
-                        ));
+                        $options = [0 => '- Select -'];
+                        $options[] = $relation_model->pluck(
+                            $field->display_column ? $field->display_column : 'name',
+                            $relation_model->getQualifiedKeyName()
+                        )->toArray();
+                        $f->options($options);
                     } else echo 'Relation not found! ('.$field->relation.')';
                     //} else {
                     //    $f->options(['no relation "' . $field->relation . '" found']);
