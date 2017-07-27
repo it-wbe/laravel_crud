@@ -23,7 +23,7 @@ class CreateContentTypeFieldsDescriptionTable extends Migration
 
         \DB::table('content_type_fields_description')->delete();
 
-        \DB::table('content_type_fields_description')->insert(array(
+        /*\DB::table('content_type_fields_description')->insert(array(
             0 =>
                 array(
                     'content_id' => '1',
@@ -84,7 +84,7 @@ class CreateContentTypeFieldsDescriptionTable extends Migration
                     'lang_id' => '3',
                     'title' => 'ESP pass',
                 ),
-        ));
+        ));*/
     }
 
 

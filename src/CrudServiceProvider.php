@@ -24,6 +24,7 @@ class CrudServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../config/crud.php' => config_path('crud.php'),
+            __DIR__ . '/../config/h-rbac.php' => config_path('h-rbac.php'),
             __DIR__ . '/../config/elfinder.php' => config_path('elfinder.php'),
             //__DIR__ . '/../../../vendor/barryvdh/config/elfinder.php' => config_path('elfinder.php'),
 

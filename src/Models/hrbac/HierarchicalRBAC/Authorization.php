@@ -1,7 +1,6 @@
 <?php
 
-namespace Dlnsk\HierarchicalRBAC;
-
+namespace Wbe\Crud\Models\hrbac\HierarchicalRBAC;
 
 class Authorization extends ArrayAuthorization
 {

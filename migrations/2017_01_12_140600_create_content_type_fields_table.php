@@ -17,21 +17,21 @@ class CreateContentTypeFieldsTable extends Migration
             Schema::create('content_type_fields', function (Blueprint $table) {
                 $table->integer('id', true);
                 $table->integer('content_type_id');
-                $table->integer('sort');
+                $table->integer('sort')->nullable();
                 $table->string('name', 128);
-                $table->string('type');
-                $table->string('display_column');
-                $table->string('search_columns');
-                $table->string('relation');
-                $table->string('validators', 512);
-                $table->boolean('grid_show');
-                $table->boolean('grid_filter');
-                $table->string('grid_custom_display', 512);
-                $table->string('grid_attributes', 512);
-                $table->boolean('form_show');
-                $table->string('form_attributes', 512);
-                $table->boolean('show');
-                $table->unique(['content_type_id', 'name'], 'crud_content_type_id,name');
+                $table->string('type')->nullable();
+                $table->string('display_column')->nullable();
+                $table->string('search_columns')->nullable();
+                $table->string('relation')->nullable();
+                $table->string('validators', 512)->nullable();
+                $table->boolean('grid_show')->nullable();
+                $table->boolean('grid_filter')->nullable();
+                $table->string('grid_custom_display', 512)->nullable();
+                $table->string('grid_attributes', 512)->nullable();
+                $table->boolean('form_show')->nullable();
+                $table->string('form_attributes', 512)->nullable();
+                $table->boolean('show')->nullable();
+                $table->unique(['content_type_id', 'name'], 'crud_content_type_id,name')->nullable();
             });
 
 

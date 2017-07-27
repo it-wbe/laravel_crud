@@ -1,5 +1,5 @@
 <?php 
-namespace Dlnsk\HierarchicalRBAC;
+namespace Wbe\Crud\Models\hrbac\HierarchicalRBAC;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
@@ -31,7 +31,7 @@ class HRBACServiceProvider extends ServiceProvider {
         
         // Publish your config
         $this->publishes([
-            __DIR__.'/../config/config.php' => config_path($this->packageName.'.php'),
+            __DIR__.'/../config/h-rbac.php' => config_path($this->packageName.'.php'),
             __DIR__.'/../config/exampleClass.php' => app_path('Classes/Authorization/AuthorizationClass.php'),
         ], 'config');
 

@@ -20,6 +20,7 @@ class CreateContentTypeTable extends Migration
                 $table->string('table');
                 $table->string('model');
                 $table->integer('sort');
+                $table->integer('is_system');
             });
 
 
@@ -32,6 +33,7 @@ class CreateContentTypeTable extends Migration
                     'table' => 'content_type',
                     'model' => 'Wbe\\Crud\\Models\\ContentTypes\\ContentType',
                     'sort' => '0',
+                    'is_system' => '1',
                 ),
             1 =>
                 array(
@@ -39,6 +41,7 @@ class CreateContentTypeTable extends Migration
                     'table' => 'content_type_fields',
                     'model' => 'Wbe\\Crud\\Models\\ContentTypes\\ContentTypeFields',
                     'sort' => '1',
+                    'is_system' => '1',
                 ),
             2 =>
                 array(
@@ -46,6 +49,7 @@ class CreateContentTypeTable extends Migration
                     'table' => 'languages',
                     'model' => 'Wbe\\Crud\\Models\\ContentTypes\\Languages',
                     'sort' => '3',
+                    'is_system' => '1',
                 ),
             3 =>
                 array(
@@ -53,6 +57,7 @@ class CreateContentTypeTable extends Migration
                     'table' => 'users',
                     'model' => 'Wbe\\Crud\\Models\\ContentTypes\\User',
                     'sort' => '2',
+                    'is_system' => '1',
                 ),
         ));
     }

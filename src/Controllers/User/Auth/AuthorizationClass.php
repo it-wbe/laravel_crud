@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Classes\Authorization;
+namespace Wbe\Crud\Controllers\User\Auth;
 
-use Dlnsk\HierarchicalRBAC\Authorization;
+use Wbe\Crud\Models\hrbac\HierarchicalRBAC\Authorization;
 use Wbe\Crud\Models\ContentTypes\ContentType;
 
 
@@ -12,9 +12,9 @@ use Wbe\Crud\Models\ContentTypes\ContentType;
 
 class AuthorizationClass extends Authorization
 {
-	public function getPermissions() {
-		return [
-			'edit-crud-system-content-type' => [
+    public function getPermissions() {
+        return [
+            'edit-crud-system-content-type' => [
                 'description' => 'Access to CRUD system content types',
             ],
             'access-content-type' => [
@@ -23,24 +23,24 @@ class AuthorizationClass extends Authorization
             'access-field-descriptor' => [
                 'description' => 'Access to Field Descriptor'
             ]
-		];
-	}
+        ];
+    }
 
-	public function getRoles() {
-		return [
-			'moderator' => [
-                'edit-crud-system-content-type',
+    public function getRoles() {
+        return [
+            'moderator' => [
+                //'edit-crud-system-content-type',
                 'access-content-type',
-                'access-field-descriptor',
+                //'access-field-descriptor',
             ],
-		];
-	}
+        ];
+    }
 
 
-	/**
-	 * Methods which checking permissions.
-	 * Methods should be present only if additional checking needs.
-	 */
+    /**
+     * Methods which checking permissions.
+     * Methods should be present only if additional checking needs.
+     */
 
     public function editCrudSystemContentType($user, $content_type_id) {
         $ct = ContentType::where('id', $content_type_id)->first();
