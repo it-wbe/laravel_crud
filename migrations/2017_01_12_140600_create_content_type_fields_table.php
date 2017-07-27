@@ -703,6 +703,25 @@ class CreateContentTypeFieldsTable extends Migration
                     'form_attributes' => '',
                     'show' => '1',
                 ),
+            35 =>
+                array(
+                    'id' => '36',
+                    'content_type_id' => '1',
+                    'sort' => '6',
+                    'name' => 'is_system',
+                    'type' => 'checkbox',
+                    'display_column' => '',
+                    'search_columns' => '',
+                    'relation' => '',
+                    'validators' => 'integer',
+                    'grid_show' => '1',
+                    'grid_filter' => '1',
+                    'grid_custom_display' => '',
+                    'grid_attributes' => '',
+                    'form_show' => '1',
+                    'form_attributes' => '',
+                    'show' => '1',
+                ),
         ));
     }
 
