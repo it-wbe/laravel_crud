@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
                 $table->string('name');
                 $table->string('password');
                 $table->string('remember_token')->nullable();
+                $table->string('role');
                 $table->timestamps();
                 $table->softDeletes();
             });
@@ -34,6 +35,21 @@ class CreateUsersTable extends Migration
                     'name' => 'Admin',
                     'password' => '$2y$10$AZWq6d4oLwmJiHQ82wzBjeKX0n8q7HlD7o92Fnw/PgNFZzob6hCae',
                     'remember_token' => 'ofzVcCz9uxOsjfO4f314xhgfYzeFGgDKTjAtBa6pWICfXIdoUmgf4l5Vb1r1',
+                    'role' => 'admin',
+                    'updated_at' => '2016-12-22 13:23:42',
+                    'deleted_at' => NULL,
+                    'created_at' => '2016-11-30 10:12:09',
+                ),
+        ));
+        \DB::table('users')->insert(array(
+            0 =>
+                array(
+                    'id' => '2',
+                    'email' => 'moderator@gmail.com',
+                    'name' => 'Moderator',
+                    'password' => '$2y$10$AZWq6d4oLwmJiHQ82wzBjeKX0n8q7HlD7o92Fnw/PgNFZzob6hCae',
+                    'remember_token' => 'ofzVcCz9uxOsjfO4f314xhgfYzeFGgDKTjAtBa6pWICfXIdoUmgf4l5Vb1r1',
+                    'role' => 'moderator',
                     'updated_at' => '2016-12-22 13:23:42',
                     'deleted_at' => NULL,
                     'created_at' => '2016-11-30 10:12:09',
