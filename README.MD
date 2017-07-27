@@ -54,6 +54,7 @@ to
         //Laravel\Cashier\CashierServiceProvider::class,
         Barryvdh\Elfinder\ElfinderServiceProvider::class,
         
+        Wbe\Crud\Models\hrbac\HierarchicalRBAC\HRBACServiceProvider::class,
         Wbe\Crud\CrudServiceProvider::class
 ```
 
@@ -79,6 +80,7 @@ protected $middleware = [
         \Illuminate\Session\Middleware\StartSession::class,
         \Wbe\Crud\Middleware\Locale::class,
         \Wbe\Crud\Middleware\LangMiddleware::class,
+        \Wbe\Crud\Middleware\AdminAccessMiddleware::class,
 ```
 
 ```php
@@ -109,4 +111,4 @@ http://yourproject.dev/admin/
 
 Login: admin@gmail.com
 
-Pass: 
+Pass: 111111
