@@ -136,17 +136,13 @@
             });
             $('form.fd_form').submit(function() {
                 $('form.fd_form .checkbox_autofill').each(function() {
-                    $(this).next('input[name="' + $(this).attr('id') + '[]"]').val($(this).is(":checked") ? 'on' : 'off');
+//                    alert($(this).is(":checked"));
+//                    $(this).next('input[name="' + $(this).attr('id') + '[]"]').val($(this).is(":checked") ? 'on' : 'off');
+                    $(this).parent('div').next().val($(this).is(":checked") ? 'on' : 'off');
                 });
 
                 var i = 0;
                 $('form.fd_form input.fd_sort').each(function(){
-                    /*$(this).after($('<input/>').attr({
-                     type: "hidden",
-                     name: ($(this).attr('name')).replace("[name]", "[sort]"),
-                     value: i
-                     }));*/
-
                     $(this).val(i);
                     i++;
                 });

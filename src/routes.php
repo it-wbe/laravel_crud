@@ -19,8 +19,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::post('admin/login/', 'Wbe\Crud\Controllers\User\Auth\LoginController@login');
     Route::get('admin/logout/', 'Wbe\Crud\Controllers\User\Auth\LoginController@logout');
 // Registration Routes...
-    Route::get('admin/register/', 'Wbe\Crud\Controllers\User\Auth\RegisterController@showRegistrationForm');
-    Route::post('admin/register/', 'Wbe\Crud\Controllers\User\Auth\RegisterController@register');
+   // Route::get('admin/register/', 'Wbe\Crud\Controllers\User\Auth\RegisterController@showRegistrationForm');
+   // Route::post('admin/register/', 'Wbe\Crud\Controllers\User\Auth\RegisterController@register');
 });
 
 Route::group(['middleware' => 'admin'], function () {
@@ -85,6 +85,7 @@ Route::get('admin/setlocale/{locale}', function ($locale) {
 
 
 View::creator('crud::common.menu', 'Wbe\Crud\Controllers\MenuController@index');
+View::creator('crud::common.vertical_menu', 'Wbe\Crud\Controllers\VerticalMenuController@index');
 View::creator('crud::layout', 'Wbe\Crud\Controllers\BackendHomeController@language_select');
 
 //View::creator('backend.layout', 'App\Http\Controllers\Wbe\Crud\Controllers\BackendHomeController@language_select');

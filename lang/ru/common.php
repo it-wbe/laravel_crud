@@ -7,7 +7,7 @@ return [
     'logout' => 'Выйти',
     'hello' => 'Привет',
     'register' => 'Регистрация',
-    'to_site' => 'На Сайт',
+    'to_site' => '<span class="glyphicon glyphicon-home"></span>',
     'filemanager' => 'Файлы',
     'content_types' => 'Типы Контента',
     'languages' => 'Язык',

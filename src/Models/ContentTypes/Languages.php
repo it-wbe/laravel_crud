@@ -12,4 +12,5 @@ class Languages extends \Eloquent
     {
         return session((is_admin_panel() ? 'admin_lang_id' : 'lang_id'));
     }*/
+
 }

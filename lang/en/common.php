@@ -7,7 +7,7 @@ return [
     'logout' => 'Logout',
     'hello' => 'Hello',
     'register' => 'Registration',
-    'to_site' => 'To Site',
+    'to_site' => '<span class="glyphicon glyphicon-home"></span>',
     'filemanager' => 'Files',
     'content_types' => 'Content Types',
     'languages' => 'Languages',

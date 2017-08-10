@@ -37,4 +37,9 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\ContentTypes\News', 'user_id', 'id');
     }
 
+
+    public function posts()
+    {
+        return $this->hasOne('App\Models\ContentTypes\Posts', 'id', 'id');
+    }
 }

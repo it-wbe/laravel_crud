@@ -123,7 +123,7 @@ class FieldsProcessor
                         //$f->value = '$desc_values[$lang_k]->{$field->name}';
                         //$f->attributes(['value'=>'123']);
 
-                        ///echo $desc_values[$lang_k]->{$field->name};
+                        //echo $desc_values[$lang_k]->{$field->name};
 
                         //if ($field->validators) {
                         //   $f->rule($field->validators);
@@ -145,8 +145,8 @@ class FieldsProcessor
                     $rapyd->fields[$f_name]->rule($field->validators);
                     //echo '"'.$field->validators.'"';
                 }*/
+//                echo $field->form_attributes; exit;
                 if ($field->form_attributes) {
-                    //echo $field->form_attributes;
                     eval($field->form_attributes);
                 }
 

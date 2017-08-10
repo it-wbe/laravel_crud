@@ -87,7 +87,7 @@ class EditController extends Controller
             FieldsProcessor::addFields($content, $edit, 'form');
 
             $edit->link(url('admin/crud/grid/' . $content_type . '/'), trans('crud::common.cancel'), "TR");
-            $edit->submit('Save', 'BL');
+            $edit->submit('Save', 'TR');
 
             $edit->saved(function () use ($edit, $content_type, $lang_id) {
                 //\Redirect::to(url('admin/'));
