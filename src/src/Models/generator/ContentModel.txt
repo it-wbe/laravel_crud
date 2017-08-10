@@ -1,0 +1,16 @@
+<?php
+
+namespace %namespace%;
+
+/*
+ *  Model for content type %classname%
+ *  [leave this text to regenerate entire model]
+ */
+
+class %classname% extends \Eloquent
+{
+    {*translate?use \Wbe\Crud\Models\Translatable;*}
+    protected $table = '%table%';
+    {*no_timestamps?public $timestamps = false;*}
+    %content%
+}

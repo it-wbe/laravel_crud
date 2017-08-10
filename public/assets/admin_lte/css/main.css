@@ -1,0 +1,75 @@
+.wrapper {
+  min-height: 100vh !important; }
+
+textarea {
+  resize: none; }
+
+/*=================================
+        Main page (login) 
+=================================*/
+.box-info_main-page {
+  width: 40%;
+  margin: 60px auto; }
+
+@media screen and (min-width: 480px) and (max-width: 991px) {
+  .box-info_main-page {
+    width: 60%; } }
+@media screen and (max-width: 479px) {
+  .box-info_main-page {
+    width: 90%; } }
+/*=================================
+        Edit content 
+=================================*/
+.content-wrapper {
+  padding: 0 5px 0 0; }
+
+.sidebar {
+  padding: 0 10px 10px; }
+
+.box-info_add-content, .box-info_tables, .box-info_filters {
+  margin-top: 20px; }
+
+.input-group_add-content {
+  padding: 0 15px !important; }
+
+.head-buttons {
+  text-align: right;
+  padding: 2px 10px; }
+
+/*=================================
+            Tables 
+=================================*/
+.table_buttons {
+  /*text-align: center;*/ }
+  .table_buttons .btn {
+    margin-bottom: 5px; }
+
+.dataTable {
+  word-break: break-word; }
+
+.dataTable th {
+  word-break: normal; }
+
+@media screen and (max-width: 767px) {
+  div.dataTables_wrapper div.dataTables_length, div.dataTables_wrapper div.dataTables_filter {
+    text-align: left; }
+
+  table.table-bordered.dataTable th {
+    /*transform: rotate(-90deg);*/ } }
+/*=================================
+	Tables for content types
+=================================*/
+.filters__box {
+  margin-bottom: 10px; }
+
+.filters__box_buttons {
+  float: right;
+  text-align: right; }
+
+.scroll-table {
+  overflow-x: auto; }
+
+.tables-header__buttons {
+  text-align: right; }
+
+/*# sourceMappingURL=main.css.map */
