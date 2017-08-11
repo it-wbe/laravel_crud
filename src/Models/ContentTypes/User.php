@@ -31,15 +31,4 @@ class User extends Authenticatable
     {
         return \DB::table('users')->where('id', $id)->first();
     }
-
-    public function news()
-    {
-        return $this->hasMany('App\Models\ContentTypes\News', 'user_id', 'id');
-    }
-
-
-    public function posts()
-    {
-        return $this->hasOne('App\Models\ContentTypes\Posts', 'id', 'id');
-    }
 }
