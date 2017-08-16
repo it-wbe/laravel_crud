@@ -11,6 +11,7 @@
 |
 */
 
+
 // admin
 
 // Authentication Routes...
@@ -21,11 +22,22 @@ Route::group(['middleware' => 'web'], function () {
 // Registration Routes...
    // Route::get('admin/register/', 'Wbe\Crud\Controllers\User\Auth\RegisterController@showRegistrationForm');
    // Route::post('admin/register/', 'Wbe\Crud\Controllers\User\Auth\RegisterController@register');
+
+   // Reset password Form email
 });
+   // Reset password Form email
+
 
 Route::group(['middleware' => 'admin'], function () {
 
+
     Route::get('admin/', 'Wbe\Crud\Controllers\BackendHomeController@index');
+
+    // admin password reset
+//    Route::get('admin/password/reset', 'Wbe\Crud\Controllers\User\Auth\ForgotPasswordController@showLinkRequestForm')->name('admin.password.reset');
+    Route::get('admin/password/email', 'Wbe\Crud\Controllers\User\Auth\ForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
+    Route::get('admin/password/reset/{token}', 'Wbe\Crud\Controllers\User\Auth\ResetPasswordController@showResetForm')->name('admin.password.token');
+    Route::post('admin/password/reset', 'Wbe\Crud\Controllers\User\Auth\ResetPasswordController@reset');
 
     Route::get('admin/autocomplete/{model}/{fields}/{limit}/', 'Wbe\Crud\Controllers\Rapyd\AjaxController@getAutocomplete');
 
@@ -33,7 +45,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('admin/crud/delete/', 'Wbe\Crud\Controllers\BackendHomeController@delete');
 
     Route::get('admin/account/', 'Wbe\Crud\Controllers\User\AccountController@index')->middleware('admin');
-    Route::post('admin/account/edit/', 'Wbe\Crud\Controllers\User\AccountController@edit')->middleware('admin');
+    Route::post('admin/account/edit', 'Wbe\Crud\Controllers\User\AccountController@edit')->middleware('admin');
 
     //Route::group(['as' => 'admin', 'action' => 'MenuController@index'], function () {
 
@@ -89,5 +101,3 @@ View::creator('crud::common.vertical_menu', 'Wbe\Crud\Controllers\VerticalMenuCo
 View::creator('crud::layout', 'Wbe\Crud\Controllers\BackendHomeController@language_select');
 
 //View::creator('backend.layout', 'App\Http\Controllers\Wbe\Crud\Controllers\BackendHomeController@language_select');
-
-

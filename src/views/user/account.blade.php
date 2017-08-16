@@ -14,6 +14,8 @@
                     <br/>
                     {{ Form::submit('Save', ['class' => 'btn btn-primary']) }}
                 {!! Form::close() !!}
+                <br/>
+                <a href="{!!route('admin.password.email')!!}" class="btn btn-default pull-right">Reset Password</a>
             </div>
         </div>
     </div>

@@ -4,6 +4,9 @@ namespace Wbe\Crud\Controllers\User\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use Auth;
 
 class ResetPasswordController extends Controller
 {
@@ -27,6 +30,15 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('admin');
+    }
+
+     protected $redirectTo = 'admin';
+
+    public function showResetForm(Request $request, $token = null)
+    {
+        $email = Auth::guard()->user()->email;
+        return view('crud::user.auth.passwords.reset')->with(compact('token', 'email'));
+
     }
 }
