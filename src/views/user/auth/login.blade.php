@@ -99,12 +99,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
+                                <div class="col-sm-offset-1 col-sm-5 col-md-6 col-md-offset-0">
                                     <div class="checkbox">
                                         <label>
                                             <input type="checkbox" name="remember"> Remember me
                                         </label>
                                     </div>
+                                </div>
+                                <div class="col-sm-offset-1 col-sm-5 col-md-6 col-md-offset-0">
+                                    <a href="{{route('password.reset')}}" class="btn btn-default">Forget Password?</a>
                                 </div>
                             </div>
                         </div>

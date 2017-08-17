@@ -5,9 +5,7 @@ namespace Wbe\Crud\Controllers\User\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Http\Request;
 
-use Auth;
 class ForgotPasswordController extends Controller
 {
     /*
@@ -28,32 +26,14 @@ class ForgotPasswordController extends Controller
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('admin.guest');
-    // }
-    //
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin.guest');
     }
-
-//    send email with token
-    public function sendResetLinkEmail(Request $request)
-    {
-        $email = Auth::guard()->user()->email;
-        $response = $this->broker()->sendResetLink(['email'=>$email]);
-
-        return $response == Password::RESET_LINK_SENT
-            ? $this->sendResetLinkResponse($response)
-            : $this->sendResetLinkFailedResponse($request, $response);
-    }
-
 
     public function showLinkRequestForm()
     {
-        $email = Auth::guard()->user()->email;
-        return view('crud::user.auth.passwords.email')->withEmail($email);
+        return view('crud::user.auth.passwords.email')->withEmail('');
     }
 
     public function broker()

@@ -5,8 +5,6 @@ namespace Wbe\Crud\Controllers\User\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
-use Auth;
 
 class ResetPasswordController extends Controller
 {
@@ -30,15 +28,24 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('admin.guest');
     }
 
-     protected $redirectTo = 'admin';
+
+    protected $redirectTo = 'admin';
 
     public function showResetForm(Request $request, $token = null)
     {
-        $email = Auth::guard()->user()->email;
-        return view('crud::user.auth.passwords.reset')->with(compact('token', 'email'));
-
+        return view('crud::user.auth.passwords.reset')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+//        $email = $request->input('email');
+//        if (property_exists($this, 'resetView')) {
+//            return view($this->resetView)->with(compact('token', 'email'));
+//        }
+//        if (view()->exists('crud::user.auth.passwords.reset')) {
+//            return view('crud::user.auth.passwords.reset')->with(compact('token', 'email'));
+//        }
+//        return view('crud::user.auth.password.reset')->with(compact('token', 'email'));
     }
 }

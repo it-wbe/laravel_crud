@@ -10,6 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 class User extends Authenticatable
 {
     use Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -32,11 +33,6 @@ class User extends Authenticatable
     {
         return \DB::table('users')->where('id', $id)->first();
     }
-    // public function sendPasswordResetNotification($token)
-    // {
-    //     $this->notify(new ResetPassword($token));
-    // }
-
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new CustomPassword($token));
@@ -49,7 +45,7 @@ class CustomPassword extends ResetPassword
     {
         return (new MailMessage)
             ->line('We are sending this email because we recieved a forgot password request.')
-            ->action('Reset Password', url(config('app.url') . route('admin.password.token', $this->token, false)))
+            ->action('Reset Password', url(route('password.token', $this->token, false)))
             ->line('If you did not request a password reset, no further action is required. Please contact us if you did not submit this request.');
     }
 }

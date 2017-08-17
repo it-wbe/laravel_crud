@@ -11,33 +11,28 @@
 |
 */
 
-
 // admin
 
 // Authentication Routes...
 Route::group(['middleware' => 'web'], function () {
-    Route::get('admin/login/', 'Wbe\Crud\Controllers\User\Auth\LoginController@showLoginForm');
+    Route::get('admin/login/', 'Wbe\Crud\Controllers\User\Auth\LoginController@showLoginForm')->name('admin.login');
     Route::post('admin/login/', 'Wbe\Crud\Controllers\User\Auth\LoginController@login');
     Route::get('admin/logout/', 'Wbe\Crud\Controllers\User\Auth\LoginController@logout');
 // Registration Routes...
    // Route::get('admin/register/', 'Wbe\Crud\Controllers\User\Auth\RegisterController@showRegistrationForm');
    // Route::post('admin/register/', 'Wbe\Crud\Controllers\User\Auth\RegisterController@register');
 
-   // Reset password Form email
-});
-   // Reset password Form email
 
+    Route::get('admin/password/reset/{token}', 'Wbe\Crud\Controllers\User\Auth\ResetPasswordController@showResetForm')->name('password.token');
+   // Reset password Form email
+    Route::get('admin/password/reset', 'Wbe\Crud\Controllers\User\Auth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+    Route::post('admin/password/email', 'Wbe\Crud\Controllers\User\Auth\ForgotPasswordController@sendResetLinkEmail');
+    Route::post('admin/password/reset', 'Wbe\Crud\Controllers\User\Auth\ResetPasswordController@reset');
+});
 
 Route::group(['middleware' => 'admin'], function () {
 
-
-    Route::get('admin/', 'Wbe\Crud\Controllers\BackendHomeController@index');
-
-    // admin password reset
-//    Route::get('admin/password/reset', 'Wbe\Crud\Controllers\User\Auth\ForgotPasswordController@showLinkRequestForm')->name('admin.password.reset');
-    Route::get('admin/password/email', 'Wbe\Crud\Controllers\User\Auth\ForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
-    Route::get('admin/password/reset/{token}', 'Wbe\Crud\Controllers\User\Auth\ResetPasswordController@showResetForm')->name('admin.password.token');
-    Route::post('admin/password/reset', 'Wbe\Crud\Controllers\User\Auth\ResetPasswordController@reset');
+    Route::get('admin/', 'Wbe\Crud\Controllers\BackendHomeController@index')->middleware('admin');
 
     Route::get('admin/autocomplete/{model}/{fields}/{limit}/', 'Wbe\Crud\Controllers\Rapyd\AjaxController@getAutocomplete');
 
