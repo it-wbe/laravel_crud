@@ -2,6 +2,7 @@
 
 namespace Wbe\Crud\Models\Rapyd;
 
+use Illuminate\Support\Facades\Session;
 use Wbe\Crud\Models\ContentTypes\Languages;
 use Wbe\Crud\Models\ContentTypes\ContentType;
 use Wbe\Crud\Models\ContentTypes\ContentTypeFields;
@@ -13,6 +14,8 @@ use Zofe\Rapyd\DataForm\DataForm;
 
 class FieldsProcessor
 {
+
+    public static $needTab = [];
     /**
      * Створення Rapyd полів на основі записів у crud_content_type_fields ($rapyd->add)
      * @param $content ContentType
@@ -95,19 +98,21 @@ class FieldsProcessor
             if (!isset($languages))
                 die('unknown type!');
 
-
+//            index для масиву needTab
+            $index_need_tab = 0;
             foreach ($ct_fields as $field) {
                 if (($field->name != 'id') && ($field->name != 'lang_id') && ($field->name != 'content_id') &&
                     in_array($field->name, $fields_desc_schema)
                 ) {
-                    //echo $field->name;
+                    FieldsProcessor::$needTab[$index_need_tab] = [];
                     foreach ($languages as $lang_k => $lang) {
+
                         //$display = $field->grid_custom_display ? $field->grid_custom_display : $field->name;
 
                         //echo $desc_table . '[' . $lang_k . '][' . $field->name . '] ; '. $field->type;
 
-                        $field_key = $desc_table . '[' . $lang_k . '][' . $field->name . ']';
-
+                            $field_key = $desc_table . '[' . $lang_k . '][' . $field->name . ']';
+                        //
                         $rapyd->add(
                             $field_key,
                             ($field->caption ? $field->caption : $field->name) . ' (' . $lang . ')',
@@ -117,6 +122,14 @@ class FieldsProcessor
                         if (($type != 'filter') && isset($desc_values[$lang_k]->{$field->name}))
                             $rapyd->fields[$field_key]->value = $desc_values[$lang_k]->{$field->name};
 
+                        $rapyd->fields[$field_key]->attr('id',$desc_table.$lang_k.$field->name);
+//                        $rapyd->fields[$field_key]
+//                        dd($rapyd->fields[$field_key]->option(['id'=>'12312')]));
+//                        ->id = 'asdaa';
+
+
+
+                        FieldsProcessor::$needTab[$index_need_tab][] = $field_key;
                         //$f = $rapyd->fields[$field_key];
 
                         //if (($type != 'filter') && isset($desc_values[$lang_k]->{$field->name}))
@@ -131,6 +144,7 @@ class FieldsProcessor
 
                         //$f->db_name = $field->name;
                     }
+                    $index_need_tab++;
                 }
             }
         }

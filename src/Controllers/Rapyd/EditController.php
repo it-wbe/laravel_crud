@@ -19,6 +19,7 @@ use Zofe\Rapyd\DataFilter\DataFilter;
 use Zofe\Rapyd\DataGrid\DataGrid;
 use Zofe\Rapyd\DataEdit\DataEdit;
 use Zofe\Rapyd\DataForm\DataForm;
+use Zofe\Rapyd\Rapyd;
 
 
 class EditController extends Controller
@@ -78,13 +79,18 @@ class EditController extends Controller
                     }
                 }
             });
-
+            // var_export($new_content_model);
+            // die;
             $edit = DataForm::source($new_content_model);
+
             $edit->attributes(array("class" => "table table-striped"));
 
             $edit->label($content->name . ' > ' .  trans('crud::common.content_add'));
 
             FieldsProcessor::addFields($content, $edit, 'form');
+
+           $tab = FieldsProcessor::$needTab;
+
 
             $edit->link(url('admin/crud/grid/' . $content_type . '/'), trans('crud::common.cancel'), "TR");
             $edit->submit('Save', 'TR');
@@ -105,9 +111,9 @@ class EditController extends Controller
                 //die('<meta http-equiv="refresh" content="0; URL=\'' . $back_url . '\'" />');
             });
 
-            $return = (string)$edit;
+            $edit->build();
 
-            return view('crud::crud.form', compact('return', 'lang_id'));
+            return view('crud::crud.form', compact('edit', 'lang_id','tab'));
 
         } elseif ($r->exists('delete')) {
 
