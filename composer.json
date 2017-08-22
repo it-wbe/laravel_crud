@@ -3,7 +3,7 @@
     "description": "Admin panel with CRUD generator, based on Rapyd",
     "type": "project",
     "require": {
-        "zofe/rapyd": "*",
+        "wbe/rapyd": "*",
         "laravel/framework": "^5.3",
         "laravel/socialite": "*",
         "php": "^5.6 || ^7.0",
