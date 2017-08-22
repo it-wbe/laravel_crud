@@ -30,12 +30,15 @@ class ContentType extends \Eloquent
         $model = str_replace('\\', '/', ltrim($model, '\\/'));
 
         $model = str_replace('wbe/crud', 'wbe/crud/src', $model);
-
+//        echo $model;
         if (starts_with($model, 'app/'))
             $dir = '/';
         else
             $dir = '/packages/';
 
+        if (0 === strpos($model, 'wbe/')) {
+            $dir = '/vendor/';
+        }
         // '/app/Models/' .
         $fn = base_path() . $dir . $model . '.php';
 
