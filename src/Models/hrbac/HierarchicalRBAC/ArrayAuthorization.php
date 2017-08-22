@@ -6,12 +6,18 @@ namespace Wbe\Crud\Models\hrbac\HierarchicalRBAC;
 class ArrayAuthorization
 {
 	public function getPermissions() {
-		return [];
+        return [
+        ];
 	}
 
-	public function getRoles() {
-		return [];
-	}
+
+    public function getRoles()
+    {
+        return[
+    ];
+    }
+
+
 
 	private function testUsingUserMethod($user, $initial_ability, $current_ability, $arguments) {
 		$methods = get_class_methods($this);
@@ -36,18 +42,17 @@ class ArrayAuthorization
 	 */
 	public function checkPermission($user, $ability, $arguments)
 	{
-		if ($user->role === 'admin') {
-			return true;
-		}
-
+        if ($user->role->name === 'admin') {
+            return true;
+        }
 		// У пользователя роль, которой нет в списке
 		$roles = $this->getRoles();
-		if (!isset($roles[$user->role])) {
+        if (!isset($roles[$user->role->name])) {
 			return null;
 		}
 
 		// Ищем разрешение для данной роли среди наследников текущего разрешения
-		$role = $roles[$user->role];
+		$role = $roles[$user->role->name];
 		$permissions = $this->getPermissions();
 		$current = $ability;
 		// Если для разрешения указана замена - элемент 'equal', то проверяется замена

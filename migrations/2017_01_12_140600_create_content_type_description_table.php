@@ -98,6 +98,25 @@ class CreateContentTypeDescriptionTable extends Migration
                     'lang_id' => '3',
                     'name' => 'Адміністратори',
                 ),
+            12 =>
+                array(
+                    'content_id' => '5',
+                    'lang_id' => '1',
+                    'name' => 'Roles',
+                ),
+            13 =>
+                array(
+                    'content_id' => '5',
+                    'lang_id' => '2',
+                    'name' => 'Роли',
+                ),
+            14 =>
+                array(
+                    'content_id' => '5',
+                    'lang_id' => '3',
+                    'name' => 'Роли',
+                ),
+
         ));
     }
 

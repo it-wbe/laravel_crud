@@ -43,7 +43,16 @@ class CreateContentTypeTable extends Migration
                     'sort' => '1',
                     'is_system' => '1',
                 ),
+
             2 =>
+                array(
+                    'id' => '3',
+                    'table' => 'users',
+                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\User',
+                    'sort' => '2',
+                    'is_system' => '1',
+                ),
+            3 =>
                 array(
                     'id' => '4',
                     'table' => 'languages',
@@ -51,12 +60,12 @@ class CreateContentTypeTable extends Migration
                     'sort' => '3',
                     'is_system' => '1',
                 ),
-            3 =>
+            4 =>
                 array(
-                    'id' => '3',
-                    'table' => 'users',
-                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\User',
-                    'sort' => '2',
+                    'id' => '5',
+                    'table' => 'roles',
+                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\Role',
+                    'sort' => '4',
                     'is_system' => '1',
                 ),
         ));

@@ -169,7 +169,7 @@ class FieldsProcessor
                 if ($field->relation && ($field->type == 'select')) {
                     //if (method_exists($data_source, $field->relation))
                     //{
-
+//                    echo $content->model;
                     $model_filename = ContentType::getFilePathByModel($content->model);
                     $rel = ModelGenerator::getModelRelationsMethods(file_get_contents($model_filename), $field->relation);
                     if (isset($rel[2][0])) {

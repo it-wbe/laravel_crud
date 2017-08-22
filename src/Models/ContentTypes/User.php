@@ -29,7 +29,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public static function get($id)
+    public function role()
+    {
+        return $this->hasOne('Wbe\Crud\Models\ContentTypes\Role', 'id', 'role_id');
+    }
+
+public static function get($id)
     {
         return \DB::table('users')->where('id', $id)->first();
     }

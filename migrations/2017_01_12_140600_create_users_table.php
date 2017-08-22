@@ -20,13 +20,16 @@ class CreateUsersTable extends Migration
                 $table->string('name');
                 $table->string('password');
                 $table->string('remember_token')->nullable();
-                $table->string('role');
+                $table->integer('role_id');
                 $table->timestamps();
                 $table->softDeletes();
             });
 
         \DB::table('users')->delete();
 
+//        Schema::table('users', function (Blueprint $table) {
+//            $table->foreign('role_id')->references('id')->on('roles');
+//        });
         \DB::table('users')->insert(array(
             0 =>
                 array(
@@ -34,8 +37,8 @@ class CreateUsersTable extends Migration
                     'email' => 'admin@gmail.com',
                     'name' => 'Admin',
                     'password' => '$2y$10$AZWq6d4oLwmJiHQ82wzBjeKX0n8q7HlD7o92Fnw/PgNFZzob6hCae',
-                    'remember_token' => 'ofzVcCz9uxOsjfO4f314xhgfYzeFGgDKTjAtBa6pWICfXIdoUmgf4l5Vb1r1',
-                    'role' => 'admin',
+//                    'remember_token' => 'ofzVcCz9uxOsjfO4f314xhgfYzeFGgDKTjAtBa6pWICfXIdoUmgf4l5Vb1r1',
+                    'role_id' => '1',
                     'updated_at' => '2016-12-22 13:23:42',
                     'deleted_at' => NULL,
                     'created_at' => '2016-11-30 10:12:09',
@@ -48,8 +51,8 @@ class CreateUsersTable extends Migration
                     'email' => 'moderator@gmail.com',
                     'name' => 'Moderator',
                     'password' => '$2y$10$AZWq6d4oLwmJiHQ82wzBjeKX0n8q7HlD7o92Fnw/PgNFZzob6hCae',
-                    'remember_token' => 'ofzVcCz9uxOsjfO4f314xhgfYzeFGgDKTjAtBa6pWICfXIdoUmgf4l5Vb1r1',
-                    'role' => 'moderator',
+//                    'remember_token' => 'ofzVcCz9uxOsjfO4f314xhgfYzeFGgDKTjAtBa6pWICfXIdoUmgf4l5Vb1r1',
+                    'role_id' => '2',
                     'updated_at' => '2016-12-22 13:23:42',
                     'deleted_at' => NULL,
                     'created_at' => '2016-11-30 10:12:09',
