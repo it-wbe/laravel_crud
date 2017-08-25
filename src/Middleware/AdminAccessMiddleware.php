@@ -43,7 +43,8 @@ class AdminAccessMiddleware
                 abort(403, 'Access denie');
             }
         }
-        else{
+        elseif(!empty($request_segments[0])&& $request_segments[0]=='admin')
+        {
             if(!\Auth::guard('admin')->user()){
               return  redirect(route('admin.login'));
             }
