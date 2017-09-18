@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
+class CreateRelationsDescriptionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,7 +16,10 @@ class CreateRolesTable extends Migration
 
         if (!Schema::hasTable('relations_description'))
             Schema::create('relations_description', function (Blueprint $table) {
-                $table->integer('id', true);
+                $table->integer('content_id');
+                $table->integer('lang_id');
+                $table->string('name');
+                $table->primary(['content_id', 'lang_id']);
             });
     }
 
