@@ -17,7 +17,7 @@ class FieldsDescriptorController extends Controller
     /** @var string Строка для визначення, чи перегенеровувати всю модель */
     //const regenerate_entire_model_ident = '[leave this text to regenerate entire model]';
     /** @var array Масив відношень */
-    const relations = ['hasOne', 'hasMany', 'belongsTo', 'belongsToMany'];
+    const relations = ['hasOne', 'hasMany', 'belongsTo', 'belongsToMany','morphToMany','morphedByMany'];
     /** @var array Масив описів відношень */
     const relations_descriptions = ['hasOne', 'hasMany', 'belongsTo (інверсія hasMany)', 'belongsToMany'];
     /** @var array Масив виключених з генерації колонок */
@@ -258,13 +258,24 @@ class FieldsDescriptorController extends Controller
 
                 $rel_key = $rel_m_k;
 
-                $relations[$rel_key] = [
-                    'rel_right_content_type' => $right_content->id,
-                    'rel_method_name' => $rel_key,
-                    'rel_type' => $rel_type,
-                    'rel_left_column' => $rel_m[2][2],
-                    'rel_right_column' => $rel_m[2][1],
-                ];
+                if($rel_type == 'morphedByMany'|| $rel_type =='morphToMany'){
+                    $relations[$rel_key] = [
+                        'rel_right_content_type' => $right_content->id,
+                        'rel_method_name' => $rel_key,
+                        'rel_type' => $rel_type,
+//                      'rel_left_column' => $rel_m[2][2],
+                        'rel_right_column' => $rel_m[2][1],
+                    ];
+                }else{
+                    $relations[$rel_key] = [
+                        'rel_right_content_type' => $right_content->id,
+                        'rel_method_name' => $rel_key,
+                        'rel_type' => $rel_type,
+                        'rel_left_column' => $rel_m[2][2],
+                        'rel_right_column' => $rel_m[2][1],
+                    ];
+                }
+//                dd($rel_key);
 
                 if ($rel_type == 'belongsToMany') {
                     if (isset($rel_m[2][1]))

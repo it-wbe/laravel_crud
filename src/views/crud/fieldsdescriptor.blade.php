@@ -92,7 +92,8 @@
             $(elem).parent().find('span.relation_display').toggle(
                     $(elem).val() == 'multiselect' ||
                     $(elem).val() == 'select' ||
-                    $(elem).val() == 'tags'
+                    $(elem).val() == 'tags' ||
+                    $(elem).val() == 'Wbe\\Crud\\Models\\Rapyd\\Fields\\Img'
             );
 
             $('table.table-rel input.rel_method_name[original_value="' +''+ '"]'); //

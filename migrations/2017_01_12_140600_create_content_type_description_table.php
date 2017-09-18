@@ -116,6 +116,24 @@ class CreateContentTypeDescriptionTable extends Migration
                     'lang_id' => '3',
                     'name' => 'Роли',
                 ),
+            15 =>
+                array(
+                    'content_id' => '6',
+                    'lang_id' => '1',
+                    'name' => 'Related Content Type',
+                ),
+            16 =>
+                array(
+                    'content_id' => '6',
+                    'lang_id' => '2',
+                    'name' => 'Связанный контент',
+                ),
+            17 =>
+                array(
+                    'content_id' => '6',
+                    'lang_id' => '3',
+                    'name' => 'Звязанний контент',
+                ),
 
         ));
     }

@@ -14,6 +14,8 @@
             <option value="hasMany" {{ $rel_type == 'hasMany' ? 'selected ' : '' }}>hasMany</option>
             <option value="belongsToMany" {{ $rel_type == 'belongsToMany' ? 'selected ' : '' }}>belongsToMany</option>
             <option value="belongsTo" {{ $rel_type == 'belongsTo' ? 'selected ' : '' }}>belongsTo (інверсія hasMany)</option>
+            <option value="morphToMany" {{ $rel_type == 'morphToMany' ? 'selected ' : '' }}>Polymorphic many to many</option>
+            <option value="morphedByMany" {{ $rel_type == 'morphedByMany' ? 'selected ' : '' }}>Polymorphic many by many</option>
         </select>
         <span class="rel_table_to" {!! $rel_type != 'belongsToMany' ? ' style="display:none;"' : '' !!} >
             Таблиця: @if ($rel_table_to_exists)

@@ -12,6 +12,7 @@ return [
     'content_types' => 'Типи Контенту',
     'languages' => 'Мова',
     'content_add' => 'Додати',
+    'content_edit' => 'Редагувати',
     'content_data' => 'Дані',
     'content_fields' => 'Поля',
     'content_type' => 'Тип Контенту',

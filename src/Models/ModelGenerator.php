@@ -103,6 +103,24 @@ class ModelGenerator
                         [$post['right_column'], $post['left_column']]
                     );
                 break;
+            case 'morphToMany':
+                $left_relation =
+                    self::generate_relation_method(
+                        $post['right_name'],
+                        $post['rel_type'],
+                        $right_model,
+                        ['ct_to_relation']//[$post['right_column'], $post['left_column']]
+                );
+                break;
+            case 'morphedByMany':
+                $left_relation =
+                    self::generate_relation_method(
+                        $post['right_name'],
+                        $post['rel_type'],
+                        $right_model,
+                        ['ct_to_relation']//$post['right_column'], $post['left_column']]
+                    );
+                break;
             default:
                 $left_relation = '/* undefined relation: ' . $post['rel_type'] . ' */';
 

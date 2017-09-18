@@ -11,6 +11,7 @@ return [
         'select' => 'Select',
         'radiogroup' => 'Radiogroup',
         'Wbe\Crud\Models\Rapyd\Fields\Ckeditor' => 'Ckeditor',
+        'Wbe\Crud\Models\Rapyd\Fields\Relation' => 'Relation',
         'autocomplete' => 'Autocomplete',
         'tags' => 'Tags',
         'multiselect' => 'Multiselect',

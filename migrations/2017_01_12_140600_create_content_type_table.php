@@ -68,6 +68,14 @@ class CreateContentTypeTable extends Migration
                     'sort' => '4',
                     'is_system' => '1',
                 ),
+            5 =>
+                array(
+                    'id' => '6',
+                    'table' => 'relations',
+                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\Relations',
+                    'sort' => '5',
+                    'is_system' => '1',
+                ),
         ));
     }
 
