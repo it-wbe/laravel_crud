@@ -78,15 +78,22 @@ class FieldsDescriptorController extends Controller
                                 'sort' => (int)\Request::input('sort')[$k],
                             ];
 
-                            if (\Request::input('id')[$k]) {
+                            if (\Request::input('id')[$k]&& \Request::input('id')[$k]>0) {
                                 $field['id'] = \Request::input('id')[$k];
+//                                if($names[$k]=='_default'){
+//                                    $field['id'] = null;
+//                                }
+//                                dump('updateOrInsert',$field);
                                 ContentTypeFields::updateOrInsert(['id' => $field['id']], $field);
-                            } else
+                            } else{
+//                                dump('insert');
                                 ContentTypeFields::insert($field);
+                            }
+
 
                             //ContentTypeFields::updateOrInsert(['id' => $field['id']], $field);
                         }
-
+//                        dd();
                         unset($f);
 
                         Globals::$messages[1][] = 'Описи полів збережено';
@@ -275,8 +282,6 @@ class FieldsDescriptorController extends Controller
                         'rel_right_column' => $rel_m[2][1],
                     ];
                 }
-//                dd($rel_key);
-
                 if ($rel_type == 'belongsToMany') {
                     if (isset($rel_m[2][1]))
                         $relations[$rel_key]['rel_table_to'] = $rel_m[2][1];

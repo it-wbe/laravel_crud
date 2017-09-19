@@ -1,8 +1,9 @@
 <?php
+
 namespace Wbe\Crud\Models\ContentTypes;
 
 /*
- *  Model for content type Images
+ *  Model for content type Relations
  *  [leave this text to regenerate entire model]
  */
 
@@ -13,8 +14,8 @@ class Relations extends \Eloquent
     public $timestamps = false;
     protected $guarded = array();
 
-    public function portfolios()
+    public function posts()
     {
-        return $this->morphedByMany('App\Models\Portfolios', 'ct_to_relations');
+        return $this->morphedByMany('App\Models\Posts', 'ct_to_relations');
     }
 }

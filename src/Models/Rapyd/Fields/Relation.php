@@ -285,7 +285,7 @@ class Relation extends \Zofe\Rapyd\DataForm\Field\Field
               // display show;
               $display = true;
           }
-
+//            dd($id);
           $output .=View::make('crud::rapyd.fild')->with('langs',$this->languages)->with('filds',$filds)->with('id',$id)->with('display',$display);
       }
       return $output;

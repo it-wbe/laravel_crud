@@ -109,7 +109,7 @@ class ModelGenerator
                         $post['right_name'],
                         $post['rel_type'],
                         $right_model,
-                        ['ct_to_relation']//[$post['right_column'], $post['left_column']]
+                        [$post['right_column']]//[$post['right_column'], $post['left_column']]
                 );
                 break;
             case 'morphedByMany':
@@ -118,7 +118,7 @@ class ModelGenerator
                         $post['right_name'],
                         $post['rel_type'],
                         $right_model,
-                        ['ct_to_relation']//$post['right_column'], $post['left_column']]
+                        [$post['right_column']]//$post['right_column'], $post['left_column']]
                     );
                 break;
             default:
@@ -192,9 +192,10 @@ class ModelGenerator
                 );
                 $translate = (\Schema::hasTable($desc_table));
 
-                $content = ''; //$this->rel_model_delimiter_begin . PHP_EOL . $this->rel_model_delimiter_end;
+                $content = 'protected $guarded = array();'; //$this->rel_model_delimiter_begin . PHP_EOL . $this->rel_model_delimiter_end;
 
                 $classname_namespace = before_last('\\', $classname, 1);
+//                dd($cdm_template);
                 $cdm_template = bind_string($cdm_template, [
                     'namespace' => $classname_namespace
                         ? /*'App\Models\ContentTypes\\' .*/ $classname_namespace
@@ -205,7 +206,7 @@ class ModelGenerator
                     'no_timestamps' => $no_timestamps,
                     'content' => $content,
                 ]);
-
+//                dd($cdm_template);
                 //$filename = self::getClassFilename('App\Models\\' . $classname);
 
                 //file_put_contents($filename, $cdm_template);

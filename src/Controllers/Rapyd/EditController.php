@@ -124,8 +124,14 @@ class EditController extends Controller
                                     $item = $this->fillmodel($item, $contentFields, $tableFieldsType, $tableName);
                                     if ($item['id'] < 0) {
                                         $item['id'] = null;
+//                                        unset($item['id']);
                                     }
+//dd($item);
+//                                    dd($tableName);
+//                                    dd($row->$tableName()->);
+//                                    $newInstance  = \Wbe\Crud\Models\ContentTypes\Relations::create($item);
                                     $newInstance = $row->$tableName()->create($item);
+//                                    dd($item);
                                     $new_typeInstance['id'] = $newInstance->id;
                                     $newInstance->save();
                                 }
@@ -253,7 +259,12 @@ class EditController extends Controller
                 if (!$new_content_model)
                     return 'content type does not exists';
 //            dd($new_content_model->);
-             \DB::table($new_content_model['table'].'_description')->where('content_id','=',$r->input('delete'))->delete();
+            $desc_table_cont = $content->name. '_description';
+            $desc_table_cont_exists_rel = \Schema::hasTable($desc_table_cont);
+            if($desc_table_cont_exists_rel )
+            {
+                \DB::table($new_content_model['table'].'_description')->where('content_id','=',$r->input('delete'))->delete();
+            }
             $new_content_model->delete();
 
             return redirect(url('admin/crud/grid/' . $content_type . '/'));
