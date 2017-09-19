@@ -40,7 +40,7 @@ class CreateContentTypeFieldsTable extends Migration
         \DB::table('content_type_fields')->insert(array(
             0 =>
                 array(
-                    'id' => '1',
+                    'id' => '-1',
                     'content_type_id' => '-2',
                     'sort' => '9999',
                     'name' => '_default',
