@@ -14,8 +14,4 @@ class Relations extends \Eloquent
     public $timestamps = false;
     protected $guarded = array();
 
-    public function posts()
-    {
-        return $this->morphedByMany('App\Models\Posts', 'ct_to_relations');
-    }
 }

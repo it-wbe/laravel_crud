@@ -18,7 +18,7 @@ class CreateRelationsDescriptionTable extends Migration
             Schema::create('relations_description', function (Blueprint $table) {
                 $table->integer('content_id');
                 $table->integer('lang_id');
-                $table->string('name');
+                $table->string('title');
                 $table->primary(['content_id', 'lang_id']);
             });
     }

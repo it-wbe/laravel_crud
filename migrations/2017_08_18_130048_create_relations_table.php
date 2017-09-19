@@ -17,6 +17,7 @@ class CreateRelationsTable extends Migration
         if (!Schema::hasTable('relations'))
             Schema::create('relations', function (Blueprint $table) {
                 $table->integer('id', true);
+                $table->string('data');
             });
     }
 
