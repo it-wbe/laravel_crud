@@ -19,6 +19,15 @@ use Zofe\Rapyd\DataForm\DataForm;
 class FieldsProcessor
 {
 
+    /// attr tab
+    /// value 0 - data
+    /// value 1 - description
+    /// value 2 - relations type
+
+
+    /// what content tabs we need
+    ///
+    public static  $cont_tabs = [];
     public static $needTab = [];
     /**
      * Створення Rapyd полів на основі записів у crud_content_type_fields ($rapyd->add)
@@ -83,8 +92,9 @@ class FieldsProcessor
                                 $rules = [];
                                 foreach ($contentRelationFildsType as $value) {
                                     if(in_array($value->name,$contentRelationFilds)){
-                                      if($value->name!='id')
-                                      $rules[$field->name.'.*.'.$value->name] = $value->validators;
+                                      if($value->name!='id'){
+                                          $rules[$field->name.'.*.'.$value->name] = $value->validators;
+                                      }
                                     }
                                     if(in_array($value->name,$contentRelationFildsDesc)){
 //                                        foreach (Languages::all() as $lang){
@@ -94,9 +104,14 @@ class FieldsProcessor
                                 }
                                 $f->rule($rules);
                                 $f->form = $rapyd;
+                                $f->attributes['tab'] =2;
+                                FieldsProcessor::$cont_tabs[2] = true;
               }else {
                     $display = $field->name;
                     $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
+//                 dd($f->attributes['tab']);
+                  $f->attributes['tab']=0;
+                  FieldsProcessor::$cont_tabs[0] = true;
                 if ($field->validators) {
                     $f->rule($field->validators);
                 }
@@ -129,8 +144,12 @@ class FieldsProcessor
                             ($field->caption ? $field->caption : $field->name) . ' (' . $lang . ')',
                             $field->type
                         );
-                        if (($type != 'filter') && isset($desc_values[$lang_k]->{$field->name}))
+
+                        if (($type != 'filter') && isset($desc_values[$lang_k]->{$field->name})){
                             $rapyd->fields[$field_key]->value = $desc_values[$lang_k]->{$field->name};
+                            $rapyd->fields[$field_key]->attributes['tab'] =1;
+                            FieldsProcessor::$cont_tabs[1] = true;
+                        }
                         FieldsProcessor::$needTab[$index_need_tab][] = $field_key;
                     }
                     $index_need_tab++;

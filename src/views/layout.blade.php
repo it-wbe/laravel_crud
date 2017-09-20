@@ -46,8 +46,11 @@
 
     {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') !!}
 
-    {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/ckeditor.js') !!}
-    {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/config.js') !!}
+    {{--{!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/ckeditor.js') !!}--}}
+    {{--{!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/config.js') !!}--}}
+
+    {!! Html::script('packages/zofe/rapyd/assets/ckeditor/ckeditor.js') !!}
+    {!! Html::script('packages/zofe/rapyd/assets/ckeditor/config.js') !!}
 
 
 

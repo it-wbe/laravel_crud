@@ -222,10 +222,12 @@ class EditController extends Controller
                 $edit->label($content->name . ' > ' .  $lable_name_method);
 
             FieldsProcessor::addFields($content, $edit, 'form');
-
+            /// $tab  - for description tabs
            $tab = FieldsProcessor::$needTab;
 
-
+           /// $cont_tab - for content tube $key is id content like data description or relation value is boot
+            $cont_tab = FieldsProcessor::$cont_tabs;
+            ksort($cont_tab);
             $edit->link(url('admin/crud/grid/' . $content_type . '/'), trans('crud::common.cancel'), "TR");
             $edit->submit('Save', 'TR');
             $edit->saved(function () use ($edit, $content_type, $lang_id) {
@@ -249,7 +251,7 @@ class EditController extends Controller
 
             $edit->build();
 
-            return view('crud::crud.form', compact('edit', 'lang_id','tab'));
+            return view('crud::crud.form', compact('edit', 'lang_id','tab','cont_tab'));
 
         } elseif ($r->exists('delete')) {
 

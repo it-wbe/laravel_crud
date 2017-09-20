@@ -81,6 +81,7 @@ class Relation extends \Zofe\Rapyd\DataForm\Field\Field
       }// загружаем картинку
       else {
           $old_file = true;
+          $img_val = null;
           if(isset(EditController::$request->file([$this->name])[$input_key][$value->name]['val'])) {
               // удаляем старую картинку на сервере
               $file = EditController::$request->file([$this->name])[$input_key][$value->name]['val'];
@@ -97,9 +98,11 @@ class Relation extends \Zofe\Rapyd\DataForm\Field\Field
               }
               $old_file = false;
           }
+
           if (!is_null($input[$value->name]['old_img'])&&$old_file!=false) {
               $img_val = $input[$value->name]['old_img'];
           }
+//          dd($img_val);
           if ($description) {
               $val['desc'][$value->name] = $img_val;
           } else {

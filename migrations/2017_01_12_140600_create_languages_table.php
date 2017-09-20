@@ -43,7 +43,7 @@ class CreateLanguagesTable extends Migration
                 array(
                     'id' => '3',
                     'name' => 'Українська',
-                    'code' => 'uk',
+                    'code' => 'ua',
                     'sort' => '3',
                 ),
         ));
