@@ -23,7 +23,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
 		{ name: 'styles' },
 		{ name: 'colors' },
-		{ name: 'about' }
+		// { name: 'about' }
 	];
 
 	// Remove some buttons provided by the standard plugins, which are
@@ -39,5 +39,7 @@ CKEDITOR.editorConfig = function( config ) {
     //config.extraPlugins = 'imageuploader';
 	// config.filebrowserImageBrowseUrl  = '../../../packages/zofe/rapyd/assets/ckeditor/plugins/imageuploader/imgbrowser.php';
 	//config.filebrowserBrowseUrl = '/laravel_server/public/admin/filemanager';
-	config.filebrowserBrowseUrl = '/public/elfinder/ckeditor';
+	// config.filebrowserBrowseUrl = '/public/elfinder/ckeditor';
+    config.filebrowserBrowseUrl = '/elfinder';
 };
+
