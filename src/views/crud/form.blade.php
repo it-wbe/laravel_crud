@@ -44,11 +44,11 @@
 
         <div class="tab-content">
             {{--контент таби для мов--}}
+            {{--{!! dd($cont_tab) !!}--}}
             @foreach($cont_tab as $comt_tab_key =>$cont_tab_value)
                 <div id="tab_cont_{{$loop->index}}" class="tab-pane fade @if($loop->index==0){{'in active'}}@endif">
                 @foreach($edit->fields as $key=> $value)
-        {{--{!!  dd($value); !!}--}}
-                    @if(isset($value->attributes['tab'])&&$value->attributes['tab'] == $comt_tab_key)
+                    @if($value->attributes['tab'] == $comt_tab_key)
 
                      {{--якщо е таби та поточне поле має бути в табі вивалюємо таби--}}
                         @if(isset($tab)&&$key == reset($tab)[0])

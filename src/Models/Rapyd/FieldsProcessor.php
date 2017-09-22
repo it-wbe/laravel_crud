@@ -147,9 +147,10 @@ class FieldsProcessor
 
                         if (($type != 'filter') && isset($desc_values[$lang_k]->{$field->name})){
                             $rapyd->fields[$field_key]->value = $desc_values[$lang_k]->{$field->name};
-                            $rapyd->fields[$field_key]->attributes['tab'] =1;
-                            FieldsProcessor::$cont_tabs[1] = true;
+
                         }
+                        $rapyd->fields[$field_key]->attributes['tab'] =1;
+                        FieldsProcessor::$cont_tabs[1] = true;
                         FieldsProcessor::$needTab[$index_need_tab][] = $field_key;
                     }
                     $index_need_tab++;
