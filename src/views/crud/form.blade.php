@@ -48,7 +48,7 @@
                 <div id="tab_cont_{{$loop->index}}" class="tab-pane fade @if($loop->index==0){{'in active'}}@endif">
                 @foreach($edit->fields as $key=> $value)
         {{--{!!  dd($value); !!}--}}
-                    @if($value->attributes['tab'] == $comt_tab_key)
+                    @if(isset($value->attributes['tab'])&&$value->attributes['tab'] == $comt_tab_key)
 
                      {{--якщо е таби та поточне поле має бути в табі вивалюємо таби--}}
                         @if(isset($tab)&&$key == reset($tab)[0])
