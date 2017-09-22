@@ -21,7 +21,7 @@ class CreateContentTypeFieldsDescriptionTable extends Migration
                 $table->primary(['content_id', 'lang_id']);
             });
 
-        \DB::table('content_type_fields_description')->delete();
+//        \DB::table('content_type_fields_description')->delete();
 
         /*\DB::table('content_type_fields_description')->insert(array(
             0 =>

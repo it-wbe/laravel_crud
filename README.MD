@@ -104,6 +104,7 @@ php artisan vendor:publish --provider="Zofe\Rapyd\RapydServiceProvider"
 php artisan vendor:publish --provider="Wbe\Crud\CrudServiceProvider"
 php artisan elfinder:publish
 php artisan migrate
+php artisan db:seed --class=\Wbe\Crud\seeds\DatabaseSeeder
 composer dump-autoload
 mkdir public/files/
 ```

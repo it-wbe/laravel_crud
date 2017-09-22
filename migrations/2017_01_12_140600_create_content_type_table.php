@@ -24,59 +24,7 @@ class CreateContentTypeTable extends Migration
             });
 
 
-        \DB::table('content_type')->delete();
-
-        \DB::table('content_type')->insert(array(
-            0 =>
-                array(
-                    'id' => '1',
-                    'table' => 'content_type',
-                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\ContentType',
-                    'sort' => '0',
-                    'is_system' => '1',
-                ),
-            1 =>
-                array(
-                    'id' => '2',
-                    'table' => 'content_type_fields',
-                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\ContentTypeFields',
-                    'sort' => '1',
-                    'is_system' => '1',
-                ),
-
-            2 =>
-                array(
-                    'id' => '3',
-                    'table' => 'users',
-                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\User',
-                    'sort' => '2',
-                    'is_system' => '1',
-                ),
-            3 =>
-                array(
-                    'id' => '4',
-                    'table' => 'languages',
-                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\Languages',
-                    'sort' => '3',
-                    'is_system' => '1',
-                ),
-            4 =>
-                array(
-                    'id' => '5',
-                    'table' => 'roles',
-                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\Role',
-                    'sort' => '4',
-                    'is_system' => '1',
-                ),
-            5 =>
-                array(
-                    'id' => '6',
-                    'table' => 'relations',
-                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\Relations',
-                    'sort' => '5',
-                    'is_system' => '1',
-                ),
-        ));
+//        \DB::table('content_type')->delete();
     }
 
 

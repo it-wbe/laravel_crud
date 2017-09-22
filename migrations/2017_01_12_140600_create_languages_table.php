@@ -22,32 +22,7 @@ class CreateLanguagesTable extends Migration
             });
 
 
-        \DB::table('languages')->delete();
-
-        \DB::table('languages')->insert(array(
-            0 =>
-                array(
-                    'id' => '1',
-                    'name' => 'English',
-                    'code' => 'en',
-                    'sort' => '1',
-                ),
-            1 =>
-                array(
-                    'id' => '2',
-                    'name' => 'Русский',
-                    'code' => 'ru',
-                    'sort' => '2',
-                ),
-            2 =>
-                array(
-                    'id' => '3',
-                    'name' => 'Українська',
-                    'code' => 'ua',
-                    'sort' => '3',
-                ),
-        ));
-
+//        \DB::table('languages')->delete();
 
     }
 
