@@ -1,7 +1,7 @@
 Laravel Admin Panel generator
 =============
 
-### Install in Laravel 5.3
+### Install in Laravel 5.5
 
 1. Config.
 Replace into `config/database.php`:
