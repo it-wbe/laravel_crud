@@ -55,7 +55,7 @@ Route::group(['middleware' => 'admin'], function () {
     //Route::any('admin/settings/generate', 'Wbe\Crud\Controllers\SettingsController@generate');
     Route::any('admin/adminer', 'Wbe\Crud\Controllers\Adminer\AdminerAutologinController@index');
 		/// EDIT LANGUAGES
-	 Route::any('admin/lang_edit/{path?}','Wbe\Crud\Controllers\LangEditController@edit');
+	 Route::any('admin/lang_edit/{menu_item}/{file_name}','Wbe\Crud\Controllers\LangEditController@edit');
 
 	
     Route::any('admin/filemanager', 'Wbe\Crud\Controllers\BackendHomeController@file_manager');
