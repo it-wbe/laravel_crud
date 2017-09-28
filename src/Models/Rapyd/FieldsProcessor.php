@@ -108,7 +108,14 @@ class FieldsProcessor
                                 FieldsProcessor::$cont_tabs[2] = true;
               }else {
                     $display = $field->name;
-                    $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
+                  if($type == 'filter' &&$field->type == 'number') {
+                      $field->type = 'text';
+                      $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
+                      $f->clause = 'custom';
+//                      dd($f);
+                  }else{
+                      $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
+                  }
 //                 dd($f->attributes['tab']);
                   $f->attributes['tab']=0;
                   FieldsProcessor::$cont_tabs[0] = true;
