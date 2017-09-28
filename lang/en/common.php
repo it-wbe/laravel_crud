@@ -26,6 +26,10 @@ return [
     'ct_records' => 'Records',
     'ct_descripted_fields' => 'Descripted fields',
     'ct_actions' => 'Actions',
+	'file_manager'=>'File Manager',
+	'fields_descriptors'=>'Fields Descriptors',
+	'systems_types'=>'Systems Type',
+	'language_editing'=>'Language Edit',
 ];
 
 ?>

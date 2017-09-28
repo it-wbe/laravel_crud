@@ -26,6 +26,10 @@ return [
     'ct_records' => 'Записей',
     'ct_descripted_fields' => 'Описано полей',
     'ct_actions' => 'Действия',
+	'file_manager'=>'Менеджер Файлов',
+	'fields_descriptors'=>'дескрипторы полей',
+	'systems_types'=>'Систeмные Типы',
+	'language_editing'=>'Редактирование Языков',
 ];
 
 ?>
