@@ -32,7 +32,7 @@ Route::group(['middleware' => 'web'], function () {
 
 Route::group(['middleware' => 'admin'], function () {
 
-    Route::get('admin/', 'Wbe\Crud\Controllers\BackendHomeController@index')->middleware('admin');
+    Route::get('admin/', 'Wbe\Crud\Controllers\BackendHomeController@index')->middleware('admin')->name('admin.index');
 
     Route::get('admin/autocomplete/{model}/{fields}/{limit}/', 'Wbe\Crud\Controllers\Rapyd\AjaxController@getAutocomplete');
 

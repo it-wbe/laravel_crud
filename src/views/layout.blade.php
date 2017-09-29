@@ -123,6 +123,15 @@
     </header>
     <acide class="main-sidebar">
         <section class="sidebar">
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+					  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+					  </button>
+					</span>
+                </div>
+            </form>
             @include('crud::common.vertical_menu')
         </section>
     </acide>
@@ -137,6 +146,7 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-sm-12">
+                        <div class="error">{{Session::get('access')}}</div>
                         @yield('content')
                     </div>
                 </div>
