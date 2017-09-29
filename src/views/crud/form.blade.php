@@ -15,7 +15,7 @@
     </style>
     <div class="rpd_dataform">
     {!!$edit->header!!}
-
+<div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
         @foreach($cont_tab as $key =>$value)
                 {{--навігація для мов--}}
@@ -41,7 +41,7 @@
                     </li>
         @endforeach
         </ul>
-
+</div>
         <div class="tab-content">
             {{--контент таби для мов--}}
             {{--{!! dd($cont_tab) !!}--}}
@@ -52,12 +52,14 @@
 
                      {{--якщо е таби та поточне поле має бути в табі вивалюємо таби--}}
                         @if(isset($tab)&&$key == reset($tab)[0])
+							<div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                              {{--навігація для мов--}}
                             @foreach($tab[0] as $tab_index=>$tab_key)
                                 <li @if($tab_index==0){{'class=active'}}@endif><a data-toggle="tab" href="#tab_{{$tab_index}}">{{explode(')',explode('(',$edit->field($tab_key)->label)[1])[0]}}</a></li>
                             @endforeach
                             </ul>
+							</div>
                                 <div class="tab-content">
                                      {{--контент таби для мов--}}
                                 @foreach($tab[0] as $tab_index=>$tab_key)
