@@ -30,7 +30,6 @@ class CreateContentTypeFieldsTable extends Migration
                 $table->string('grid_attributes', 512)->nullable();
                 $table->boolean('form_show')->nullable();
                 $table->string('form_attributes', 512)->nullable();
-                $table->boolean('show')->nullable();
                 $table->unique(['content_type_id', 'name'], 'crud_content_type_id,name')->nullable();
             });
     }
