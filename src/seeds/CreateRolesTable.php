@@ -25,7 +25,7 @@ class CreateRolesTable extends Seeder
         $collection = collect($data);
         foreach ($collection as $row){
             if(is_null(\DB::table('roles')->where('name','=',$row['name'])->first())){
-                \DB::table('roles')->insert($row->asArray());
+                \DB::table('roles')->insert($row);
             }
         }
     }

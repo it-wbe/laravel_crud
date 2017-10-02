@@ -151,25 +151,25 @@ class CreateContentTypeDescriptionTable extends Seeder
                     //'form_attributes' => '',
                     //'show' => '1',
                 ),
-            7 =>
-                array(
-                    //'id' => '18',
-                    'content_type_id' => '2',
-                    'sort' => '12',
-                    'name' => 'grid_attributes',
-                    'type' => 'text',
-                    'display_column' => '',
-                    'search_columns' => '',
-                    'relation' => '',
-                    'validators' => 'max:512|required',
-                    'grid_show' => '1',
-                    'grid_filter' => '1',
-                    'grid_custom_display' => '',
-                    //'grid_attributes' => '',
-                    'form_show' => '1',
-                    //'form_attributes' => '',
-                    //'show' => '1',
-                ),
+//            7 =>
+//                array(
+//                    //'id' => '18',
+//                    'content_type_id' => '2',
+//                    'sort' => '12',
+//                    'name' => 'grid_attributes',
+//                    'type' => 'text',
+//                    'display_column' => '',
+//                    'search_columns' => '',
+//                    'relation' => '',
+//                    'validators' => 'max:512|required',
+//                    'grid_show' => '1',
+//                    'grid_filter' => '1',
+//                    'grid_custom_display' => '',
+//                    //'grid_attributes' => '',
+//                    'form_show' => '1',
+//                    //'form_attributes' => '',
+//                    //'show' => '1',
+//                ),
             8 =>
                 array(
                     //'id' => '15',
@@ -265,44 +265,44 @@ class CreateContentTypeDescriptionTable extends Seeder
                     //'form_attributes' => '',
                     //'show' => '1',
                 ),
-            13 =>
-                array(
-                    //'id' => '20',
-                    'content_type_id' => '2',
-                    'sort' => '14',
-                    'name' => 'form_attributes',
-                    'type' => 'text',
-                    'display_column' => '',
-                    'search_columns' => '',
-                    'relation' => '',
-                    'validators' => 'max:512|required',
-                    'grid_show' => '1',
-                    'grid_filter' => '1',
-                    'grid_custom_display' => '',
-                    //'grid_attributes' => '',
-                    'form_show' => '1',
-                    //'form_attributes' => '',
-                    //'show' => '1',
-                ),
-            14 =>
-                array(
-                    //'id' => '21',
-                    'content_type_id' => '2',
-                    'sort' => '15',
-                    'name' => 'show',
-                    'type' => 'checkbox',
-                    'display_column' => '',
-                    'search_columns' => '',
-                    'relation' => '',
-                    'validators' => 'integer|required',
-                    'grid_show' => '1',
-                    'grid_filter' => '1',
-                    'grid_custom_display' => '',
-                    //'grid_attributes' => '',
-                    'form_show' => '1',
-                    //'form_attributes' => '',
-                    //'show' => '1',
-                ),
+//            13 =>
+//                array(
+//                    //'id' => '20',
+//                    'content_type_id' => '2',
+//                    'sort' => '14',
+//                    'name' => 'form_attributes',
+//                    'type' => 'text',
+//                    'display_column' => '',
+//                    'search_columns' => '',
+//                    'relation' => '',
+//                    'validators' => 'max:512|required',
+//                    'grid_show' => '1',
+//                    'grid_filter' => '1',
+//                    'grid_custom_display' => '',
+//                    //'grid_attributes' => '',
+//                    'form_show' => '1',
+//                    //'form_attributes' => '',
+//                    //'show' => '1',
+//                ),
+//            14 =>
+//                array(
+//                    //'id' => '21',
+//                    'content_type_id' => '2',
+//                    'sort' => '15',
+//                    'name' => 'show',
+//                    'type' => 'checkbox',
+//                    'display_column' => '',
+//                    'search_columns' => '',
+//                    'relation' => '',
+//                    'validators' => 'integer|required',
+//                    'grid_show' => '1',
+//                    'grid_filter' => '1',
+//                    'grid_custom_display' => '',
+//                    //'grid_attributes' => '',
+//                    'form_show' => '1',
+//                    //'form_attributes' => '',
+//                    //'show' => '1',
+//                ),
             15 =>
                 array(
                     //'id' => '22',
@@ -767,22 +767,26 @@ class CreateContentTypeDescriptionTable extends Seeder
         /// $cont_type_id  получаем id которые больше $max_cont_id  - получем количество и id контента которые добавили
         ///
         $max_cont_id  = \DB::table('content_type_fields')->max('content_type_id');
-        $cont_type_id = \DB::table('content_type')->where('id','>',$max_cont_id)->get(['id']);
-        if(empty($cont_type_id)){
-            \DB::table('content_type_fields')->insert($data);
-        }
-        else{ // меняем значения id
-            $collect = collect($data)->groupBy('content_type_id');
-            $data = $collect->slice($collect->count() - count($cont_type_id));
-            $data->all();
-            $i = 0;
-            foreach ($data as $data_temp_key=> $data_temp_value){
-                foreach ($data_temp_value as $row_value){
-                    $row_value['content_type_id'] =$cont_type_id[$i]->id;
-                    \DB::table('content_type_fields')->insert($row_value);
+        if(!is_null($max_cont_id)) {
+            $cont_type_id = \DB::table('content_type')->where('id', '>', $max_cont_id)->get(['id']);
+            if (empty($cont_type_id)) {
+                \DB::table('content_type_fields')->insert($data);
+            } else { // меняем значения id
+                $collect = collect($data)->groupBy('content_type_id');
+                $data = $collect->slice($collect->count() - count($cont_type_id));
+                $data->all();
+                $i = 0;
+                foreach ($data as $data_temp_key => $data_temp_value) {
+                    foreach ($data_temp_value as $row_value) {
+                        $row_value['content_type_id'] = $cont_type_id[$i]->id;
+                        \DB::table('content_type_fields')->insert($row_value);
+                    }
+                    $i++;
                 }
-                $i++;
             }
+        }
+        else{
+            \DB::table('content_type_fields')->insert($data);
         }
     }
 }

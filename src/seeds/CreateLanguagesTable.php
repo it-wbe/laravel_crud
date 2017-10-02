@@ -38,7 +38,7 @@ class CreateLanguagesTable extends Seeder
         $collection = collect($data);
         foreach ($collection as $row){
             if(is_null(\DB::table('languages')->where('code','=',$row['code'])->first())){
-                \DB::table('languages')->insert($row->asArray());
+                \DB::table('languages')->insert($row);
             }
         }
     }

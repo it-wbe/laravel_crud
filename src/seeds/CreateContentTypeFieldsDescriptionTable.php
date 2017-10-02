@@ -127,22 +127,25 @@ class CreateContentTypeFieldsDescriptionTable extends Seeder
         /// $cont_type_id  получаем id которые больше $max_cont_id  - получем количество и id контента которые добавили
         ///
         $max_cont_id  = \DB::table('content_type_description')->max('content_id');
-        $cont_type_id = \DB::table('content_type')->where('id','>',$max_cont_id)->get(['id']);
-        if(empty($cont_type_id)){
-            \DB::table('content_type_description')->insert($data);
-        }
-        else{ // меняем значения id
-            $collect = collect($data)->groupBy('content_id');
-            $data = $collect->slice($collect->count() - count($cont_type_id));
-            $data->all();
-            $i = 0;
-            foreach ($data as $data_temp_key=> $data_temp_value){
-                foreach ($data_temp_value as $row_value){
-                    $row_value['content_id'] =$cont_type_id[$i]->id;
-                    \DB::table('content_type_description')->insert($row_value);
+        if(!is_null($max_cont_id)) {
+            $cont_type_id = \DB::table('content_type')->where('id', '>', $max_cont_id)->get(['id']);
+            if (empty($cont_type_id)) {
+                \DB::table('content_type_description')->insert($data);
+            } else { // меняем значения id
+                $collect = collect($data)->groupBy('content_id');
+                $data = $collect->slice($collect->count() - count($cont_type_id));
+                $data->all();
+                $i = 0;
+                foreach ($data as $data_temp_key => $data_temp_value) {
+                    foreach ($data_temp_value as $row_value) {
+                        $row_value['content_id'] = $cont_type_id[$i]->id;
+                        \DB::table('content_type_description')->insert($row_value);
+                    }
+                    $i++;
                 }
-                $i++;
             }
+        }else{
+            \DB::table('content_type_description')->insert($data);
         }
     }
 }

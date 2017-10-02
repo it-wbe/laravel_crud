@@ -40,7 +40,7 @@ class CreateUsersTable extends Seeder
         $collection = collect($data);
         foreach ($collection as $row){
             if(is_null(\DB::table('users')->where('name','=',$row['name'])->first())){
-                \DB::table('users')->insert($row->asArray());
+                \DB::table('users')->insert($row);
             }
         }
     }
