@@ -32,10 +32,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+//                    //'form_attributes' => '',
+                    
                 ),
             1 =>
                 array(
@@ -51,10 +51,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    
                 ),
             2 =>
                 array(
@@ -70,10 +70,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    
                 ),
             3 =>
                 array(
@@ -89,10 +89,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             4 =>
                 array(
@@ -108,10 +108,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             5 =>
                 array(
@@ -127,10 +127,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             6 =>
                 array(
@@ -146,10 +146,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             7 =>
                 array(
@@ -165,10 +165,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             8 =>
                 array(
@@ -184,10 +184,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             9 =>
                 array(
@@ -203,10 +203,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             10 =>
                 array(
@@ -222,10 +222,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             11 =>
                 array(
@@ -241,10 +241,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             12 =>
                 array(
@@ -260,10 +260,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             13 =>
                 array(
@@ -279,10 +279,29 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
+                ),
+            14 =>
+                array(
+                    //'id' => '21',
+                    'content_type_id' => '2',
+                    'sort' => '15',
+                    'name' => 'show',
+                    'type' => 'checkbox',
+                    'display_column' => '',
+                    'search_columns' => '',
+                    'relation' => '',
+                    'validators' => 'integer|required',
+                    'grid_show' => '1',
+                    'grid_filter' => '1',
+                    'grid_custom_display' => '',
+                    //'grid_attributes' => '',
+                    'form_show' => '1',
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             15 =>
                 array(
@@ -298,10 +317,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
 
             16 =>
@@ -318,10 +337,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             17 =>
                 array(
@@ -337,10 +356,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             18 =>
                 array(
@@ -356,10 +375,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             19 =>
                 array(
@@ -375,10 +394,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             20 =>
                 array(
@@ -394,10 +413,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             21 =>
                 array(
@@ -413,10 +432,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             22 =>
                 array(
@@ -432,10 +451,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             23 =>
                 array(
@@ -451,10 +470,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             24 =>
                 array(
@@ -470,10 +489,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             25 =>
                 array(
@@ -489,10 +508,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             26 =>
                 array(
@@ -508,10 +527,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             27 =>
                 array(
@@ -527,10 +546,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => 'role.name',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
 
             28 =>
@@ -547,10 +566,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             29 =>
                 array(
@@ -566,10 +585,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
 
             30 =>
@@ -586,10 +605,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             31 =>
                 array(
@@ -605,10 +624,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             32 =>
                 array(
@@ -624,10 +643,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    
                 ),
             33 =>
                 array(
@@ -643,10 +662,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             34 =>
                 array(
@@ -662,10 +681,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             35 =>
                 array(
@@ -681,10 +700,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             36 =>
                 array(
@@ -700,10 +719,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             37 =>
                 array(
@@ -719,10 +738,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
             38 =>
                 array(
@@ -738,10 +757,10 @@ class CreateContentTypeDescriptionTable extends Seeder
                     'grid_show' => '1',
                     'grid_filter' => '1',
                     'grid_custom_display' => '',
-                    'grid_attributes' => '',
+                    //'grid_attributes' => '',
                     'form_show' => '1',
-                    'form_attributes' => '',
-
+                    //'form_attributes' => '',
+                    //'show' => '1',
                 ),
         );
         /// $max_cont_id получаем максимальный контент на данный момент

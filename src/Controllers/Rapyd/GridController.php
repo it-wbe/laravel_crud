@@ -90,8 +90,8 @@ class GridController extends Controller
                 // $f = $grid->add($display, $field->caption ? $field->caption : $field->name, $field->name);
                 $f = $grid->add($display, $field->title != "not set" ? $field->title : $field->name, $field->name);
 
-                if ($field->grid_attributes)
-                    eval($field->grid_attributes);
+//                if ($field->grid_attributes)
+//                    eval($field->grid_attributes);
             }
         }
 

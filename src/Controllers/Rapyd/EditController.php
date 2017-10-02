@@ -220,7 +220,7 @@ class EditController extends Controller
                 $lable_name_method = trans('crud::common.content_edit');
             }
                 $edit->label($content->name . ' > ' .  $lable_name_method);
-
+//            dump($content);
             FieldsProcessor::addFields($content, $edit, 'form');
             /// $tab  - for description tabs
            $tab = FieldsProcessor::$needTab;
