@@ -46,11 +46,8 @@
 
     {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') !!}
 
-    {{--{!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/ckeditor.js') !!}--}}
-    {{--{!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/config.js') !!}--}}
-
-    {!! Html::script('packages/zofe/rapyd/assets/ckeditor/ckeditor.js') !!}
-    {!! Html::script('packages/zofe/rapyd/assets/ckeditor/config.js') !!}
+    {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/ckeditor.js') !!}
+    {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/config.js') !!}
 
 
 
@@ -146,7 +143,6 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="error">{{Session::get('access')}}</div>
                         @yield('content')
                     </div>
                 </div>
