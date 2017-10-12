@@ -147,9 +147,9 @@ class LangEditController extends Controller
             if(!is_array($arr_val)){
                 if(is_null($parent_val))
                 {
-                    $context['['.$arr_key.']'] = $arr_val;
+                    $context['['.$arr_key.']'] = htmlspecialchars($arr_val,ENT_QUOTES );
                 }else{
-                    $context[$parent_val.'['.$arr_key.']'] = $arr_val;
+                    $context[$parent_val.'['.$arr_key.']'] = htmlspecialchars($arr_val,ENT_QUOTES );
                 }
             }else{
                 if(is_null($parent_val)){
