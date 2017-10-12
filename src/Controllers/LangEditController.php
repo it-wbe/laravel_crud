@@ -127,9 +127,9 @@ class LangEditController extends Controller
     {
         foreach ($arr as $arr_key => $arr_val) {
             if (!is_array($arr_val)) {
-                $context .= '\'' . $arr_key . '\'=>\'' . $arr_val . '\',' . PHP_EOL;
+                $context .= '"' . $arr_key . '"=>"' . htmlspecialchars($arr_val,ENT_QUOTES ) . '",' . PHP_EOL;
             } else {
-                $context .= '\'' . $arr_key . '\'=>[ ' . PHP_EOL;
+                $context .= '"' . $arr_key . '"=>[ ' . PHP_EOL;
                 $this->GetValue($arr_val, $context);
                 $context .= '],' . PHP_EOL;
             }
@@ -147,9 +147,9 @@ class LangEditController extends Controller
             if(!is_array($arr_val)){
                 if(is_null($parent_val))
                 {
-                    $context['['.$arr_key.']'] = htmlspecialchars($arr_val,ENT_QUOTES );
+                    $context['['.$arr_key.']'] = $arr_val;
                 }else{
-                    $context[$parent_val.'['.$arr_key.']'] = htmlspecialchars($arr_val,ENT_QUOTES );
+                    $context[$parent_val.'['.$arr_key.']'] = $arr_val;
                 }
             }else{
                 if(is_null($parent_val)){
