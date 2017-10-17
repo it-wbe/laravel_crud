@@ -71,10 +71,10 @@ class FieldsDescriptorController extends Controller
                                 'grid_show' => (int)(\Request::input('grid_show')[$k] == 'on'),
                                 'grid_filter' => (int)(\Request::input('grid_filter')[$k] == 'on'),
                                 'grid_custom_display' => \Request::input('grid_custom_display')[$k],
-                                'grid_attributes' => \Request::input('grid_attributes')[$k],
+                                //'grid_attributes' => \Request::input('grid_attributes')[$k],
                                 'form_show' => (int)(\Request::input('form_show')[$k] == 'on'),
-                                'form_attributes' => \Request::input('form_attributes')[$k],
-                                'show' => (int)(\Request::input('show')[$k] == 'on'),
+                                //'form_attributes' => \Request::input('form_attributes')[$k],
+                                //'show' => (int)(\Request::input('show')[$k] == 'on'),
                                 'sort' => (int)\Request::input('sort')[$k],
                             ];
 
