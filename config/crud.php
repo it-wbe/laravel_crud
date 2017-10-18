@@ -1,6 +1,7 @@
 <?php
 
 return [
+	'edit_redirect' => env('edit_redirect', 1),
     'field_types' => [
         'text' => 'Text',
         'textarea' => 'Textarea',

@@ -212,10 +212,10 @@
                         <th>grid show</th>
                         <th>grid filter</th>
                         <th>grid custom display</th>
-                        <th>grid attributes</th>
+                        {{--<th>grid attributes</th>--}}
                         <th>form show</th>
-                        <th>form attributes</th>
-                        <th>show</th>
+                        {{--<th>form attributes</th>--}}
+                        {{--<th>show</th>--}}
                         <th>Дії</th>
                     </tr>
                     </thead>

@@ -36,16 +36,16 @@
         <input type="hidden" name="grid_filter[]">
     </td>
     <td><input type="text" class="form-control" name="grid_custom_display[]" value="{{ $f->grid_custom_display }}"></td>
-    <td><input type="text" class="form-control" name="grid_attributes[]" value="{{ $f->grid_attributes }}"></td>
+    {{--<td><input type="text" class="form-control" name="grid_attributes[]" value="{{ $f->grid_attributes }}"></td>--}}
     <td>
         <input type="checkbox" {{--id="form_show"--}} class="form-control checkbox_autofill" {{ $f->form_show ? 'checked' : '' }}>
         <input type="hidden" name="form_show[]">
     </td>
-    <td><input type="text" class="form-control" name="form_attributes[]" value="{{ $f->form_attributes }}"></td>
-    <td>
-        <input type="checkbox" {{--id="show"--}} class="form-control checkbox_autofill" {{ $f->show ? 'checked' : '' }}>
-        <input type="hidden" name="show[]">
-    </td>
+    {{--<td><input type="text" class="form-control" name="form_attributes[]" value="{{ $f->form_attributes }}"></td>--}}
+    {{--<td>--}}
+        {{--<input type="checkbox" --}}{{--id="show"--}}{{-- class="form-control checkbox_autofill" {{ $f->show ? 'checked' : '' }}>--}}
+        {{--<input type="hidden" name="show[]">--}}
+    {{--</td>--}}
     <td>
         <nobr>
         <button class="btn btn-success btn-xs btn-move-field" onclick="return fd_field_move_up(this);" title="Up">
