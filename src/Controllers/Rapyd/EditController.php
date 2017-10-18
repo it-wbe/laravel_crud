@@ -3,6 +3,7 @@
 namespace Wbe\Crud\Controllers\Rapyd;
 
 use App\Models\Relation;
+use Mockery\Exception;
 use Wbe\Crud\Models\ModelGenerator;
 use Wbe\Crud\Models\Rapyd\FieldsProcessor;
 
@@ -82,129 +83,139 @@ class EditController extends Controller
             }
             $desc_table = $content->table . '_description';
             $desc_table_exists = \Schema::hasTable($desc_table);
-            $new_content_model::saved(function ($row) use ($content, $content_id, $desc_table, $desc_table_exists) {
-                $this_contentFilds = ContentTypeFields::getFieldsFromDB($content->id,[['form_show',1]]);
-                foreach ($this_contentFilds as $filds) {
-                    if ($filds->type == 'Wbe\Crud\Models\Rapyd\Fields\Relation') {
-                        $languages = Languages::all()->pluck('name', 'id');
-                        $contentTypeId = ContentType::where('table', $filds->name)->pluck('id')->first();
+            try {
+                $new_content_model::saved(function ($row) use ($content, $content_id, $desc_table, $desc_table_exists) {
+                    $this_contentFilds = ContentTypeFields::getFieldsFromDB($content->id, [['form_show', 1]]);
+                    foreach ($this_contentFilds as $filds) {
+                        if ($filds->type == 'Wbe\Crud\Models\Rapyd\Fields\Relation') {
+                            $languages = Languages::all()->pluck('name', 'id');
+                            $contentTypeId = ContentType::where('table', $filds->name)->pluck('id')->first();
 //                        $this->contentFields = \Schema::getColumnListing($filds->name);
-                        $desc_table = $filds->name . '_description';
-                        $contentFieldsDescription = \Schema::getColumnListing($filds->desc_table);
-                        $tableFieldsType = ContentTypeFields::getFieldsFromDB($contentTypeId, [['form_show', '=', 1]]);
+                            $desc_table = $filds->name . '_description';
+                            $contentFieldsDescription = \Schema::getColumnListing($filds->desc_table);
+                            $tableFieldsType = ContentTypeFields::getFieldsFromDB($contentTypeId, [['form_show', '=', 1]]);
 //                        dd($tableFieldsType );
-                        /// наш новый тип достаем поля типа делаем новые обекты модельки
-                        $contentFields = \Schema::getColumnListing($filds->name);
-                        $tableName = $filds->name;
-                        $all_id = \DB::table('ct_to_relations')
-                            ->where([
-                                ['ct_to_relations_id', '=', $row->id],
-                                ['ct_to_relations_type', '=', get_class($row)]])
-                            ->pluck('relations_id')->toArray();
-                        if (isset($_POST[$tableName])) {
-                            foreach (Input::get($tableName) as $key_rel => $item) {
-                                $update = false;
-                                foreach ($row->$tableName()->get() as $rel) {
-                                    /// видаляемо id з массиву які є на сторінці , інші вважаємо видаленими
-                                    if (isset($item['id']) && $rel->id == (int)$item['id']) {
-                                        $search_id = array_search($rel->id, $all_id);
-                                        unset($all_id[$search_id]);
-                                        $update = true;
+                            /// наш новый тип достаем поля типа делаем новые обекты модельки
+                            $contentFields = \Schema::getColumnListing($filds->name);
+                            $tableName = $filds->name;
+                            $all_id = \DB::table('ct_to_relations')
+                                ->where([
+                                    ['ct_to_relations_id', '=', $row->id],
+                                    ['ct_to_relations_type', '=', get_class($row)]])
+                                ->pluck('relations_id')->toArray();
+                            if (isset($_POST[$tableName])) {
+                                foreach (Input::get($tableName) as $key_rel => $item) {
+                                    $update = false;
+                                    foreach ($row->$tableName()->get() as $rel) {
+                                        /// видаляемо id з массиву які є на сторінці , інші вважаємо видаленими
+                                        if (isset($item['id']) && $rel->id == (int)$item['id']) {
+                                            $search_id = array_search($rel->id, $all_id);
+                                            unset($all_id[$search_id]);
+                                            $update = true;
+                                            $item = $this->fillmodel($item, $contentFields, $tableFieldsType, $tableName);
+                                            if ($item['id'] < 0) {
+                                                $item['id'] = null;
+                                            }
+                                            $rel->fill($item);
+                                            $rel->save();
+                                        }
+                                    }
+                                    $desc = null;
+                                    if (!$update) {
+                                        /// create new
                                         $item = $this->fillmodel($item, $contentFields, $tableFieldsType, $tableName);
                                         if ($item['id'] < 0) {
                                             $item['id'] = null;
-                                        }
-                                        $rel->fill($item);
-                                        $rel->save();
-                                    }
-                                }
-                                $desc = null;
-                                if (!$update) {
-                                    /// create new
-                                    $item = $this->fillmodel($item, $contentFields, $tableFieldsType, $tableName);
-                                    if ($item['id'] < 0) {
-                                        $item['id'] = null;
 //                                        unset($item['id']);
-                                    }
+                                        }
 //dd($item);
 //                                    dd($tableName);
 //                                    dd($row->$tableName()->);
 //                                    $newInstance  = \Wbe\Crud\Models\ContentTypes\Relations::create($item);
-                                    $newInstance = $row->$tableName()->create($item);
+                                        $newInstance = $row->$tableName()->create($item);
 //                                    dd($item);
-                                    $new_typeInstance['id'] = $newInstance->id;
-                                    $newInstance->save();
-                                }
-                                $desc_table_cont = $tableName . '_description';
-                                $desc_table_cont_exists_rel = \Schema::hasTable($desc_table);
-                                /// save ower type description
-                                /// content id
+                                        $new_typeInstance['id'] = $newInstance->id;
+                                        $newInstance->save();
+                                    }
+                                    $desc_table_cont = $tableName . '_description';
+                                    $desc_table_cont_exists_rel = \Schema::hasTable($desc_table);
+                                    /// save ower type description
+                                    /// content id
 
-                                if (!isset($new_typeInstance)) {
-                                    $key = $key_rel;
-                                } else {
-                                    $key = $new_typeInstance['id'];
-                                }
-                                $desc = Input::get($tableName . '_description')[$key_rel];
-                                if (!is_null($desc)) {
-                                    if ($desc_table_cont_exists_rel && isset($_POST[$desc_table_cont])) {
+                                    if (!isset($new_typeInstance)) {
+                                        $key = $key_rel;
+                                    } else {
+                                        $key = $new_typeInstance['id'];
+                                    }
+                                    $desc = Input::get($tableName . '_description')[$key_rel];
+                                    if (!is_null($desc)) {
+                                        if ($desc_table_cont_exists_rel && isset($_POST[$desc_table_cont])) {
 
-                                        $lang_records = $desc;
-                                        foreach ($desc as $post_lang_id => $post_lang) {
+                                            $lang_records = $desc;
+                                            foreach ($desc as $post_lang_id => $post_lang) {
 
-                                            if (!isset($new_typeInstance)) {
-                                                $lang_records[$post_lang_id]['content_id'] = $key_rel;
-                                            } else {
-                                                $lang_records[$post_lang_id]['content_id'] = $new_typeInstance['id'];
+                                                if (!isset($new_typeInstance)) {
+                                                    $lang_records[$post_lang_id]['content_id'] = $key_rel;
+                                                } else {
+                                                    $lang_records[$post_lang_id]['content_id'] = $new_typeInstance['id'];
+                                                }
+
+                                                $lang_records[$post_lang_id]['lang_id'] = $post_lang_id;
                                             }
-
-                                            $lang_records[$post_lang_id]['lang_id'] = $post_lang_id;
-                                        }
-                                        foreach ($lang_records as $post_lang_id => $post_lang) {
-                                            \DB::table($desc_table_cont)->updateOrInsert(['content_id' => $key, 'lang_id' => $post_lang_id], $post_lang);
+                                            foreach ($lang_records as $post_lang_id => $post_lang) {
+                                                \DB::table($desc_table_cont)->updateOrInsert(['content_id' => $key, 'lang_id' => $post_lang_id], $post_lang);
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            //// remove all
+                                //// remove all
 //                            dump($all_id);
-                        }/// relation взагалі ніякого нема  /// remova relations
+                            }/// relation взагалі ніякого нема  /// remova relations
 //                        dd($all_id);
 //                        $aa = array_values($all_id);
 //                        dd($aa);
-                        foreach ($all_id as $id){
-                            \DB::table($filds->name)->where('id','=',$id)->delete();
-                        }
+                            foreach ($all_id as $id) {
+                                \DB::table($filds->name)->where('id', '=', $id)->delete();
+                            }
 //                                 remove description end relations table
-                        foreach ($all_id as $value) {
-                            \DB::table($filds->name . '_description')->where('content_id', '=', $value)->delete();
+                            foreach ($all_id as $value) {
+                                \DB::table($filds->name . '_description')->where('content_id', '=', $value)->delete();
 
-                            \DB::table('ct_to_relations')->where([
-                                ['relations_id', '=', $value],
-                                ['ct_to_relations_type', '=', get_class($row)]])->delete();
+                                \DB::table('ct_to_relations')->where([
+                                    ['relations_id', '=', $value],
+                                    ['ct_to_relations_type', '=', get_class($row)]])->delete();
+                            }
                         }
                     }
-                }
-                $desc_table = $content->table . '_description';
+                    $desc_table = $content->table . '_description';
 //                dd($desc_table);
 
-                // сохранение description для модели
+                    // сохранение description для модели
 //                dd($_POST[$desc_table]);
-                if ($desc_table_exists && isset($_POST[$desc_table])) {
+                    if ($desc_table_exists && isset($_POST[$desc_table])) {
 
-                    $lang_records = \Request::all()[$desc_table];
+                        $lang_records = \Request::all()[$desc_table];
 //                    dd($desc_table);
-                    foreach ($lang_records as $post_lang_id => $post_lang) {
-                        $lang_records[$post_lang_id]['content_id'] = $row->id;
-                        $lang_records[$post_lang_id]['lang_id'] = $post_lang_id;
-                    }
+                        foreach ($lang_records as $post_lang_id => $post_lang) {
+                            $lang_records[$post_lang_id]['content_id'] = $row->id;
+                            $lang_records[$post_lang_id]['lang_id'] = $post_lang_id;
+                        }
 
-                    foreach ($lang_records as $post_lang_id => $post_lang) {
+                        foreach ($lang_records as $post_lang_id => $post_lang) {
 //                        dd($lang_records);/
-                        \DB::table($desc_table)->updateOrInsert(['content_id' => $content_id, 'lang_id' => $post_lang_id], $post_lang);
+                            try{
+                                \DB::table($desc_table)->updateOrInsert(['content_id' => $content_id, 'lang_id' => $post_lang_id], $post_lang);
+                             }catch (\Exception $ex){
+                                EditController::$request->session()->flash('message.level', 'danger');
+                                EditController::$request->session()->flash('message.content', 'Error!'.$ex->getMessage());
+                            }
+                        }
                     }
-                }
-            });
+                });
+            }catch (\Exception $ex){
+                EditController::$request->session()->flash('message.level', 'danger');
+                EditController::$request->session()->flash('message.content', 'Error!'.$ex->getMessage());
+            }
             // var_export($new_content_model);
             // die;
             $edit = DataForm::source($new_content_model);
@@ -230,27 +241,43 @@ class EditController extends Controller
             ksort($cont_tab);
             $edit->link(url('admin/crud/grid/' . $content_type . '/'), trans('crud::common.cancel'), "TR");
             $edit->submit('Save', 'TR');
-            $edit->saved(function () use ($edit, $content_type, $lang_id) {
+//           try {
+               $edit->saved(function () use ($edit, $content_type, $lang_id) {
 //                $new_conte
 //                dump('saved not foreach');
-//                dd('save');
-                //\Redirect::to(url('admin/'));
-                //redirect()->action('Backend\HomeController@index');
-                //return redirect('admin/');
-                ///die('<meta http-equiv="refresh" content="0; URL=\'' . url('admin/crud/grid/' . $content_type . '/') . '\'" />');
+//                dd($edit->model->id);//->Model->id);
+                   //\Redirect::to(url('admin/'));
+                   //redirect()->action('Backend\HomeController@index');
+                   //return redirect('admin/');
+                   ///die('<meta http-equiv="refresh" content="0; URL=\'' . url('admin/crud/grid/' . $content_type . '/') . '\'" />');
 
                 if (\Request::has('to'))
                     $back_url = \Request::input('to');
-                else
+                else{
+                    if(config('crud.edit_redirect')==1){
+                        $back_url = url('admin/crud/edit/' . $content_type . '?modify='.$edit->model->id);
+                    }else{
                     $back_url = url('admin/crud/grid/' . $content_type . '/');
-
+                    }
+                }
+////
                 header('Location: ' . $back_url);
                 die();
-                //die('<meta http-equiv="refresh" content="0; URL=\'' . $back_url . '\'" />');
-            });
+//                return redirect();
+//                   $edit->link(url('admin/crud/grid/' . $content_type . '/'), "save", "TR");
+//                   $edit->submit('Save', 'TR');
+                   //                   return back();
+                   //die('<meta http-equiv="refresh" content="0; URL=\'' . $back_url . '\'" />');
+               });
+//           }
+//           catch (\Exception $ex){
+//                EditController::$request->session()->flash('message.level', 'danger');
+//                EditController::$request->session()->flash('message.content', 'Error!'.$ex->getMessage());
+////                EditController::$request->flash('error', 'Save was unsuccessful!');
+//            }
 
             $edit->build();
-
+//            dump($edit);
             return view('crud::crud.form', compact('edit', 'lang_id','tab','cont_tab'));
 
         } elseif ($r->exists('delete')) {
