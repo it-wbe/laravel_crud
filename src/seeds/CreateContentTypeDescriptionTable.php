@@ -786,7 +786,8 @@ class CreateContentTypeDescriptionTable extends Seeder
             }
         }
         else{
-            \DB::table('content_type_fields')->insert($data);
+            foreach ($data as $row)
+            \DB::table('content_type_fields')->insert($row);
         }
     }
 }

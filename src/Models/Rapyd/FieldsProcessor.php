@@ -116,7 +116,7 @@ class FieldsProcessor
 //                      dd($content->table);
                       if ($field->type == "image" || $field->type == "file") {
                           if (\Request::input('process')) {
-                              $filename = \Request::file('image')->getClientOriginalName();
+                              $filename = \Request::file($field->name)->getClientOriginalName();
                           }else{$filename ='';}
                           $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type)->move('files/'.$content->table."/")->webpath('');
                       } else {
@@ -157,6 +157,9 @@ class FieldsProcessor
                     foreach ($languages as $lang_k => $lang) {
                         $field_key = $desc_table . '[' . $lang_k . '][' . $field->name . ']';
                         if ($field->type == "image" || $field->type == "file") {
+                            if (\Request::input('process')) {
+                                $filename = \Request::file($field->name)->getClientOriginalName();
+                            }else{$filename ='';}
                             $rapyd->add(
                                 $field_key,
                                 ($field->caption ? $field->caption : $field->name) . ' (' . $lang . ')',
