@@ -76,7 +76,8 @@ class GridController extends Controller
         $filter = DataFilter::source($new_content_type_model::with($relations));
 
         FieldsProcessor::addFields($content, $filter, 'filter');
-
+        $filter->add('show_rows_crud','show_rows_crud','select')
+            ->options([10=>10,20=>20,50=>50]);
         $filter->submit('Знайти');
         $filter->reset('Очистити');
         $filter->build();
@@ -111,9 +112,8 @@ class GridController extends Controller
             }
 
         });*/
-
-        $grid->paginate(10);
-
+        $show_rows_crud =  \Request::input('show_rows_crud');
+        $grid->paginate($show_rows_crud );
         return view('crud::crud.grid', compact('content', 'filter', 'grid'));
     }
 }

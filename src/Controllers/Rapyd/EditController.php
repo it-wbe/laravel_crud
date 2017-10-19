@@ -163,6 +163,9 @@ class EditController extends Controller
                                                 $lang_records[$post_lang_id]['lang_id'] = $post_lang_id;
                                             }
                                             foreach ($lang_records as $post_lang_id => $post_lang) {
+//                                                dd('asd');
+                                                $this->createAlias($post_lang);
+
                                                 \DB::table($desc_table_cont)->updateOrInsert(['content_id' => $key, 'lang_id' => $post_lang_id], $post_lang);
                                             }
                                         }
@@ -204,6 +207,8 @@ class EditController extends Controller
                         foreach ($lang_records as $post_lang_id => $post_lang) {
 //                        dd($lang_records);/
                             try{
+//                                dump($post_lang );
+                                $this->createAlias($post_lang);
                                 \DB::table($desc_table)->updateOrInsert(['content_id' => $content_id, 'lang_id' => $post_lang_id], $post_lang);
                              }catch (\Exception $ex){
                                 EditController::$request->session()->flash('message.level', 'danger');
@@ -298,6 +303,16 @@ class EditController extends Controller
 
             return redirect(url('admin/crud/grid/' . $content_type . '/'));
         } else abort(404, 'Action not found');
+    }
+
+    /**
+     * Generate alias
+     * @param $post_lang *_description some lang
+     */
+    function createAlias(&$post_lang){
+        if(empty($post_lang['alias'])){
+                $post_lang['alias'] =  str_slug($post_lang['title'],'-');
+        }
     }
 
     public function fillmodel($item ,$contentFilds,$contentFildsType,$modelName){
