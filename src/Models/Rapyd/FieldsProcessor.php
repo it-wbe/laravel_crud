@@ -72,7 +72,6 @@ class FieldsProcessor
             }
         }
 
-
 //        // додавання полів
         foreach ($ct_fields as $field) {
             if ((!in_array($field->name, $fields_desc_schema)) &&
@@ -113,8 +112,17 @@ class FieldsProcessor
                       $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
                       $f->clause = 'custom';
 //                      dd($f);
-                  }else{
-                      $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
+                  }else {
+//                      dd($content->table);
+                      if ($field->type == "image" || $field->type == "file") {
+                          if (\Request::input('process')) {
+                              $filename = \Request::file('image')->getClientOriginalName();
+                          }else{$filename ='';}
+                          $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type)->move('files/'.$content->table."/")->webpath('');
+                      } else {
+                          $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
+                      }
+
                   }
 //                 dd($f->attributes['tab']);
                   $f->attributes['tab']=0;
@@ -139,6 +147,8 @@ class FieldsProcessor
                 die('unknown type!');
 //            index для масиву needTab
             $index_need_tab = 0;
+
+            /// generate description fields
             foreach ($ct_fields as $field) {
                 if (($field->name != 'id') && ($field->name != 'lang_id') && ($field->name != 'content_id') &&
                     in_array($field->name, $fields_desc_schema)
@@ -146,11 +156,20 @@ class FieldsProcessor
                     FieldsProcessor::$needTab[$index_need_tab] = [];
                     foreach ($languages as $lang_k => $lang) {
                         $field_key = $desc_table . '[' . $lang_k . '][' . $field->name . ']';
-                        $rapyd->add(
-                            $field_key,
-                            ($field->caption ? $field->caption : $field->name) . ' (' . $lang . ')',
-                            $field->type
-                        );
+                        if ($field->type == "image" || $field->type == "file") {
+                            $rapyd->add(
+                                $field_key,
+                                ($field->caption ? $field->caption : $field->name) . ' (' . $lang . ')',
+                                $field->type
+                            )->move('files/'.$content->table."/")->webpath('');
+                        }
+                        else{
+                            $rapyd->add(
+                                $field_key,
+                                ($field->caption ? $field->caption : $field->name) . ' (' . $lang . ')',
+                                $field->type
+                            );
+                        }
 
                         if (($type != 'filter') && isset($desc_values[$lang_k]->{$field->name})){
                             $rapyd->fields[$field_key]->value = $desc_values[$lang_k]->{$field->name};
