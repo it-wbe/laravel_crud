@@ -108,6 +108,27 @@ php artisan db:seed --class="\Wbe\Crud\seeds\DatabaseSeeder"
 composer dump-autoload
 mkdir public/files/
 ```
+
+
+add alias 
+
+auto generate alias if in description table exist column alias generate alias willbe from column title
+
+
+add redirect config configuration from add page
+
+in config/crud.php
+
+'edit_redirect' => env('edit_redirect', 1)
+
+by default 1
+
+1 - redirect to edit page
+0 - redirect to data page
+
+
+
+
 Migrations will create tables and fill it with default data.
 It also contains data insertions into database (like seeding). 
 
