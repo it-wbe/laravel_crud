@@ -116,6 +116,7 @@ class FieldsProcessor
 //                      dd($content->table);
                       if ($field->type == "image" || $field->type == "file") {
                           if (\Request::input('process')) {
+							  if(!is_null(\Request::file($field->name)))
                               $filename = \Request::file($field->name)->getClientOriginalName();
                           }else{$filename ='';}
                           $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type)->move('files/'.$content->table."/")->webpath('');
