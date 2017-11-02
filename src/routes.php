@@ -46,8 +46,8 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('admin/hints', 'Wbe\Crud\Controllers\Hints\HintsFormerController@index');
     Route::get('admin/odds', 'Wbe\Crud\Controllers\Odds\OddsFormerController@index');
-    Route::get('admin/crud/grid/{content_type}', 'Wbe\Crud\Controllers\Rapyd\GridController@index');
-    Route::any('admin/crud/edit/{content_type}/', 'Wbe\Crud\Controllers\Rapyd\EditController@index');
+    Route::get('admin/crud/grid/{content_type}', 'Wbe\Crud\Controllers\Rapyd\GridController@index')->name('crud grid');
+    Route::any('admin/crud/edit/{content_type}/', 'Wbe\Crud\Controllers\Rapyd\EditController@index')->name('crud edit');
     Route::any('admin/crud/edit/{content_type}/lang/{lang_id}/', 'Wbe\Crud\Controllers\Rapyd\EditController@index');
     Route::any('admin/type_content', 'Wbe\Crud\Controllers\TypeContentController@index');
     Route::any('admin/fields_descriptor/content/{content_type}', 'Wbe\Crud\Controllers\FieldsDescriptorController@content_types');
@@ -63,6 +63,14 @@ Route::group(['middleware' => 'admin'], function () {
     //test
     Route::any('admin/test', 'Wbe\Crud\Controllers\EditTestController@index');
     //});
+
+
+    // MENU TREE
+    Route::any('admin/additional/menu_tree', 'Wbe\Crud\Controllers\MenuTreeController@index')->name('Menu Edit');
+    Route::any('admin/menu/edit', 'Wbe\Crud\Controllers\MenuTreeController@anyMenuedit')->name('menu.editNode');
+    Route::post('admin/menu/AddCustomNode', 'Wbe\Crud\Controllers\MenuTreeController@addCustomNode')->name('menu.addCustomNode');
+    Route::any('admin/menu/generate', 'Wbe\Crud\Controllers\MenuTreeController@tree_generate')->name('menu.generate');
+    Route::post('admin/menu/anyMenueditPost', 'Wbe\Crud\Controllers\MenuTreeController@anyMenueditPost')->name('menu.editNodepost');
 
 
 });
