@@ -13,6 +13,7 @@ return [
     'languages' => 'Язык',
     'content_add' => 'Добавить',
     'content_edit' => 'Редактировать',
+    'content_show' => 'Показать',
     'content_data' => 'Данные',
     'content_fields' => 'Поля',
     'content_type' => 'Тип Контента',

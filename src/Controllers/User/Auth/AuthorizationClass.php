@@ -2,8 +2,10 @@
 
 namespace Wbe\Crud\Controllers\User\Auth;
 
+use Wbe\Crud\Models\Roles\Role;
 use Wbe\Crud\Models\hrbac\HierarchicalRBAC\Authorization;
 use Wbe\Crud\Models\ContentTypes\ContentType;
+use Wbe\Crud\Models\Roles\Permissions;
 
 
 /**
@@ -14,6 +16,8 @@ class AuthorizationClass extends Authorization
 {
     public function getPermissions() {
         return [
+            'admin/crud/grid/1',
+
             'edit-crud-system-content-type' => [
                 'description' => 'Access to CRUD system content types',
             ],
@@ -27,6 +31,8 @@ class AuthorizationClass extends Authorization
     }
 
     public function getRoles() {
+//     return   dd(Permissions::select()->get());
+//        return Role::select('name')->with('permission')->get();
         return [
             'moderator' => [
                 //'edit-crud-system-content-type',

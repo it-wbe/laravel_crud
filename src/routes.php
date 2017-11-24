@@ -44,16 +44,16 @@ Route::group(['middleware' => 'admin'], function () {
 
     //Route::group(['as' => 'admin', 'action' => 'MenuController@index'], function () {
 
-    Route::get('admin/hints', 'Wbe\Crud\Controllers\Hints\HintsFormerController@index');
-    Route::get('admin/odds', 'Wbe\Crud\Controllers\Odds\OddsFormerController@index');
-    Route::get('admin/crud/grid/{content_type}', 'Wbe\Crud\Controllers\Rapyd\GridController@index');
-    Route::any('admin/crud/edit/{content_type}/', 'Wbe\Crud\Controllers\Rapyd\EditController@index');
+//    Route::get('admin/hints', 'Wbe\Crud\Controllers\Hints\HintsFormerController@index');
+//    Route::get('admin/odds', 'Wbe\Crud\Controllers\Odds\OddsFormerController@index');
+    Route::get('admin/crud/grid/{content_type}', 'Wbe\Crud\Controllers\Rapyd\GridController@index')->name('crud grid');
+    Route::any('admin/crud/edit/{content_type}/', 'Wbe\Crud\Controllers\Rapyd\EditController@index')->name('crud edit');
     Route::any('admin/crud/edit/{content_type}/lang/{lang_id}/', 'Wbe\Crud\Controllers\Rapyd\EditController@index');
-    Route::any('admin/type_content', 'Wbe\Crud\Controllers\TypeContentController@index');
+//    Route::any('admin/type_content', 'Wbe\Crud\Controllers\TypeContentController@index');
     Route::any('admin/fields_descriptor/content/{content_type}', 'Wbe\Crud\Controllers\FieldsDescriptorController@content_types');
-    Route::any('admin/settings', 'Wbe\Crud\Controllers\SettingsController@index');
+//    Route::any('admin/settings', 'Wbe\Crud\Controllers\SettingsController@index');
     //Route::any('admin/settings/generate', 'Wbe\Crud\Controllers\SettingsController@generate');
-    Route::any('admin/adminer', 'Wbe\Crud\Controllers\Adminer\AdminerAutologinController@index');
+//    Route::any('admin/adminer', 'Wbe\Crud\Controllers\Adminer\AdminerAutologinController@index');
 		/// EDIT LANGUAGES
 	 Route::any('admin/lang_edit/{menu_item}/{file_name}','Wbe\Crud\Controllers\LangEditController@edit');
 
@@ -61,9 +61,24 @@ Route::group(['middleware' => 'admin'], function () {
     Route::any('admin/filemanager', 'Wbe\Crud\Controllers\BackendHomeController@file_manager');
 
     //test
-    Route::any('admin/test', 'Wbe\Crud\Controllers\EditTestController@index');
+//    Route::any('admin/test', 'Wbe\Crud\Controllers\EditTestController@index');
     //});
 
+
+    // MENU TREE
+    Route::any('admin/additional/menu', 'Wbe\Crud\Controllers\MenuTreeController@index')->name('Menu Edit');
+    Route::any('admin/additional/menu/edit', 'Wbe\Crud\Controllers\MenuTreeController@anyMenuedit')->name('menu.editNode');
+    Route::post('admin/additional/menu/edit/AddCustomNode', 'Wbe\Crud\Controllers\MenuTreeController@addCustomNode')->name('menu.addCustomNode');
+    Route::get('admin/additional/menu/edit/generate', 'Wbe\Crud\Controllers\MenuTreeController@tree_generate')->name('menu.generate');
+    Route::post('admin/additional/menu/edit/anyMenueditPost', 'Wbe\Crud\Controllers\MenuTreeController@anyMenueditPost')->name('menu.editNodepost');
+
+
+    ////// ROLES
+    Route::get('admin/additional/roles', 'Wbe\Crud\Controllers\Roles\RolesController@roleIndex')->name('Role');
+    Route::get('admin/additional/roles/edit/generate', 'Wbe\Crud\Controllers\Roles\RolesController@generatePermissions')->name('generatePermissions');
+    Route::any('admin/additional/roles/edit', 'Wbe\Crud\Controllers\Roles\RolesController@roleEdit')->name('role.edit');
+    Route::any('admin/additional/roles/edit/add', 'Wbe\Crud\Controllers\Roles\RolesController@addRole')->name('role.add');
+    Route::post('admin/additional/roles/edit/del', 'Wbe\Crud\Controllers\Roles\RolesController@deleteRole')->name('role.del');
 
 });
 

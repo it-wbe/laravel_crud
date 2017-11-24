@@ -39,7 +39,7 @@ class TranslateScope implements Scope
         $description_field_lang_id = (property_exists($model, 'description_field_lang_id') ? $model->description_field_lang_id : 'lang_id');
         $primaryKey = (isset($model->primaryKey)) ? $model->primaryKey : 'id'; //(isset($model->primaryKey)) ? $model->primaryKey :
 
-
+//dump('lang_ '.get_current_lang());
 
         $builder->selectRaw($table . '.*, ' . implode(',', $sel_raw))
             ->leftJoin($table . '_description', [

@@ -4,6 +4,8 @@ namespace Wbe\Crud\Controllers\Rapyd;
 
 use App\Models\Relation;
 use Mockery\Exception;
+use Wbe\Crud\Controllers\MenuTreeController;
+use Wbe\Crud\Controllers\Roles\RolesController;
 use Wbe\Crud\Models\ModelGenerator;
 use Wbe\Crud\Models\Rapyd\FieldsProcessor;
 
@@ -29,7 +31,7 @@ use Validator;
 
 class EditController extends Controller
 {
-   static public $request;
+    static public $request;
     /**
      * Форма редагування запису поточного типу контенту, його видалення
      * @param Request $r
@@ -39,10 +41,15 @@ class EditController extends Controller
      */
     public function index(Request $r, $content_type, $lang_id = 0)
     {
-      // dd(\App\Models\Portfolios::find(7)->relations()->get());
-      // dump($r->session());
+        // dd(\App\Models\Portfolios::find(7)->relations()->get());
+        // dump($r->session());
+        if($r->exists('update'))
+        {
+            $r->set('modify',$r->get('update'));
+        }
+
         EditController::$request = $r;
-        if ($r->exists('modify') || $r->exists('insert')) {
+        if ($r->exists('modify') || $r->exists('insert')||$r->exists('show')) {
 //            dd($content_type);
             $content = ContentType::find($content_type);
 //            dd($content);
@@ -50,6 +57,10 @@ class EditController extends Controller
                 die('content type with id ' . $content_type . ' not found');
 
             $content_id = $r->exists('modify') ? $r->input('modify') : false;
+
+            if($r->exists('show'))
+            $content_id = $r->input('show');
+
             $content->rec_id = $content_id;
 
             if (!$content) abort('403', 'Content type #' . $content_type . ' not found!');
@@ -60,19 +71,17 @@ class EditController extends Controller
             $content_model = $content::getCTModel($content->model);
 //             dump($content_model);
 //            dd(\Schema::getColumnListing($content->table)[0], $r->input('modify'));
-  // dd($content_model);
+            // dd($content_model);
             if (!$content_model)
                 die('model not found: ' . $content->model);
 
-            if ($r->exists('modify') || $r->exists('content')) {
+            if ($r->exists('modify') || $r->exists('content')||$r->exists('show')) {
                 if(\Schema::hasColumn($content->table, 'id')) {
-//                    dump('first');
-//                    dump($content_model->with($content_model->relationships)->all());
-                    $new_content_model = $content_model::where('id', $r->input('modify'))->first();
+                    $new_content_model = $content_model::where('id', $content_id)->first();
+
                 } else {
-//                    dump('else');
-                    $new_content_model = $content_model::where(\Schema::getColumnListing($content->table)[0], $r->input('modify'))->first();
-                  //  dd($content_model);
+                    $new_content_model = $content_model::where(\Schema::getColumnListing($content->table)[0], $content_id)->first();
+                    //  dd($content_model);
                 }
                 if (!$new_content_model)
 //                    dump('if !new content model');
@@ -81,6 +90,7 @@ class EditController extends Controller
 //                dump('new content model');
                 $new_content_model = (new $content_model);
             }
+//            dd($new_content_model );
             $desc_table = $content->table . '_description';
             $desc_table_exists = \Schema::hasTable($desc_table);
             try {
@@ -225,6 +235,13 @@ class EditController extends Controller
             // var_export($new_content_model);
             // die;
             $edit = DataForm::source($new_content_model);
+            $show = false;
+            if($r->exists('show')){
+                $edit->status = 'show';
+                $edit->link(\URL::previous(),'back',"TR");
+                $edit->link(\URL::previous(),'back',"BR");
+                $show = true;
+            }
 
             $edit->attributes(array("class" => "table table-striped"));
             // method lable
@@ -235,35 +252,46 @@ class EditController extends Controller
             elseif($r->exists('modify'))
             {
                 $lable_name_method = trans('crud::common.content_edit');
+            }elseif($r->exists('show'))
+            {
+                $lable_name_method = trans('crud::common.content_show');
             }
-                $edit->label($content->name . ' > ' .  $lable_name_method);
+            $edit->label($content->name . ' > ' .  $lable_name_method);
 //            dump($content);
-            FieldsProcessor::addFields($content, $edit, 'form');
+            FieldsProcessor::addFields($content, $edit, 'form',$show);
             /// $tab  - for description tabs
-           $tab = FieldsProcessor::$needTab;
+            $tab = FieldsProcessor::$needTab;
 
-           /// $cont_tab - for content tube $key is id content like data description or relation value is boot
+            /// $cont_tab - for content tube $key is id content like data description or relation value is boot
             $cont_tab = FieldsProcessor::$cont_tabs;
             ksort($cont_tab);
-            $edit->link(url('admin/crud/grid/' . $content_type . '/'), trans('crud::common.cancel'), "TR");
-            $edit->submit('Save', 'TR');
-//           try {
-               $edit->saved(function () use ($edit, $content_type, $lang_id) {
+            if(!$r->exists('show')) {
+                $edit->link(url('admin/crud/grid/' . $content_type . '/'), trans('crud::common.cancel'), "TR");
+                $edit->submit('Save', 'TR');
+            }
+            //           try {
+            $edit->saved(function () use ($edit, $content_type, $lang_id) {
 //                $new_conte
 //                dump('saved not foreach');
 //                dd($edit->model->id);//->Model->id);
-                   //\Redirect::to(url('admin/'));
-                   //redirect()->action('Backend\HomeController@index');
-                   //return redirect('admin/');
-                   ///die('<meta http-equiv="refresh" content="0; URL=\'' . url('admin/crud/grid/' . $content_type . '/') . '\'" />');
+                //\Redirect::to(url('admin/'));
+                //redirect()->action('Backend\HomeController@index');
+                //return redirect('admin/');
+                ///die('<meta http-equiv="refresh" content="0; URL=\'' . url('admin/crud/grid/' . $content_type . '/') . '\'" />');
 
                 if (\Request::has('to'))
                     $back_url = \Request::input('to');
                 else{
-                    if(config('crud.edit_redirect')==1){
-                        $back_url = url('admin/crud/edit/' . $content_type . '?modify='.$edit->model->id);
+                    if($content_type == 1){//// redirect to field descriptor regenerate menu and permissions
+                        //// regenerate menu
+                        $this->regen_menu_permission();
+                        $back_url = url('admin/fields_descriptor/content/'.$edit->model->id);
                     }else{
-                    $back_url = url('admin/crud/grid/' . $content_type . '/');
+                        if(config('crud.edit_redirect')==1){
+                            $back_url = url('admin/crud/edit/' . $content_type . '?modify='.$edit->model->id);
+                        }else{
+                            $back_url = url('admin/crud/grid/' . $content_type . '/');
+                        }
                     }
                 }
 ////
@@ -272,27 +300,28 @@ class EditController extends Controller
 //                return redirect();
 //                   $edit->link(url('admin/crud/grid/' . $content_type . '/'), "save", "TR");
 //                   $edit->submit('Save', 'TR');
-                   //                   return back();
-                   //die('<meta http-equiv="refresh" content="0; URL=\'' . $back_url . '\'" />');
-               });
+                //                   return back();
+                //die('<meta http-equiv="refresh" content="0; URL=\'' . $back_url . '\'" />');
+            });
 //           }
 //           catch (\Exception $ex){
 //                EditController::$request->session()->flash('message.level', 'danger');
 //                EditController::$request->session()->flash('message.content', 'Error!'.$ex->getMessage());
 ////                EditController::$request->flash('error', 'Save was unsuccessful!');
 //            }
-
+//            if($r->exists('show'))
+//            {
+//                $edit->status('show');
+//            }
             $edit->build();
-//            dump($edit);
             return view('crud::crud.form', compact('edit', 'lang_id','tab','cont_tab'));
 
         } elseif ($r->exists('delete')) {
-
             $content = ContentType::find($content_type);
             $content_model = /*'App\Models\\' .*/ $content->model;
             $new_content_model = $content_model::where('id', $r->input('delete'))->first();
-                if (!$new_content_model)
-                    return 'content type does not exists';
+            if (!$new_content_model)
+                return 'content type does not exists';
 //            dd($new_content_model->);
             $desc_table_cont = $content->name. '_description';
             $desc_table_cont_exists_rel = \Schema::hasTable($desc_table_cont);
@@ -301,11 +330,28 @@ class EditController extends Controller
                 \DB::table($new_content_model['table'].'_description')->where('content_id','=',$r->input('delete'))->delete();
             }
             $new_content_model->delete();
-
+            if($content_type==1){
+                $this->regen_menu_permission();
+            }
             return redirect(url('admin/crud/grid/' . $content_type . '/'));
         } else abort(404, 'Action not found');
     }
 
+
+
+    /**
+     * regenerate permissions and menu
+     *
+     */
+    private function regen_menu_permission()
+    {
+        $menu = new MenuTreeController();
+        $menu->tree_generate(false, false);
+        //// regenerate permissions
+        $roles = new RolesController();
+        $roles->generatePermissions();
+        $roles->AddAdminPermissions();
+    }
     /**
      * Generate alias
      * @param $post_lang *_description some lang
@@ -323,6 +369,8 @@ class EditController extends Controller
 //        dd('end');
     }
 
+
+    // for saved
     public function fillmodel($item ,$contentFilds,$contentFildsType,$modelName){
         // наполняем контент
 //        dump($item);
@@ -346,7 +394,7 @@ class EditController extends Controller
     public function getValue($item,$content_value,$modelName,$type){
         if($type!= 'image'){
             if(is_array($item[$content_value])){
-              return  implode('|', $item[$content_value]);
+                return  implode('|', $item[$content_value]);
             }else{
                 return $item[$content_value];
             }
@@ -355,7 +403,7 @@ class EditController extends Controller
             $id = $item['id'];
             // картинка може бути завантажена тільки що
             if(isset(EditController::$request->file([$modelName])[$id][$content_value]['val'])){
-               $file =  EditController::$request->file([$modelName])[$id][$content_value]['val'];
+                $file =  EditController::$request->file([$modelName])[$id][$content_value]['val'];
                 return '/files/' . $modelName. '/'.$file->getClientOriginalName();
             }
             // значення в нас знаходиться в назві поля old_img

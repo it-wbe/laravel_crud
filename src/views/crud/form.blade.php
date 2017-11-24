@@ -14,7 +14,8 @@
         }
     </style>
     <div class="rpd_dataform">
-    {!!$edit->header!!}
+{{--        {!! dump($edit) !!}--}}
+        {!! $edit->header!!}
 <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
         @foreach($cont_tab as $key =>$value)
@@ -68,8 +69,8 @@
                                         <div class="form-group clearfix @if($edit->field($tab[$loop->index][$tab_index])->has_error){{'has-error'}}@endif" id="fg_{{$key}}">
                                         <label for="div_content_{{$tab_index}}_{{$loop->index}}" class="col-sm-2 control-label required">{{explode(' ',$edit->field($tab[$loop->index][$tab_index])->label)[0]}}</label>
                                             <div class="col-sm-10" id="div_content_{{$tab_index}}_{{$loop->index}}">
-                                                {!! $edit->field($tab[$loop->index][$tab_index])->output !!}
-                                                @if($edit->field($tab[$loop->index][$tab_index])->has_error)
+                                                {!! (html_entity_decode($edit->field($tab[$loop->index][$tab_index])->output))  !!}
+                                            @if($edit->field($tab[$loop->index][$tab_index])->has_error)
                                                     @foreach($edit->field($tab[$loop->index][$tab_index])->messages as $message)
                                                     <span class="help-block">
                                                     <span class="glyphicon glyphicon-warning-sign"></span>
@@ -105,6 +106,7 @@
                 </div>
             @endforeach
         </div>
-    {!! $edit->footer!!}
+
+                {!! $edit->footer!!}
     </div>
 @endsection

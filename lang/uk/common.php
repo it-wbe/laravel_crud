@@ -13,7 +13,6 @@ return [
     'languages' => 'Languages',
     'content_add' => 'Add',
     'content_edit' => 'Edit',
-    'content_show' => 'Show',
     'content_data' => 'Data',
     'content_fields' => 'Fields',
     'content_type' => 'Content Type',

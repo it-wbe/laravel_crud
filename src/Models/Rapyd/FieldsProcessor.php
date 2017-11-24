@@ -37,7 +37,7 @@ class FieldsProcessor
      * @request Requset
      * @return bool
      */
-    static public function addFields($content, DataForm $rapyd, $type)
+    static public function addFields($content,  $rapyd, $type,$show=false)
     {
         $desc_table = $content->table . '_description';
         $desc_table_exists = \Schema::hasTable($desc_table);
@@ -71,67 +71,69 @@ class FieldsProcessor
                 } else echo '!isset $ct_fields[' . $ct_field_k . ']';
             }
         }
-
 //        // додавання полів
         foreach ($ct_fields as $field) {
             if ((!in_array($field->name, $fields_desc_schema)) &&
                 (($type != 'filter') || in_array($field->name, $fields_schema)) &&
                 (($field->name != 'id') && ($field->name != 'lang_id') && ($field->name != 'content_id'))
             ) {
-              if($field->type == 'Wbe\Crud\Models\Rapyd\Fields\Relation')
-              {
-                $display = $field->name;
-                // dd($field);
-                $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type,$rapyd->model,$rapyd->model->getRelations());
-                $cont_type_id = ContentType::where('table',$field->name)->pluck('id')->first();
-                                $contentRelationFildsType = ContentTypeFields::getFieldsFromDB($cont_type_id, [['form_show', '=', 1]]);
-                                $contentRelationFilds =  \Schema::getColumnListing($field->name);
-                                $contentRelationFildsDesc = \Schema::getColumnListing($field->name.'_description');
-                                // dd($contentRelationFilds);
-                                $rules = [];
-                                foreach ($contentRelationFildsType as $value) {
-                                    if(in_array($value->name,$contentRelationFilds)){
-                                      if($value->name!='id'){
-                                          $rules[$field->name.'.*.'.$value->name] = $value->validators;
-                                      }
-                                    }
-                                    if(in_array($value->name,$contentRelationFildsDesc)){
-//                                        foreach (Languages::all() as $lang){
-                                            $rules[$field->name.'_description.*.*.'.$value->name] = $value->validators;
-//                                        }
-                                    }
-                                }
-                                $f->rule($rules);
-                                $f->form = $rapyd;
-                                $f->attributes['tab'] =2;
-                                FieldsProcessor::$cont_tabs[2] = true;
-              }else {
+                if($field->type == 'Wbe\Crud\Models\Rapyd\Fields\Relation')
+                {
                     $display = $field->name;
-                  if($type == 'filter' &&$field->type == 'number') {
-                      $field->type = 'text';
-                      $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
-                      $f->clause = 'custom';
+                    // dd($field);
+                    $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type,$rapyd->model,$rapyd->model->getRelations());
+                    $cont_type_id = ContentType::where('table',$field->name)->pluck('id')->first();
+                    $contentRelationFildsType = ContentTypeFields::getFieldsFromDB($cont_type_id, [['form_show', '=', 1]]);
+                    $contentRelationFilds =  \Schema::getColumnListing($field->name);
+                    $contentRelationFildsDesc = \Schema::getColumnListing($field->name.'_description');
+                    // dd($contentRelationFilds);
+                    $rules = [];
+                    foreach ($contentRelationFildsType as $value) {
+                        if(in_array($value->name,$contentRelationFilds)){
+                            if($value->name!='id'){
+                                $rules[$field->name.'.*.'.$value->name] = $value->validators;
+                            }
+                        }
+                        if(in_array($value->name,$contentRelationFildsDesc)){
+                            $rules[$field->name.'_description.*.*.'.$value->name] = $value->validators;
+                        }
+                    }
+                    $f->rule($rules);
+                    $f->form = $rapyd;
+                    $f->attributes['tab'] =2;
+                    FieldsProcessor::$cont_tabs[2] = true;
+                }else {
+                    $display = $field->name;
+                    if($type == 'filter' &&$field->type == 'number') {
+                        $field->type = 'text';
+                        $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
+                        $f->clause = 'custom';
 //                      dd($f);
-                  }else {
+                    }else {
 //                      dd($content->table);
-                      if ($field->type == "image" || $field->type == "file") {
-                          if (\Request::input('process')) {
-							  if(!is_null(\Request::file($field->name)))
-                              $filename = \Request::file($field->name)->getClientOriginalName();
-                          }else{$filename ='';}
-                          $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type)->move('files/'.$content->table."/")->webpath('');
-                      } else {
-                          $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
-                      }
+                        if ($field->type == "image" || $field->type == "file") {
+                            if (\Request::input('process')) {
+                                if(!is_null(\Request::file($field->name)))
+                                    $filename = \Request::file($field->name)->getClientOriginalName();
+                            }else{$filename ='';}
 
-                  }
+                            //todo fix hard core $parh File::exists
+                            $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type)
+                                ->move('files/'.$content->table)
+                                ->webpath(public_path());
+                        } else{
+
+                            $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
+                        }
+
+                    }
 //                 dd($f->attributes['tab']);
-                  $f->attributes['tab']=0;
-                  FieldsProcessor::$cont_tabs[0] = true;
-                if ($field->validators) {
-                    $f->rule($field->validators);
+                    $f->attributes['tab']=0;
+                    FieldsProcessor::$cont_tabs[0] = true;
+                    if ($field->validators) {
+//                        $f->rule($field->validators);
+                    }
                 }
-              }
             }
         }
         if ($desc_table_exists) {
@@ -161,11 +163,13 @@ class FieldsProcessor
                             if (\Request::input('process')) {
                                 $filename = \Request::file($field->name)->getClientOriginalName();
                             }else{$filename ='';}
+                            //todo fix hard core $parh File::exists
                             $rapyd->add(
                                 $field_key,
                                 ($field->caption ? $field->caption : $field->name) . ' (' . $lang . ')',
                                 $field->type
-                            )->move('files/'.$content->table."/")->webpath('');
+                            )->move('files/'.$content->table)->webpath(public_path());
+//                            $f->path = 'public/';
                         }
                         else{
                             $rapyd->add(
@@ -176,8 +180,7 @@ class FieldsProcessor
                         }
 
                         if (($type != 'filter') && isset($desc_values[$lang_k]->{$field->name})){
-                            $rapyd->fields[$field_key]->value = $desc_values[$lang_k]->{$field->name};
-
+                                $rapyd->fields[$field_key]->value = $desc_values[$lang_k]->{$field->name};
                         }
                         $rapyd->fields[$field_key]->attributes['tab'] =1;
                         FieldsProcessor::$cont_tabs[1] = true;
@@ -197,19 +200,27 @@ class FieldsProcessor
                 if ($field->form_attributes) {
                     eval($field->form_attributes);
                 }
+//                if($show&&$field->type == 'image'||$field->type == 'file'){
+////                    dd($f);
+////                    $f->value = ('asdasd');
+//                    $f->old_value = $f->value;
+////                    dd($f);
+//                }
                 // тип поля "select": заповнення
                 if ($field->relation && ($field->type == 'select')) {
-                    $model_filename = ContentType::getFilePathByModel($content->model);
-                    $rel = ModelGenerator::getModelRelationsMethods(file_get_contents($model_filename), $field->relation);
-                    if (isset($rel[2][0])) {
-                        $relation_model = new $rel[2][0];
-                        $options = [0 => '- Select -'];
-                        $options[] = $relation_model->pluck(
+                        $model_filename = ContentType::getFilePathByModel($content->model);
+                        $rel = ModelGenerator::getModelRelationsMethods(file_get_contents($model_filename), $field->relation);
+                        if (isset($rel[2][0])) {
+                            $relation_model = new $rel[2][0];
+                            $options = $relation_model->pluck(
                             $field->display_column ? $field->display_column : 'name',
-                            $relation_model->getQualifiedKeyName()
-                        )->toArray();
-                        $f->options($options);
-                    } else echo 'Relation not found! (' . $field->relation . ')';
+                                $relation_model->getQualifiedKeyName()
+                            )->toArray();
+                            unset($options[count($options)+2]);
+//                            dd($options);
+                            array_unshift($options,"- Select -");
+                            $f->options($options);
+                        } else echo 'Relation not found! (' . $field->relation . ')';
                     // тип поля "tags": задяння ajax обробника
                 } elseif ($field->relation && ($field->type == 'tags')) {
                     $model_filename = ContentType::getFilePathByModel($content->model);
@@ -223,56 +234,7 @@ class FieldsProcessor
                     );
                 }
             }
-    }
-        return true;
-    }
-
-
-    /**
-     * Sets a single-line title.
-     *
-     * @param int $id id content
-     *
-     * @param $desc_table name table with _description
-     *
-     * @param  $contentTypeId content type id
-     *
-     * @return desctiption array values
-     */
-    protected static function AddDescriptionColum($id,$desc_table,$contentTypeId){
-//        dd($desc_table->get_class());
-      // $content->table = 'images'
-      // $ct_fields = ContentTypeFields::getFieldsFromDB(7, $where);
-//      $desc_table = 'images_description';
-        $languages = Languages::all()->pluck('name', 'id');
-         $fields_desc_schema = \Schema::getColumnListing($desc_table);
-//         dd($fields_desc_schema);
-            $ct_fields =    ContentTypeFields::getFieldsFromDB($contentTypeId, [['form_show', '=', 1]]);
-          $desc_values = collect(\DB::table($desc_table)->where(['content_id' => $id])->get())->keyBy('lang_id')->toArray();
-//           dd($desc_values);
-          $value = [];
-
-//        dd($ct_fields);
-          $index_need_tab = 0;
-        foreach ($languages as $lang_k => $lang) {
-            foreach ($ct_fields as $field) {
-// dd($field->name);
-                if (($field->name != 'id') && ($field->name != 'lang_id') && ($field->name != 'content_id') &&
-                    in_array($field->name, $fields_desc_schema)
-                ) {
-//                    dd($lang);
-                    $field_key = $desc_table . '[' . $lang_k . '][' . $field->name . ']';
-                    $value[$lang_k.'_'.$lang][$field->name]['fild_key'] = $field_key;
-//                    $value[$lang_k][$field->name][''] = ($field->caption ? $field->caption : $field->name);
-                    if($desc_values)
-                    $value[$lang_k.'_'.$lang][$field->name]['value'] = $desc_values[$lang_k]->{$field->name};
-//                      $value[$index_need_tab]['id'] = $desc_table . $lang_k . $field->name;
-
-                    $index_need_tab++;
-                }
-            }
         }
-          // dd(value($value));//
-      return $value;
+        return true;
     }
 }

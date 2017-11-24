@@ -1,6 +1,10 @@
 <?php
 namespace Wbe\Crud\Middleware;
 use Closure;
+use Wbe\Crud\Models\ContentTypes\User;
+use Wbe\Crud\Models\Roles\Permissions;
+use Wbe\Crud\Models\Roles\Role;
+
 class AdminAccessMiddleware
 {
     /**
@@ -13,38 +17,58 @@ class AdminAccessMiddleware
     public function handle($request, Closure $next)
     {
         $request_segments = \Request::segments();
-        //dd($request_segments);
-        if(!empty($request_segments[0]) && !empty($request_segments[1]) && $request_segments[0] == 'admin') {
-            if($request_segments[1] == 'crud' || $request_segments[1] == 'fields_descriptor') {
-                if($request_segments[1] == 'fields_descriptor' && \Gate::forUser(\Auth::guard('admin')->user())->denies('access-field-descriptor')) {
-//                    abort(403, 'Access denie');
-                    \Session::flash('access', 'You don\'t have access');
-                return redirect()->route('admin.index');
-                }
-                if (\Gate::forUser(\Auth::guard('admin')->user())->allows('edit-crud-system-content-type', $request_segments[3])) {
-                    return $next($request);
-                } elseif (\Gate::forUser(\Auth::guard('admin')->user())->allows('access-content-type', $request_segments[3])) {
-                    return $next($request);
-                } else {
-                    \Session::flash('access', 'You don\'t have access');
-                    return redirect()->route('admin.index');
+        if(!empty($request_segments[0])&& $request_segments[0]=='admin') {
+                if (!empty($request_segments[1])) {
+                    if ($request_segments[1] == 'login' || $request_segments[1] == 'logout' || $request_segments[1] == 'password') {
+                        return $next($request);
                     }
+                }elseif(empty($request_segments[1])){ // index admin
+                    if(!empty(\Auth::guard('admin')->user())){
+                    return $next($request);
+                    }
+                }
+                if (!\Auth::guard('admin')->user()) {
+                    return redirect(route('admin.login'));
+                }
+
+            if(empty(\Auth::guard('admin')->user())){
+
+                return redirect()->back();
             }
-            if($request_segments[1]=='login'||$request_segments[1]=='logout'||$request_segments[1]=='password')
-            {
+            $rights = null;
+            if($request->has('modify')||$request->has('insert')){
+                $rights = 'w';
+            }elseif($request->has('delete')){
+                $rights = 'd';
+            }elseif($request->has('show')){
+                $rights = 'r';
+            }
+
+            $path = $request->path();
+            if($request_segments[1]=='crud'){ /// crud content type
+                $a =0 ;
+                    $a = count($request_segments)-1;
+                $temp  ='admin/crud/grid/'.$request_segments[$a];
+            }elseif($request_segments[1]=='additional'){/// permissions for additional
+                if($request_segments[2]=='roles'){
+                    $temp = $request_segments[0].'/'.$request_segments[1].'/'.$request_segments[2];
+                }elseif($request_segments[2]=='menu') {
+                    $temp = $request_segments[0].'/'.$request_segments[1].'/'.$request_segments[2];
+                }else{
+                    $temp = $path;
+                }
+            }else{
+                $temp = $path;
+            }
+            if(\Auth::guard('admin')->user()->role->HasPermission($temp,$rights)){
                 return $next($request);
             }
-            if(!\Auth::guard('admin')->user()){
-                \Session::flash('access', 'You don\'t have access');
-                return redirect()->route('admin.login');
+            else{
+                \Session::flash('access', "You don't have access");
+                return redirect()->back();
             }
-        }
-        elseif(!empty($request_segments[0])&& $request_segments[0]=='admin')
-        {
-            if(!\Auth::guard('admin')->user()){
-              return  redirect(route('admin.login'));
+                return $next($request);
             }
-        }
         return $next($request);
     }
 }

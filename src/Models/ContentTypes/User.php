@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class User extends Authenticatable
+    class User extends Authenticatable
 {
     use Notifiable;
 
@@ -31,13 +31,14 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->hasOne('Wbe\Crud\Models\ContentTypes\Role', 'id', 'role_id');
+        return $this->hasOne('Wbe\Crud\Models\Roles\Role', 'id', 'role_id');
     }
 
-public static function get($id)
+    public static function get($id)
     {
         return \DB::table('users')->where('id', $id)->first();
     }
+
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new CustomPassword($token));

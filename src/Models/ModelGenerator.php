@@ -442,11 +442,11 @@ class ModelGenerator
                 if ((!file_exists($filename)) ||
                     (strpos(file_get_contents($filename), '[leave this text to regenerate]') !== false)
                 ) {
-                    echo '<b>writing model "' . $classname . '" to "' . $filename . '"</b><br>';
+//                    echo '<b>writing model "' . $classname . '" to "' . $filename . '"</b><br>';
 
                     file_put_contents($filename, $cdm_template);
                 } else {
-                    echo '<b>file "' . $filename . '" already exists! cannot write model "' . $classname . '"</b><br>';
+//                    echo '<b>file "' . $filename . '" already exists! cannot write model "' . $classname . '"</b><br>';
                 }
 
                 return 1;

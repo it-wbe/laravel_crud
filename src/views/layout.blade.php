@@ -73,6 +73,7 @@
     </div>
 </div>--}}
 <div class="wrapper">
+
     @if (Auth::guard('admin')->check())
     <header class="main-header clearfix">
         <a href="{{ url('admin/') }}" class="logo">
@@ -137,6 +138,14 @@
     @endif
     <div class="content-wrapper">
         <div class="box box-info box-info_tables">
+            @if(session()->has('access'))
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    {!! session('access') !!}
+                </div>
+            @endif
+
+
             @if (Auth::guard('admin')->check())
             <div class="box-header">
                 <h3 class="box-title">@yield('title')</h3>

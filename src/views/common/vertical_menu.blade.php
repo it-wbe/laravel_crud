@@ -1,5 +1,5 @@
 <ul class="sidebar-menu">
-    {!! $vertical_menu !!}
+    {!! $vertical_menu; !!}
 </ul>
 
 

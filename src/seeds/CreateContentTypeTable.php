@@ -45,14 +45,14 @@ class CreateContentTypeTable extends Seeder
                     'sort' => '3',
                     'is_system' => '1',
                 ),
-            4 =>
-                array(
-                    'id' => '5',
-                    'table' => 'roles',
-                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\Role',
-                    'sort' => '4',
-                    'is_system' => '1',
-                ),
+//            4 =>
+//                array(
+//                    'id' => '5',
+//                    'table' => 'roles',
+//                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\Role',
+//                    'sort' => '4',
+//                    'is_system' => '1',
+//                ),
             5 =>
                 array(
                     'id' => '6',

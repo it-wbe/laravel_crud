@@ -75,7 +75,7 @@ class GridController extends Controller
 
         $filter = DataFilter::source($new_content_type_model::with($relations));
 
-        FieldsProcessor::addFields($content, $filter, 'filter');
+        FieldsProcessor::addFields($content, $filter, 'filter',false);
         $filter->add('show_rows_crud','show_rows_crud','select')
             ->options([10=>10,20=>20,50=>50]);
         $filter->submit('Знайти');
@@ -100,7 +100,8 @@ class GridController extends Controller
         $grid->link(url('admin/fields_descriptor/content/' . $content_type), trans('crud::common.content_fields'), "TR");
         $grid->link(url('/admin/crud/edit/' . $content_type . '?insert=1'), trans('crud::common.content_add'), "TR");
 
-        $grid->edit(url('/admin/crud/edit/' . $content_type . '/'), trans('crud::common.grid_actions'), 'modify|delete');
+        $grid->edit(url('/admin/crud/edit/' . $content_type . '/'), trans('crud::common.grid_actions'), 'modify|delete|show');
+//        $grid->show(url('/admin/crud/show/' . $content_type . '/'), trans('crud::common.grid_actions'), 'modify|delete');
 
         /*$grid->add('mybutton','mybutton')->cell( function ($value, $row) {
 

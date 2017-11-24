@@ -111,8 +111,8 @@ class Image extends \Zofe\Rapyd\DataForm\Field\File
 
     public function thumb()
     {
-        if (!\File::exists($this->path.$this->old_value)) return '';
-        return '<img src="'.ImageManager::make($this->path.$this->old_value)->fit($this->preview[0], $this->preview[1])->encode('data-url').'" class="pull-left" style="margin:0 10px 10px 0">';
+        if (!\File::exists($this->web_path.$this->old_value)) return '';
+        return '<img src="'.ImageManager::make($this->web_path.$this->old_value)->fit($this->preview[0], $this->preview[1])->encode('data-url').'" class="pull-left" style="margin:0 10px 10px 0">';
     }
 
     public function build()
@@ -124,7 +124,6 @@ class Image extends \Zofe\Rapyd\DataForm\Field\File
         switch ($this->status) {
             case "disabled":
             case "show":
-
                 if ($this->type == 'hidden' || $this->value == "") {
                     $output = "";
                 } elseif ((!isset($this->value))) {
@@ -139,7 +138,7 @@ class Image extends \Zofe\Rapyd\DataForm\Field\File
             case "modify":
                 if ($this->old_value != "") {
                     $output .= '<div class="clearfix">';
-                    $output .= $this->thumb()." &nbsp;".link_to($this->web_path.$this->value, $this->value, array('target'=>'_blank'))."<br />\n";
+                    $output .= $this->thumb()." &nbsp;".link_to('/public/'.$this->value, $this->value, array('target'=>'_blank'))."<br />\n";
                     $output .= Form::checkbox($this->name.'_remove', 1, (bool) Input::get($this->name.'_remove'))." ".trans('rapyd::rapyd.delete')." <br/>\n";
                     $output .= '</div>';
 
