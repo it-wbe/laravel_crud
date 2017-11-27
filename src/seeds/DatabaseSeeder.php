@@ -21,6 +21,6 @@ class DatabaseSeeder extends Seeder
 		$this->call(CreateRelationsTable::class);
 		$this->call(CreateRolesTable::class);
 		$this->call(CreateUsersTable::class);
-		//$this->call(CreateContentTypeDescriptionTable::class);
+		$this->call(CreatePermissionTable::class);
     }
 }

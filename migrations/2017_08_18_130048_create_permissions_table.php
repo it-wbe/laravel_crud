@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Wbe\Crud\Controllers\Rapyd;
 
 class CreatePermissionsTable extends Migration
 {
@@ -30,8 +29,7 @@ class CreatePermissionsTable extends Migration
 				$table->tinyInteger('w');
 				$table->tinyInteger('d');
             });
-			$temp = new EditController();
-			$temp->regen_menu_permission();
+
 		}
 		
     }
