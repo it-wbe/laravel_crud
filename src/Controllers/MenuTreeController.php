@@ -20,11 +20,7 @@ class MenuTreeController extends Controller
         $root = Menus::root();
         $langs = Languages::all()->pluck('name', 'id', 'code');
 
-<<<<<<< HEAD
         if (is_null($root)||request()->has('hard')) {
-=======
-        if (is_null($root)) {
->>>>>>> 83e6bacedd46e8d4d2e5e9ee31e1440f9a6101b8
             $this->tree_generate($langs);
             $root = Menus::root();
         }
@@ -77,11 +73,7 @@ class MenuTreeController extends Controller
         }
     }
 
-<<<<<<< HEAD
     public function tree_generate($regenerate = false,$redirect = true)
-=======
-    public function tree_generate($regenerate = false)
->>>>>>> 83e6bacedd46e8d4d2e5e9ee31e1440f9a6101b8
     {
 //        $regenerate = true;
         if ($regenerate) { // delete all menu items with description
@@ -95,10 +87,7 @@ class MenuTreeController extends Controller
 //        } else {
             $root = $this->AddNew($langs);
 //        }
-<<<<<<< HEAD
         if($redirect)
-=======
->>>>>>> 83e6bacedd46e8d4d2e5e9ee31e1440f9a6101b8
         return redirect()->back();
     }
 
@@ -190,11 +179,7 @@ class MenuTreeController extends Controller
         foreach ($routeList as $value) {
             preg_match('~additional~', $value->uri(), $additional_page);
             if (!empty($additional_page[0])) {
-<<<<<<< HEAD
                 $temp = $root->children()->create(['href' => url($value->uri()),'item_type'=>MenuTreeController::$item_types["Default_list_item"]['id']]);
-=======
-                $temp = $root->children()->create(['href' => $value->uri(),'item_type'=>MenuTreeController::$item_types["Default_list_item"]['id']]);
->>>>>>> 83e6bacedd46e8d4d2e5e9ee31e1440f9a6101b8
                 foreach ($langs as $lang_val)
                     \DB::table("menus_description")->insert(['content_id' => $temp->id, 'lang_id' => $lang_val['id'], 'title' => $value->getName()]);
             }
@@ -309,7 +294,6 @@ class MenuTreeController extends Controller
         foreach ($routeList as $value) {
             preg_match('~additional~', $value->uri(), $additional_page);
             if (!empty($additional_page[0])) {
-<<<<<<< HEAD
 
                 if (is_null(Menus::select('*')->where('href', '=', $value->uri())->first())) {
                    $temp =  explode('/',$value->uri());
@@ -343,19 +327,6 @@ class MenuTreeController extends Controller
                         foreach ($langs as $lang_val)
                             \DB::table("menus_description")->insert(['content_id' => $temp->id, 'lang_id' => $lang_val['id'], 'title' => $value->getName()]);
                     }
-=======
-                if (is_null(Menus::select('*')->where('href', '=', url($value->uri()))->first())) {
-                    $aditional_group =   $this->findNode_ItemType($root,MenuTreeController::$item_types["Additional_group"]['id']);
-                      // create grup additional
-                      if(is_null($aditional_group)){
-                          $aditional_group = $root->children()->create(['href' => '', 'item_type' => MenuTreeController::$item_types["Additional_group"]['id']]);
-                          foreach ($langs as $lang_val)
-                              \DB::table("menus_description")->insert(['content_id' => $aditional_group->id, 'lang_id' => $lang_val['id'], 'title' => 'Additional']);
-                      }
-                            $temp = $aditional_group->children()->create(['href' => $value->uri(),'item_type'=>MenuTreeController::$item_types["Additional_item"]['id']]);
-                            foreach ($langs as $lang_val)
-                                \DB::table("menus_description")->insert(['content_id' => $temp->id, 'lang_id' => $lang_val['id'], 'title' => $value->getName()]);
->>>>>>> 83e6bacedd46e8d4d2e5e9ee31e1440f9a6101b8
                 }
             }
         }

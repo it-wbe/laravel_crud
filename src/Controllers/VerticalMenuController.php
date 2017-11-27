@@ -19,15 +19,10 @@ class VerticalMenuController extends Controller
 
     static public function index()
     {
-//        dd($url_array = explode('/',url()->current()));
         $menu = '';
         $root = Menus::root();
         $url_array = explode('/',url()->current());
         $system_types = \DB::table('content_type')->where('is_system','=',1)->pluck('id')->toArray();
-<<<<<<< HEAD
-=======
-//dd($system_types);
->>>>>>> 83e6bacedd46e8d4d2e5e9ee31e1440f9a6101b8
         $menu.=  VerticalMenuController::ShowList($root,$url_array,$system_types);
         View::share('vertical_menu', $menu);
 
