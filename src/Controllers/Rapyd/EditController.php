@@ -343,7 +343,7 @@ class EditController extends Controller
      * regenerate permissions and menu
      *
      */
-    private function regen_menu_permission()
+    public function regen_menu_permission()
     {
         $menu = new MenuTreeController();
         $menu->tree_generate(false, false);
