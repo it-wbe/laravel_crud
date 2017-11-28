@@ -389,7 +389,7 @@ class FieldsDescriptorController extends Controller
 
         //print_r($fields);
 
-        $content_types = ContentType::get()->keyBy('id');
+         $content_types = ContentType::get()->where('is_system','=','0')->keyBy('id');
         //unset($content_types[$content_type]);
 
         $existing_relations = implode(',', $existing_relations);
