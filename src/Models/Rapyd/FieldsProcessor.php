@@ -121,9 +121,11 @@ class FieldsProcessor
                             $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type)
                                 ->move('files/'.$content->table)
                                 ->webpath(public_path());
+								$f->attributes['class']=" ";
                         } else{
 
                             $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
+							$f->attributes['class']=" ";
                         }
 
                     }
