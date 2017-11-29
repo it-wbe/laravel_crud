@@ -163,6 +163,7 @@ class FieldsProcessor
                         $field_key = $desc_table . '[' . $lang_k . '][' . $field->name . ']';
                         if ($field->type == "image" || $field->type == "file") {
                             if (\Request::input('process')) {
+								if(!is_null(\Request::file($field->name)))
                                 $filename = \Request::file($field->name)->getClientOriginalName();
                             }else{$filename ='';}
                             //todo fix hard core $parh File::exists
