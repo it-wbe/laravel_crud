@@ -27,6 +27,9 @@ class AdminAccessMiddleware
                     return $next($request);
                     }
                 }
+                if($request_segments[1]=='setlocale'){
+                  return $next($request);
+                }
                 if (!\Auth::guard('admin')->user()) {
                     return redirect(route('admin.login'));
                 }
@@ -60,6 +63,7 @@ class AdminAccessMiddleware
             }else{
                 $temp = $path;
             }
+            // dump($temp,$rights);
             if(\Auth::guard('admin')->user()->role->HasPermission($temp,$rights)){
                 return $next($request);
             }
