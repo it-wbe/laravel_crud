@@ -22,13 +22,13 @@ class AdminAccessMiddleware
                     if ($request_segments[1] == 'login' || $request_segments[1] == 'logout' || $request_segments[1] == 'password') {
                         return $next($request);
                     }
+                    if($request_segments[1]=='setlocale'){
+                      return $next($request);
+                    }
                 }elseif(empty($request_segments[1])){ // index admin
                     if(!empty(\Auth::guard('admin')->user())){
                     return $next($request);
                     }
-                }
-                if($request_segments[1]=='setlocale'){
-                  return $next($request);
                 }
                 if (!\Auth::guard('admin')->user()) {
                     return redirect(route('admin.login'));
