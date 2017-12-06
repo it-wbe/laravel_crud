@@ -40,8 +40,12 @@ class MenuTreeController extends Controller
         $title = request()->input('title');
         $item_type = request()->input('type');
         $icon = request()->input('icon');
-        if(!$icon){
-          $icon = MenuTreeController::$item_types['Default_list_item']['icon'];
+        if(empty($icon)){
+            if($item_type  == 1){/// menu_item
+                $icon =  MenuTreeController::$item_types['Default_list_item']['icon'];
+            }else{ // type === lable
+                $icon =  MenuTreeController::$item_types['label']['icon'];
+            }
         }
         $child1 = $root->children()->create(['href' => "",'item_type'=>$item_type,'icon'=>$icon]);
         foreach ($title as $title_val)
@@ -64,7 +68,6 @@ class MenuTreeController extends Controller
                     }else{ // type === lable
                         $icon =  MenuTreeController::$item_types['label']['icon'];
                     }
-
                 }
                 \DB::table('menus')->where('id','=',$id)->update(['icon'=>request()->get('icon'),'item_type'=>$type]);
                 foreach (request()->get('title') as $desc_val)
