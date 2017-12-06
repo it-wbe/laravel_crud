@@ -12,11 +12,13 @@ use Lang;
 use Wbe\Crud\Models\ContentTypes\Menus;
 class VerticalMenuController extends Controller
 {
+
+//    for add new category vartical menu add this category to checkMeddelware swich
+
+
     /**
      * Заповнення масиву з головним меню
      */
-
-
     static public function index()
     {
         $menu = '';
@@ -24,6 +26,7 @@ class VerticalMenuController extends Controller
         $url_array = explode('/',url()->current());
         $system_types = \DB::table('content_type')->where('is_system','=',1)->pluck('id')->toArray();
         $menu.=  VerticalMenuController::ShowList($root,$url_array,$system_types);
+//        dd($root);
         View::share('vertical_menu', $menu);
 
     }
@@ -35,7 +38,7 @@ class VerticalMenuController extends Controller
      $submenu = '';
             $submenu .="<li class='treeview ".VerticalMenuController::active($node,$url_array,$system_types)."' >".
                 "<a href='#'>".
-                "<span class='  ".MenuTreeController::$item_types[key(MenuTreeController::findType($node['item_type']))]['icon']."'></span>".
+                "<span class='  ".$node->icon."'></span>".
                 $node->MenusDescriptionLang->title.
                 '<span class="pull-right-container">'.
                 '<i class="fa fa-angle-left pull-right"></i>'.
@@ -55,13 +58,21 @@ class VerticalMenuController extends Controller
                 if (count($node->children()->get()) > 0) {
                     $submenu .= VerticalMenuController::ShowGroup($node,$url_array,$system_types);
                 } else {
-                    $type_id = key(MenuTreeController::findType($node['item_type']));
-                    $submenu .= '<li class="' . VerticalMenuController::active($node,$url_array,$system_types). '">' .
-                        '<a href="' . url($node->href) . '">' .
-                        '<i class="' . MenuTreeController::$item_types[$type_id]['icon'] . '"></i>' .
-                        $node->MenusDescriptionLang->title .
-                        '</a>' .
-                        '</li>';
+                    if($node->item_type !=12) {
+
+
+//                    $type_id = key(MenuTreeController::findType($node['item_type']));
+                        $submenu .= '<li class="' . VerticalMenuController::active($node, $url_array, $system_types) . '">' .
+                            '<a href="' . url($node->href) . '">' .
+                            '<i class="' . $node->icon . '"></i>' .
+                            $node->MenusDescriptionLang->title .
+                            '</a>' .
+                            '</li>';
+                    }else{
+                        $submenu .= '<li style="color:white; text-align: center; border: 1px solid #2b91af; border-radius: 10px; margin: 10px 0px 5px 0px;">' .
+                            $node->MenusDescriptionLang->title .
+                            '</li>';
+                    }
                 }
 
             }
@@ -114,6 +125,9 @@ class VerticalMenuController extends Controller
                 return true;
                 break;
             case MenuTreeController::$item_types["FileManager"]['id']: // File manager
+                return true;
+                break;
+            case MenuTreeController::$item_types["label"]['id']: // label
                 return true;
                 break;
             //// ROOT
@@ -200,5 +214,6 @@ class VerticalMenuController extends Controller
 //"Site_group"=>['id'=>9,'icon'=>'glyphicon glyphicon-cog'],
 //"Additional_group"=>['id'=>10,'icon'=>'glyphicon glyphicon-cog'],
 //"Additional_item"=>['id'=>11,'icon'=>'fa fa-link'],
+//"lable"=>['id'=>12,'icon'=>''],
 
 }

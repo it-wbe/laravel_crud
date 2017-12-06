@@ -34,10 +34,24 @@
                 </div>
             </div>
         @endforeach
-        <button type="submit" class="btn btn-primary col-md-4 col-xs-4">Add Node</button>
+        <div class="col-md-6 ">
+            <label for="icon">Icon</label>
+            <input type="text" name="icon" class="form-control">
+        </div>
+        <div class="col-md-6" style="margin-bottom: 10px;">
+            <label for="type">Type</label>
+            <select name="type" class="form-control">
+                <option value="1">Пункт Menu</option>
+                <option value="12">Label</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-primary col-md-4 col-xs-4">Add Node</button>
+        </div>
     </form>
-
-        <a class="btn btn-danger  pull-right col-md-4 col-xs-4" href="{!! route('menu.generate') !!}">Regenerate Menu</a>
+<div class="col-md-6">
+    <a class="btn btn-danger  pull-right col-md-4 col-xs-4" href="{!! route('menu.generate') !!}">Regenerate Menu</a>
+</div>
     </div>
 <div class="container-fluid" >
     {!! $tree !!}

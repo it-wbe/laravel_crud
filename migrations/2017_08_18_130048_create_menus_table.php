@@ -23,6 +23,7 @@ class CreateMenusTable extends Migration
                 $table->integer('depth')->nullable();
                 $table->text('href')->nullable();
                 $table->integer('item_type');
+                $table->string('icon',70)->default("");
             });
 
         if(Schema::hasTable('menus')&&Schema::hasTable('menus_description')){
