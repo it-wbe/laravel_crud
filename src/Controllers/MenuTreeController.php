@@ -111,102 +111,7 @@ class MenuTreeController extends Controller
         if($redirect)
         return redirect()->back();
     }
-
-//    private function Regenerate($langs)
-//    {
-//        $root = Menus::create(['href' => '','item_type'=>0]);
-//        foreach ($langs as $lang_val)
-//            \DB::table("menus_description")->insert(['content_id' => $root->id, 'lang_id' => $lang_val['id'], 'title' => "ROOT"]);
-//
-//        $all_items_menu = ContentType::select('*')->groupBy('is_system')->get();
-//        $system_types = null;
-//
-//
-//        // ContentType
-//        //Translation Content type
-//
-//        $description = \DB::table('content_type_description')->get();
-//
-//        // add Content Types
-//        foreach ($all_items_menu as $item_key => $item_value) {
-//            if ($item_value->is_system == 1) {
-//                if (is_null($system_types)) { // if first here create group
-//
-//                    $system_types = $root->children()->create(['href' => '', 'item_type' => MenuTreeController::$item_types["System_Type_Group"]['id']]); // SystemType GROUP
-//                    foreach ($langs as $lang_val)
-//                        \DB::table("menus_description")->insert(['content_id' => $system_types->id, 'lang_id' => $lang_val['id'], 'title' => Lang::get('crud::common.systems_types', [], strtolower($lang_val['code']))]);
-//                }
-//                // Add System Types
-//                $temp = $system_types->children()->create(['href' => 'admin/crud/grid/' . $item_value->id, 'item_type' => MenuTreeController::$item_types["Content_SystemType"]['id']]);
-//                foreach ($langs as $lang_val) {
-//                    $descr_temp = $description->where('lang_id', $lang_val['id'])->where('content_id', $item_value->id)->first();
-//                    \DB::table("menus_description")->insert(['content_id' => $temp->id, 'lang_id' => $lang_val['id'], 'title' => $descr_temp->name]);
-//                }
-//            } // create group just for not system types
-//            else {
-//                /// Add Content Types to root
-//                $temp = $root->children()->create(['href' => 'admin/crud/grid/' . $item_value->id, 'item_type' => MenuTreeController::$item_types["Content_Type"]['id']]);
-//                foreach ($langs as $lang_val) {
-//                    $descr_temp = $description->where('lang_id', $lang_val['id'])->where('content_id', $item_value->id)->first();
-////                    dd($descr_temp->name);
-//                    \DB::table("menus_description")->insert(['content_id' => $temp->id, 'lang_id' => $lang_val['id'], 'title' => $descr_temp->name]);
-//                }
-//            }
-//        }
-//
-//        ///// langs add to menu
-//
-//
-//        // create group Language Edit
-//
-//        $lang_edit = $root->children()->create(['href' => '', 'item_type' => MenuTreeController::$item_types["Lang_Edit_Group"]['id']]);
-//        foreach ($langs as $lang_val)
-//            \DB::table("menus_description")->insert(['content_id' => $lang_edit->id, 'lang_id' => $lang_val['id'], 'title' => Lang::get('crud::common.language_editing', [], strtolower($lang_val['code']))]);
-//
-//        ///// site lang add
-//
-//        /// create group Site
-//        $lang_site = $lang_edit->children()->create(['href' => '', 'item_type' => MenuTreeController::$item_types["Group"]['id']]);
-//        foreach ($langs as $lang_val)
-//            \DB::table("menus_description")->insert(['content_id' => $lang_site->id, 'lang_id' => $lang_val['id'], 'title' => 'Site']);
-//
-//        $site_files = $this->generate_lang_menu('site', $langs);
-//        foreach ($site_files as $file_name => $file_index) {
-//            $temp = $lang_site->children()->create(['href' => 'admin/lang_edit/site/' . $file_name, 'item_type' => MenuTreeController::$item_types["Content_SystemType"]['id']]);
-//            $file_name_temp = explode('.', $file_name);
-//            foreach ($langs as $lang_val)
-//                \DB::table("menus_description")->insert(['content_id' => $temp->id, 'lang_id' => $lang_val['id'], 'title' => ucwords($file_name_temp[0])]);
-//        }
-//
-//        //        /////// crud lang add
-//        //      create group CRUD
-//        $lang_site = $lang_edit->children()->create(['href' => '','item_type'=>MenuTreeController::$item_types["Group"]['id']]);
-//        foreach ($langs as $lang_val)
-//            \DB::table("menus_description")->insert(['content_id' => $lang_site->id, 'lang_id' => $lang_val['id'], 'title' => 'Crud']);
-//        $site_files = $this->generate_lang_menu('crud', $langs);
-//        foreach ($site_files as $file_name => $file_index) {
-//            $temp = $lang_site->children()->create(['href' => 'admin/lang_edit/crud/' . $file_name,'item_type'=>MenuTreeController::$item_types["Default_list_item"]['id']]);
-//            $file_name_temp = explode('.', $file_name);
-//            foreach ($langs as $lang_val)
-//                \DB::table("menus_description")->insert(['content_id' => $temp->id, 'lang_id' => $lang_val['id'], 'title' => ucwords($file_name_temp[0])]);
-//        }
-//
-//        //// Add file manager
-//        $temp = $root->children()->create(['href' => 'admin/filemanager','item_type'=>MenuTreeController::$item_types["FileManager"]['id']]);
-//        foreach ($langs as $lang_val)
-//            \DB::table("menus_description")->insert(['content_id' => $temp->id, 'lang_id' => $lang_val['id'], 'title' => Lang::get('crud::common.file_manager', [], strtolower($lang_val['code']))]);
-//        //add additional menu items
-//        $routeList = Route::getRoutes();
-//        foreach ($routeList as $value) {
-//            preg_match('~additional~', $value->uri(), $additional_page);
-//            if (!empty($additional_page[0])) {
-//                $temp = $root->children()->create(['href' => url($value->uri()),'item_type'=>MenuTreeController::$item_types["Default_list_item"]['id']]);
-//                foreach ($langs as $lang_val)
-//                    \DB::table("menus_description")->insert(['content_id' => $temp->id, 'lang_id' => $lang_val['id'], 'title' => $value->getName()]);
-//            }
-//        }
-//    }
-
+	
     private function AddNew($langs)
     {
         $root = Menus::root();
@@ -267,7 +172,9 @@ class MenuTreeController extends Controller
              $lang_site_group = $lang_edit_group->children()->create(['href' => '', 'item_type' => MenuTreeController::$item_types["Site_group"]['id'],'icon'=>MenuTreeController::$item_types["Site_group"]['icon']]);
              foreach ($langs as $lang_val)
                  \DB::table("menus_description")->insert(['content_id' => $lang_site_group->id, 'lang_id' => $lang_val['id'], 'title' => 'Site']);
-         }
+		 }else{
+            $lang_site_group = Menus::select('*')->where('item_type', '=', MenuTreeController::$item_types["Site_group"]['id'])->first();
+        }
 
         foreach ($site_files as $file_name => $file_index) {
             if (is_null(Menus::select('href')->where('href', '=', 'admin/lang_edit/site/' . $file_name)->first())) {
@@ -291,6 +198,8 @@ class MenuTreeController extends Controller
             $lang_crud_group = $lang_edit_group->children()->create(['href' => '', 'item_type' => MenuTreeController::$item_types["Crud_group"]['id'], 'icon' => MenuTreeController::$item_types["Crud_group"]['icon']]);
             foreach ($langs as $lang_val)
                 \DB::table("menus_description")->insert(['content_id' => $lang_crud_group ->id, 'lang_id' => $lang_val['id'], 'title' => 'Crud']);
+        }else{
+            $lang_crud_group = Menus::select('*')->where('item_type', '=', MenuTreeController::$item_types["Crud_group"]['id'])->first();
         }
 
         foreach ($site_files as $file_name => $file_index) {
