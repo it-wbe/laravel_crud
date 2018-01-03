@@ -215,10 +215,10 @@ class MenuTreeController extends Controller
         }
         $root = Menus::root();
         $description = \DB::table('content_type_description')->get();
-        $all_items_menu = ContentType::all()->groupBy('is_system');
-
+        //$all_items_menu = ContentType::all()->groupBy('is_system');
+        $not_system = ContentType::where('is_system','=','0')->get();
         //// not System
-        foreach ($all_items_menu[0] as $item_key => $item_value) {
+        foreach ($not_system as $item_key => $item_value) {
             if (is_null(Menus::select('href')->where('href', '=', 'admin/crud/grid/' . $item_value->id)->first())) {
                 /// add new system type
                 $new_type = $root->children()->create(['href' => 'admin/crud/grid/' . $item_value->id,'item_type'=>MenuTreeController::$item_types["Content_Type"]['id'],'icon'=>MenuTreeController::$item_types["Content_Type"]['icon']]);
@@ -227,8 +227,9 @@ class MenuTreeController extends Controller
                         ->insert(['content_id' => $new_type->id, 'lang_id' => $lang_val->lang_id, 'title' => $lang_val->name]);
             }
         }
+        $system = ContentType::where('is_system','=','1')->get();
         ///// system type
-        foreach ($all_items_menu[1] as $item_key => $item_value) {
+        foreach ($system as $item_key => $item_value) {
             if (is_null(Menus::select('href')->where('href', '=', 'admin/crud/grid/' . $item_value->id)->first())) {
                 /// add new system type
                 /// create group system type

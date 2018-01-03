@@ -52,7 +52,6 @@ class RolesController extends Controller
 
 
         $permissions = $this->getPermissions();
-
         return view::make('crud::roles.index')->with(['roles' => $roles, 'permissions' => $permissions]);
     }
 
@@ -118,18 +117,20 @@ class RolesController extends Controller
 
     public function generatePermissions()
     {
-        $all_items_menu = ContentType::all()->groupBy('is_system');
-
+//        $all_items_menu = ContentType::all()->groupBy('is_system');
+        $not_system = ContentType::where('is_system','=','0')->get();
         //// not System
-        foreach ($all_items_menu[0] as $item_key => $item_value) {
+        foreach ($not_system as $item_key => $item_value) {
             if (is_null(Permissions::select('href')->where('href', '=', 'admin/crud/grid/' . $item_value->id)->first())) {
                 /// add new system type
                 $per = new  Permissions(['href' => 'admin/crud/grid/' . $item_value->id, 'name' => $item_value->name]);
                 $per->save();
             }
         }
+
+        $system = ContentType::where('is_system','=','1')->get();
         ///// system type
-        foreach ($all_items_menu[1] as $item_key => $item_value) {
+        foreach ($system as $item_key => $item_value) {
             if (is_null(Permissions::select('href')->where('href', '=', 'admin/crud/grid/' . $item_value->id)->first())) {
                 /// add new system type
                 /// create group system type

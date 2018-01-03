@@ -5,10 +5,168 @@
 @section('show_sidebar', false)
 
 @section('scripts')
-    {{--!!Html::script('/js/jquery.sortable.min.js')!!--}}
+    <ul class="validator_arr" style="display:none; height: 100px; overflow: auto;
+  overscroll-behavior: contain;">
+       <li class="active">required</li>
+       <li>accepted</li>
+        <li>active_url</li>
+        <li>after</li>
+        <li>after_or_equal</li>
+        <li>alpha</li>
+        <li>alpha_dash</li>
+        <li>alpha_numeric</li>
+        <li>array</li>
+        <li>before</li>
+        <li>before_or_equal</li>
+        <li>between</li>
+        <li>boolean</li>
+        <li>confirmed</li>
+        <li>date</li>
+        <li>date_equals</li>
+        <li>date_format</li>
+        <li>different</li>
+        <li>digits</li>
+        <li>digits_between</li>
+        <li>dimensions</li>
+        <li>distinct</li>
+        <li>e-mail</li>
+        <li>exists</li>
+        <li>file</li>
+        <li>filled</li>
+        <li>image</li>
+        <li>in</li>
+        <li>in_array</li>
+        <li>integer</li>
+        <li>ip_address</li>
+        <li>json</li>
+        <li>max</li>
+        <li>mime_types</li>
+        <li>min</li>
+        <li>nullable</li>
+        <li>not_in</li>
+        <li>numeric</li>
+        <li>present</li>
+        <li>regular_expression</li>
+        <li>required</li>
+        <li>required_if</li>
+        <li>required_unless</li>
+        <li>required_with</li>
+        <li>required_with_all</li>
+        <li>required_without</li>
+        <li>required_without_all</li>
+        <li>same</li>
+        <li>size</li>
+        <li>string</li>
+        <li>timezone</li>
+        <li>unique</li>
+        <li>url</li>
+    </ul>
+<script>
+        var curent_val_input = null;
+        var activeButton = 0;
+        $(".valid").on('click',function(){
+            var nod = $('.validator_arr').clone(true);
+            activeButton = $(nod[0]).children('.active').index();
+            $(nod).appendTo($(this).parent());
+            $(nod).css('display','block');
+            curent_val_input = this;
+            $($(this).parent()).on('mouseleave',function(){
+                var node =$(this).find('.validator_arr');
+                curent_val_input = null;
+                node.remove();
+            });
+        });
+
+        $(".validator_arr li").on('mouseenter',function(){
+            $(this).addClass('active');
+        });
+        $(".validator_arr li").on('mouseleave',function(){
+            $(this).removeClass('active');
+        });
+        $(".validator_arr li").on('click',function(){
+            PutSelected(this);
+//            console.log(curent_val_input);
+//            $(this).innerText
+        });
+        function PutSelected(selected) {
+
+            if(curent_val_input !=null && curent_val_input.value.lenght !=0){
+                if(curent_val_input.value[--curent_val_input.value.lenght] == "|"){
+                    /// поставить значение
+                    curent_val_input.value+= selected.innerHTML;
+                }else{
+                    /// поставить | потом значение
+                    curent_val_input.value+= "|"+selected.innerHTML;
+                }
+                console.log(curent_val_input.value[--curent_val_input.value.lenght]);
+            }
+        }
+        function SetFocus(div){
+            $(div.parentElement).animate({
+                    scrollTop: $(div).prev().position().top
+                }, 10);
+        //$(div).focus();
+        }
+        $(function () {
+            $(".valid").each(function (index) {
+                $(this).keydown(function (e) {
+                    ///// up
+                    if (e.which == 38) {
+                        if (activeButton > 0) {
+                            console.log('up');
+                            var all = $($($(this).parent().children()[1]).children()).length;
+                            var classThis = $($($(this).parent().children()[1]).children());
+                            $(classThis[activeButton]).removeClass('active');
+                            activeButton--;
+                            $(classThis[activeButton]).addClass('active');
+                            SetFocus(classThis[activeButton]);
+                        }
+                    }
+                    /////enter
+                    else if (e.which == 13) {
+                        e.preventDefault();
+                     var selected = $($(this).parent().children()[1]).children().find(".active");
+                        PutSelected(selected);
+                     ///////down
+                    } else if (e.which == 40) {
+                        var all = $($($(this).parent().children()[1]).children()).length;
+
+                        console.log('down');
+                        if ($($($(this).parent().children()[1]).children()).length > 0 && activeButton < all - 1) {
+                            var classThis = $($($(this).parent().children()[1]).children());
+                            $(classThis[activeButton]).removeClass('active');
+                            activeButton++;
+                            SetFocus(classThis[activeButton]);
+                            $(classThis[activeButton]).addClass('active');
+                        }
+                    }
+                });
+
+            });
+        });
+</script>
 @endsection
 
 @section('content')
+<style>
+    .validator_arr{
+        z-index: 999999;
+        display: inline-block;
+        position: absolute;
+        background-color: whitesmoke;
+        list-style-type: none;
+        padding: 5px;
+        width: 180px;
+        text-align: center;
+    }
+    .validator_arr>.active{
+        color: #1c2d3f;
+        background-color: lightslategrey;
+    }
+</style>
+
+
+
     <style>
         .table-fields input {
             border: 1px solid #ddd;
@@ -28,6 +186,11 @@
 
         td [name='form_sort[]'] {
             width: 35px;
+        }
+
+        .validators_list{
+            display:none;
+
         }
 
         /*.table-fields input:focus {
@@ -161,6 +324,8 @@
                 $(this).trigger("click");
             });
 
+
+
             // www.jqueryscript.net/other/jQuery-Drag-drop-Sorting-Plugin-For-Bootstrap-html5sortable.html
             //$('table.table-fields tbody').sortable({});
         });
@@ -170,7 +335,6 @@
 
     @include('crud::crud.contentinfo')
     <br><br>
-
 
     <input type="hidden" id="content_table" value="{{ $content->table }}">
 
