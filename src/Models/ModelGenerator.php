@@ -180,9 +180,10 @@ class ModelGenerator
             //base_path() . '\app\Models\\' . ltrim($classname, '\\/') . '.php';
 
             //(!class_exists('App\Models\\' . $classname)) ||
-            if ((!file_exists($filename)) ||
-                (strpos(file_get_contents($filename), self::regenerate_entire_model_ident) !== false)
-            ) {
+//            dd(strpos(file_get_contents($filename), self::regenerate_entire_model_ident));
+            if (!file_exists($filename))// ||
+//                (strpos(file_get_contents($filename), self::regenerate_entire_model_ident) !== false))
+            {
 
                 $fields = \Schema::getColumnListing($table);
                 $no_timestamps = !(
@@ -206,13 +207,11 @@ class ModelGenerator
                     'no_timestamps' => $no_timestamps,
                     'content' => $content,
                 ]);
-//                dd($cdm_template);
                 //$filename = self::getClassFilename('App\Models\\' . $classname);
 
                 //file_put_contents($filename, $cdm_template);
                 Globals::$messages[0][] = 'writing model "' . $classname . '" to "' . $filename . '"';
             } else {
-
                 Globals::$messages[0][] = 'file "' . $filename . '" already exists, removing and writing relations...';
                 $cdm_template = file_get_contents($filename);
             }
@@ -220,7 +219,6 @@ class ModelGenerator
             foreach ($new_relations as $new_relation_k => $new_relation) {
                 $cdm_template = self::createOrUpdateMethod($new_relation_k, $new_relation, $cdm_template);
             }
-
             file_put_contents($filename, $cdm_template);
         } else Globals::$messages[3][] = 'table "' . $content_type->table . '" not found! cannot write model';
         return true;
@@ -442,11 +440,14 @@ class ModelGenerator
                 if ((!file_exists($filename)) ||
                     (strpos(file_get_contents($filename), '[leave this text to regenerate]') !== false)
                 ) {
-//                    echo '<b>writing model "' . $classname . '" to "' . $filename . '"</b><br>';
+
+                    //echo '<b>writing model "' . $classname . '" to "' . $filename . '"</b><br>';
 
                     file_put_contents($filename, $cdm_template);
+                    header("Refresh:0");
                 } else {
-//                    echo '<b>file "' . $filename . '" already exists! cannot write model "' . $classname . '"</b><br>';
+                    echo '<b>file "' . $filename . '" already exists! cannot write model "' . $classname . '"</b><br>';
+
                 }
 
                 return 1;

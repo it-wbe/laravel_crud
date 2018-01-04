@@ -49,7 +49,7 @@ class CreateContentTypeTable extends Seeder
                 array(
                     'id' => '5',
                     'table' => 'roles',
-                    'model' => 'Wbe\\Crud\\Models\\ContentTypes\\Role',
+                    'model' => 'Wbe\\Crud\\Models\\Roles\\Role',
                     'sort' => '4',
                     'is_system' => '1',
                 ),
@@ -63,7 +63,7 @@ class CreateContentTypeTable extends Seeder
                 ),
         );
             foreach ($data as $key=> $value){
-              $exsist =   \DB::table('content_type')->where([['id','=',$value['id']],['table','=',$value['table']]])->first();
+              $exsist =   \DB::table('content_type')->where([['table','=',$value['table']]])->first();
 //              dd($exsist);
               if(is_null($exsist)){
                   unset($value['id']);
