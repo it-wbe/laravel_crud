@@ -26,10 +26,10 @@ class CreateMenusTable extends Migration
                 $table->string('icon',70)->default("");
             });
 
-        if(Schema::hasTable('menus')&&Schema::hasTable('menus_description')){
-            $menu_tree = new Wbe\Crud\Controllers\MenuTreeController();
-            $menu_tree->tree_generate(true);
-        }
+        //if(Schema::hasTable('menus')&&Schema::hasTable('menus_description')){
+        //    $menu_tree = new Wbe\Crud\Controllers\MenuTreeController();
+        //    $menu_tree->tree_generate(true);
+        //}
     }
 
     /**

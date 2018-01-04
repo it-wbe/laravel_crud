@@ -26,7 +26,7 @@
             <input class="form-control search_columns" name="search_columns[]" value="{{ $f->search_columns }}" type="text">
         </span>
     </td>
-    <td><input type="text" class="form-control" name="validators[]" value="{{ $f->validators }}"></td>
+    <td><input type="text" class="form-control valid" name="validators[]" id="validator" value="{{ $f->validators }}"></td>
     <td>
         <input type="checkbox" {{--id="grid_show"--}} class="form-control checkbox_autofill" {{ $f->grid_show ? 'checked' : '' }}>
         <input type="hidden" name="grid_show[]">
