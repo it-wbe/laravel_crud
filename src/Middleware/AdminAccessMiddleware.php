@@ -19,7 +19,7 @@ class AdminAccessMiddleware
         $request_segments = \Request::segments();
         if(!empty($request_segments[0])&& $request_segments[0]=='admin') {
                 if (!empty($request_segments[1])) {
-                    if ($request_segments[1] == 'login' || $request_segments[1] == 'logout' || $request_segments[1] == 'password') {
+                    if ($request_segments[1] == 'login' || $request_segments[1] == 'logout' || $request_segments[1] == 'password' || $request_segments[1] == 'setlocale') {
                         return $next($request);
                     }
                     if($request_segments[1]=='setlocale'){
