@@ -4,6 +4,7 @@ use Closure;
 use Wbe\Crud\Models\ContentTypes\User;
 use Wbe\Crud\Models\Roles\Permissions;
 use Wbe\Crud\Models\Roles\Role;
+use Wbe\Crud\Models\Log\AdminLog;
 
 class AdminAccessMiddleware
 {
@@ -16,14 +17,12 @@ class AdminAccessMiddleware
      */
     public function handle($request, Closure $next)
     {
+
         $request_segments = \Request::segments();
         if(!empty($request_segments[0])&& $request_segments[0]=='admin') {
-                if (!empty($request_segments[1])) {
-                    if ($request_segments[1] == 'login' || $request_segments[1] == 'logout' || $request_segments[1] == 'password' || $request_segments[1] == 'setlocale') {
+            if (!empty($request_segments[1])) {
+                if ($request_segments[1] == 'login' || $request_segments[1] == 'logout' || $request_segments[1] == 'password'|| $request_segments[1] == 'setlocale') {
                         return $next($request);
-                    }
-                    if($request_segments[1]=='setlocale'){
-                      return $next($request);
                     }
                 }elseif(empty($request_segments[1])){ // index admin
                     if(!empty(\Auth::guard('admin')->user())){
@@ -39,11 +38,18 @@ class AdminAccessMiddleware
                 return redirect()->back();
             }
             $rights = null;
-            if($request->has('modify')||$request->has('insert')){
+            $log_rights = null;
+            if($request->has('modify')) {
                 $rights = 'w';
+                $log_rights = "modification";
+            }elseif($request->has('insert')){
+                $rights = 'w';
+                $log_rights = "insert";
             }elseif($request->has('delete')){
+                $log_rights = "delete";
                 $rights = 'd';
             }elseif($request->has('show')){
+                $log_rights = "show";
                 $rights = 'r';
             }
 
@@ -52,6 +58,12 @@ class AdminAccessMiddleware
                 $a =0 ;
                     $a = count($request_segments)-1;
                 $temp  ='admin/crud/grid/'.$request_segments[$a];
+
+            /// log only for crud content type
+                if(!is_null($log_rights)){
+                    Log::write(\Auth::guard('admin')->user()->id,$log_rights,$request_segments[$a]);
+                }
+
             }elseif($request_segments[1]=='additional'){/// permissions for additional
                 if($request_segments[2]=='roles'){
                     $temp = $request_segments[0].'/'.$request_segments[1].'/'.$request_segments[2];
@@ -63,7 +75,6 @@ class AdminAccessMiddleware
             }else{
                 $temp = $path;
             }
-            // dump($temp,$rights);
             if(\Auth::guard('admin')->user()->role->HasPermission($temp,$rights)){
                 return $next($request);
             }
@@ -74,5 +85,11 @@ class AdminAccessMiddleware
                 return $next($request);
             }
         return $next($request);
+    }
+}
+
+class Log{
+    public static function write($user_id,$action,$content_type_id){
+        AdminLog::insert(['user_id'=>$user_id,'action'=>$action,'content_type_id'=>$content_type_id,'action_date'=>date('Y-m-d H:i:s')]);
     }
 }

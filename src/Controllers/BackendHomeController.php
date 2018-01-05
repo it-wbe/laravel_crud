@@ -2,7 +2,9 @@
 
 namespace Wbe\Crud\Controllers;
 
+use Illuminate\Support\Collection;
 use Wbe\Crud\Models\ContentTypes\ContentTypeFields;
+use Wbe\Crud\Models\Log\AdminLog;
 use Wbe\Crud\Models\ModelGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
@@ -22,16 +24,19 @@ class BackendHomeController extends Controller
      */
     public function index(Request $r)
     {
-        $content_types = ContentType::orderBy('sort')->get();
+        $content_types = ContentType::where('is_system','=',0)->orderBy('sort')->get();
+        $count = new Collection();
         foreach ($content_types as $ctk => $ct) {
-            if (\Schema::hasTable($ct->table))
-                $content_types[$ctk]->records_count = \DB::table($ct->table)->count();
-            else
-                $content_types[$ctk]->records_count = '<span style="color:red">table not found</span>';
-            $content_types[$ctk]->descripted_fileds = \DB::table('content_type_fields')->where('content_type_id', $ct->id)->count();
+            if (\Schema::hasTable($ct->table)) {
+                $count->push(["name"=>$ct->name,"count"=>\DB::table($ct->table)->count()]);
+            }
         }
-        return view('crud::crud.fd_content_types', compact('content_types'));
+       $counts = $count->sortByDesc('count');
+        $logs = AdminLog::limit(10)->get();
+
+        return view('crud::crud.index', compact('content_types','counts','logs'));
     }
+
 
     /**
      * Видалання типу контенту
