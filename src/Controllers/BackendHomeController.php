@@ -29,8 +29,8 @@ class BackendHomeController extends Controller
           $set_temp = collect(unserialize(\Auth::guard('admin')->user()->settings));
           $contents = ContentType::whereIn('id',$set_temp->keys())->get();
         }
+        $content_types = ContentType::where('is_system', '=', 0)->orderBy('sort')->get();
         if(!isset($contents)) {
-            $content_types = ContentType::where('is_system', '=', 0)->orderBy('sort')->get();
             $contents = $content_types;
         }
         $count = new Collection();
