@@ -13,23 +13,19 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('users'))
-            Schema::create('users', function (Blueprint $table) {
-                $table->integer('id', true);
-                $table->string('email')->nullable();
-                $table->string('name');
-                $table->string('password');
-                $table->string('remember_token')->nullable();
+        if (!Schema::hasTable('users')){
+            Schema::table('users', function ($table) {
+                //$table->integer('id', true);
+                $table->string('email')->nullable()->change();
+                //$table->string('name');
+                //$table->string('password');
+                $table->string('remember_token')->nullable()->change();
                 $table->integer('role_id');
-                $table->timestamps();
+                $table->text('settings')->nullable();
+                //$table->timestamps();
                 $table->softDeletes();
             });
-
-//        \DB::table('users')->delete();
-
-//        Schema::table('users', function (Blueprint $table) {
-//            $table->foreign('role_id')->references('id')->on('roles');
-//        });
+		}
     }
 
 

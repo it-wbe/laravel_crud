@@ -37,6 +37,10 @@ class AdminAccessMiddleware
 
                 return redirect()->back();
             }
+            if($request_segments[1]=='account'){
+                return $next($request);
+            }
+
             $rights = null;
             $log_rights = null;
             if($request->has('modify')) {

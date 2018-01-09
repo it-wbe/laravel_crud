@@ -24,17 +24,22 @@ class BackendHomeController extends Controller
      */
     public function index(Request $r)
     {
-        $content_types = ContentType::where('is_system','=',0)->orderBy('sort')->get();
-        $count = new Collection();
-        foreach ($content_types as $ctk => $ct) {
-            if (\Schema::hasTable($ct->table)) {
-                $count->push(["name"=>$ct->name,"count"=>\DB::table($ct->table)->count()]);
-            }
+        if(!empty(\Auth::guard('admin')->user()->settings)){
+          $set_temp = collect(unserialize(\Auth::guard('admin')->user()->settings));
+          $contents = ContentType::whereIn('id',$set_temp->keys())->get();
         }
-       $counts = $count->sortByDesc('count');
-        $logs = AdminLog::limit(10)->get();
+        $content_types = ContentType::where('is_system', '=', 0)->orderBy('sort')->get();
 
-        return view('crud::crud.index', compact('content_types','counts','logs'));
+        $count = new Collection();
+        foreach ($contents as $ctk => $ct) {
+                if (\Schema::hasTable($ct->table)) {
+                    $count->push(["name" => $ct->name, "count" => \DB::table($ct->table)->count()]);
+                }
+            }
+            $counts = $count->sortByDesc('count');
+            $logs = AdminLog::limit(6)->get();
+
+        return view('crud::crud.index', compact('content_types','counts','logs','settings'));
     }
 
 

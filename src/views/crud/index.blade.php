@@ -4,7 +4,6 @@
 @section('header', 'CRUD')
 
 @section('content')
-    @if($content_types)
 
         <style type="text/css">
             .log{
@@ -12,22 +11,20 @@
                 margin: 5px;
             }
         </style>
-
-        {{-- Total--}}
-        @foreach($counts as $count)
-            <div class="col-md-{!! 12 /config('crud.index_count_total')!!}">
-                <div class="panel-title">Total {{$count['name']}}</div>
-                <div class="panel-body"><h1>{{$count['count']}}</h1></div>
-            </div>
-
-            @if($loop->index == config('crud.index_count_total')-1)
-                @break
-            @endif
-        @endforeach
-        {{-- End Total--}}
-        {{-- Add content --}}
+        @if($counts)
+             {{--Total--}}
+            @foreach($counts as $count)
+                <div class="col-md-3">
+                    <div class="panel-title">Total {{$count['name']}}</div>
+                    <div class="panel-body"><h1>{{$count['count']}}</h1></div>
+                </div>
+            @endforeach
+             {{--End Total--}}
+        @endif
+        @if($content_types)
+            {{-- Add content --}}
         <div class="panel col-md-6" style="border:1px solid black;">
-            <div class="panel-title">Add Content:</div>
+            <div class="panel-title">{!! __('crud::common.add_content') !!}:</div>
             <div class="panel-body">
                 <div class="col-md-8">
                         <form >
@@ -44,10 +41,11 @@
             </div>
         </div>
         {{--End Add Content--}}
-
+            @endif
+        @if($logs)
         {{-- Log --}}
         <div class="col-md-6">
-            <div class="panel-title">Last Activity:</div>
+            <div class="panel-title">{!! __('crud::common.last_activity')!!}:</div>
             <div class="panel-body">
                 @foreach($logs as $log)
                 <div class="col-md-12 log">

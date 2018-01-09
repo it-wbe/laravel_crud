@@ -40,6 +40,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('admin/crud/delete/', 'Wbe\Crud\Controllers\BackendHomeController@delete');
 
     Route::get('admin/account/', 'Wbe\Crud\Controllers\User\AccountController@index')->middleware('admin');
+    Route::any('admin/account/settings', 'Wbe\Crud\Controllers\User\AccountController@settings')->middleware('admin');
     Route::post('admin/account/edit', 'Wbe\Crud\Controllers\User\AccountController@edit')->middleware('admin');
 
     //Route::group(['as' => 'admin', 'action' => 'MenuController@index'], function () {
