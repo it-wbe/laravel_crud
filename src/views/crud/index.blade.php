@@ -36,13 +36,13 @@
                         </form>
                 </div>
                 <div class="col-md-2">
-                    <button id="add_content_ok" class="btn btn-success btn-lg">OK</button>
+                    <button id="add_content_ok" class="btn btn-primary btn-lg">OK</button>
                 </div>
             </div>
         </div>
         {{--End Add Content--}}
             @endif
-        @if($logs)
+        @if(count($logs)>0)
         {{-- Log --}}
         <div class="col-md-6">
             <div class="panel-title">{!! __('crud::common.last_activity')!!}:</div>
