@@ -50,6 +50,7 @@ class AccountController extends Controller
              $data = serialize($w->all());
              $user->settings = $data;
              $user->save();
+             $settings = $w->all();
              request()->session()->flash('alert-success', 'settings saved!');
          }
          $types = ContentType::where('is_system', '=', '0')->get();
