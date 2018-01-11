@@ -33,7 +33,16 @@ return [
 	"language_editing"=>"Language Edit",
 	"last_activity"=>"Last Activity",
     "add_content"=>"Add Content",
-
+    "back"=>"Back",
+	"menu_icon"=>"Icon",
+	"menu_type"=>"Menu Type",
+	"menu_item"=>"Menu Item",
+	"menu_label"=>"Menu Label",
+	"menu_delimiter"=>"Menu Delimiter",
+	"menu_add_node"=>"Add Node",
+	"menu_edit_node"=>"Edit Node",
+	"menu_regenerate"=>"Regenerate Menu",
+	"menu_delete_node_message"=>"Realy Delete Node ?",
 ];
 
 ?>

@@ -22,32 +22,32 @@
                 </div>
             @endforeach
             <div class="col-md-6 ">
-                <label for="icon">Icon</label>
+                <label for="icon">{!! __("crud::common.menu_icon") !!}</label>
                 <span class="{{$edit->icon}} col-md-1"  aria-hidden="true"></span><input type="text" name="icon" value="{!! $edit->icon !!}" class="form-control">
             </div>
             <div class="col-md-6 ">
-                <label for="type">Type</label>
+                <label for="type">{!! __("crud::common.menu_type") !!}</label>
                 <select name="type" class="form-control">
-                    <option value="1" @if($edit->item_type==1){{"selected"}}@endif >Пункт Menu</option>
-                    <option value="12" @if($edit->item_type==12){{"selected"}}@endif>Label</option>
-                    <option value="13" @if($edit->item_type==13){{"selected"}}@endif>Delimiter</option>
+                    <option value="1" @if($edit->item_type==1){{"selected"}}@endif >{!! __("crud::common.menu_item") !!}</option>
+                    <option value="12" @if($edit->item_type==12){{"selected"}}@endif>{!! __("crud::common.menu_label") !!}</option>
+                    <option value="13" @if($edit->item_type==13){{"selected"}}@endif>{!! __("crud::common.menu_delimiter") !!}</option>
                 </select>
             </div>
             <div class="col-md-12 controll">
-                <button type="submit" class="btn btn-primary col-md-4 col-xs-4">Edit Node</button>
-                <a href="{{route('Menu Edit')}}" class="btn btn-default col-md-4 col-xs-4 pull-right">Back</a>
+                <button type="submit" class="btn btn-primary col-md-4 col-xs-4">{!! __("crud::common.menu_edit_node") !!}</button>
+                <a href="{{route('Menu Edit')}}" class="btn btn-default col-md-4 col-xs-4 pull-right">{!! __("crud::common.back") !!}</a>
             </div>
         </form>
     @else
         <div class="col-md-6 col-md-offset-3">
            <h1>
-            Realy Delete Node ?
+               {!! __("crud::common.menu_delete_node_message") !!}
            </h1>
         </div>
-        <button onclick="location.href='{{route('Menu Edit')}}'" class="btn btn-default col-md-4 col-xs-4">Cancel</button>
+        <button onclick="location.href='{{route('Menu Edit')}}'" class="btn btn-default col-md-4 col-xs-4">{!! __("crud::common.cancel") !!}</button>
         <form method="post" class="form"  >
             {{ csrf_field() }}
-            <button type="submit" class="btn btn-primary col-md-4 col-xs-4 pull-right">Delete</button>
+            <button type="submit" class="btn btn-primary col-md-4 col-xs-4 pull-right">{!! __("crud::common.delete") !!}</button>
         </form>
 
     @endif
