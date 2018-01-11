@@ -8,4 +8,3 @@
 </style>
 
 <h3 class="table-fields">{{ $content->name }}</h3>
-<code class="table-fields">table: {{ $content->table }}; model: {{ $content->model }}</code>
