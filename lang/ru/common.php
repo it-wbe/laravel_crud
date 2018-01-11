@@ -33,6 +33,16 @@ return [
 	"language_editing"=>"Редактирование Языков",
 	"last_activity"=>"Последняя Активность",
 	"add_content"=>"Добавить контент",
+    "back"=>"Назад",
+    "menu_icon"=>"Иконка",
+    "menu_type"=>"Тип Пункта Меню",
+    "menu_item"=>"Пункт Меню",
+    "menu_label"=>"Метка Меню",
+    "menu_delimiter"=>"Разгреничитель Меню",
+    "menu_add_node"=>"Добавить Пункт Меню",
+    "menu_edit_node"=>"Редактировать Пункт Меню",
+    "menu_regenerate"=>"Перегенерировать Меню",
+    "menu_delete_node_message"=>"Действительно удалить пункт меню?",
 ];
 
 ?>

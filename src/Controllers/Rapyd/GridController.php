@@ -88,16 +88,14 @@ class GridController extends Controller
         foreach ($fields as $field) {
             if ($field->grid_show && ($field->name != 'lang_id') && ($field->name != 'content_id')) {
                 $display = $field->grid_custom_display ? $field->grid_custom_display : $field->name;
-                // $f = $grid->add($display, $field->caption ? $field->caption : $field->name, $field->name);
                 $f = $grid->add($display, $field->title != "not set" ? $field->title : $field->name, $field->name);
-
-//                if ($field->grid_attributes)
-//                    eval($field->grid_attributes);
             }
         }
 
-        $grid->link(url('admin/crud/edit/1?modify=' . $content_type . '&to=' . urlencode(url()->full())), trans('crud::common.content_type'), "TR");
-        $grid->link(url('admin/fields_descriptor/content/' . $content_type), trans('crud::common.content_fields'), "TR");
+        if(\Auth::guard('admin')->user()->role_id==1) {
+            $grid->link(url('admin/crud/edit/1?modify=' . $content_type . '&to=' . urlencode(url()->full())), trans('crud::common.content_type'), "TR");
+            $grid->link(url('admin/fields_descriptor/content/' . $content_type), trans('crud::common.content_fields'), "TR");
+        }
         $grid->link(url('/admin/crud/edit/' . $content_type . '?insert=1'), trans('crud::common.content_add'), "TR");
 
         $grid->edit(url('/admin/crud/edit/' . $content_type . '/'), trans('crud::common.grid_actions'), 'modify|delete|show');

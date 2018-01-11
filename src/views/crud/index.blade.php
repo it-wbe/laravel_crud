@@ -21,7 +21,7 @@
             @endforeach
              {{--End Total--}}
         @endif
-        @if($content_types)
+        @if(count($content_types)>0)
             {{-- Add content --}}
         <div class="panel col-md-6" style="border:1px solid black;">
             <div class="panel-title">{!! __('crud::common.add_content') !!}:</div>

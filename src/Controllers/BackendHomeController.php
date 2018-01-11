@@ -33,6 +33,18 @@ class BackendHomeController extends Controller
         if(!isset($contents)) {
             $contents = $content_types;
         }
+        /// check if user has permissions to add content to content type
+        $content_types_temp  = collect();
+        foreach ($content_types as $content_type){
+            $path = "admin/crud/grid/".$content_type->id;
+            $rights = "w";
+            if(\Auth::guard('admin')->user()->role->HasPermission($path,$rights)){
+                $content_types_temp->push($content_type);
+            }
+        }
+        $content_types  = $content_types_temp;
+        // end check
+
         $count = new Collection();
         foreach ($contents as $ctk => $ct) {
                 if (\Schema::hasTable($ct->table)) {
@@ -40,7 +52,7 @@ class BackendHomeController extends Controller
                 }
             }
             $counts = $count->sortByDesc('count');
-            $logs = AdminLog::limit(6)->get();
+            $logs = AdminLog::orderBy('action_date','des')->limit(6)->get();
 
         return view('crud::crud.index', compact('content_types','counts','logs','settings'));
     }
