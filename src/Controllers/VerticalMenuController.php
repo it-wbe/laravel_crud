@@ -58,7 +58,7 @@ class VerticalMenuController extends Controller
                 if (count($node->children()->get()) > 0) {
                     $submenu .= VerticalMenuController::ShowGroup($node,$url_array,$system_types);
                 } else {
-                    if($node->item_type !=12) {
+                    if($node->item_type !=12 &&$node->item_type !=13) {
 
 
 //                    $type_id = key(MenuTreeController::findType($node['item_type']));
@@ -68,8 +68,12 @@ class VerticalMenuController extends Controller
                             $node->MenusDescriptionLang->title .
                             '</a>' .
                             '</li>';
-                    }else{
-                        $submenu .= '<li style="color:white; text-align: center; border: 1px solid #2b91af; border-radius: 10px; margin: 10px 0px 5px 0px;">' .
+                    }elseif($node->item_type==12){
+                        $submenu .= '<li class="menu-label">' .
+                            $node->MenusDescriptionLang->title .
+                            '</li>';
+                    }elseif($node->item_type==13){
+                        $submenu .= '<li class="menu-delimiter">' .
                             $node->MenusDescriptionLang->title .
                             '</li>';
                     }

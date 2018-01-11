@@ -30,6 +30,7 @@
                 <select name="type" class="form-control">
                     <option value="1" @if($edit->item_type==1){{"selected"}}@endif >Пункт Menu</option>
                     <option value="12" @if($edit->item_type==12){{"selected"}}@endif>Label</option>
+                    <option value="13" @if($edit->item_type==13){{"selected"}}@endif>Delimiter</option>
                 </select>
             </div>
             <div class="col-md-12 controll">

@@ -12,6 +12,7 @@ return [
     "languages"=>"Мова",
     "content_add"=>"Додати",
     "content_edit"=>"Редагувати",
+	"content_show" => "Перегляд",
     "content_data"=>"Дані",
     "content_fields"=>"Поля",
     "content_type"=>"Тип Контенту",

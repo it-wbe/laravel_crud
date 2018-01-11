@@ -32,6 +32,7 @@ return [
 	"systems_types"=>"Систeмные Типы",
 	"language_editing"=>"Редактирование Языков",
 	"last_activity"=>"Последняя Активность",
+	"add_content"=>"Добавить контент",
 ];
 
 ?>
