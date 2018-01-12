@@ -7,59 +7,59 @@
 @section('scripts')
     <ul class="validator_arr" style="display:none; height: 100px; overflow: auto;
   overscroll-behavior: contain;">
-       <li class="active">required</li>
-       <li>accepted</li>
-        <li>active_url</li>
-        <li>after</li>
-        <li>after_or_equal</li>
-        <li>alpha</li>
-        <li>alpha_dash</li>
-        <li>alpha_numeric</li>
-        <li>array</li>
-        <li>before</li>
-        <li>before_or_equal</li>
-        <li>between</li>
-        <li>boolean</li>
-        <li>confirmed</li>
-        <li>date</li>
-        <li>date_equals</li>
-        <li>date_format</li>
-        <li>different</li>
-        <li>digits</li>
-        <li>digits_between</li>
-        <li>dimensions</li>
-        <li>distinct</li>
-        <li>e-mail</li>
-        <li>exists</li>
-        <li>file</li>
-        <li>filled</li>
-        <li>image</li>
-        <li>in</li>
-        <li>in_array</li>
-        <li>integer</li>
-        <li>ip_address</li>
-        <li>json</li>
-        <li>max</li>
-        <li>mime_types</li>
-        <li>min</li>
-        <li>nullable</li>
-        <li>not_in</li>
-        <li>numeric</li>
-        <li>present</li>
-        <li>regular_expression</li>
-        <li>required</li>
-        <li>required_if</li>
-        <li>required_unless</li>
-        <li>required_with</li>
-        <li>required_with_all</li>
-        <li>required_without</li>
-        <li>required_without_all</li>
-        <li>same</li>
-        <li>size</li>
-        <li>string</li>
-        <li>timezone</li>
-        <li>unique</li>
-        <li>url</li>
+       <li class="active" tabindex="0">required</li>
+       <li tabindex="0">accepted</li>
+        <li tabindex="0">active_url</li>
+        <li tabindex="0">after</li>
+        <li tabindex="0">after_or_equal</li>
+        <li tabindex="0">alpha</li>
+        <li tabindex="0">alpha_dash</li>
+        <li tabindex="0">alpha_numeric</li>
+        <li tabindex="0">array</li>
+        <li tabindex="0">before</li>
+        <li tabindex="0">before_or_equal</li>
+        <li tabindex="0">between</li>
+        <li tabindex="0">boolean</li>
+        <li tabindex="0">confirmed</li>
+        <li tabindex="0">date</li>
+        <li tabindex="0">date_equals</li>
+        <li tabindex="0">date_format</li>
+        <li tabindex="0">different</li>
+        <li tabindex="0">digits</li>
+        <li tabindex="0">digits_between</li>
+        <li tabindex="0">dimensions</li>
+        <li tabindex="0">distinct</li>
+        <li tabindex="0">e-mail</li>
+        <li tabindex="0">exists</li>
+        <li tabindex="0">file</li>
+        <li tabindex="0">filled</li>
+        <li tabindex="0">image</li>
+        <li tabindex="0">in</li>
+        <li tabindex="0">in_array</li>
+        <li tabindex="0">integer</li>
+        <li tabindex="0">ip_address</li>
+        <li tabindex="0">json</li>
+        <li tabindex="0">max</li>
+        <li tabindex="0">mime_types</li>
+        <li tabindex="0">min</li>
+        <li tabindex="0">nullable</li>
+        <li tabindex="0">not_in</li>
+        <li tabindex="0">numeric</li>
+        <li tabindex="0">present</li>
+        <li tabindex="0">regular_expression</li>
+        <li tabindex="0">required</li>
+        <li tabindex="0">required_if</li>
+        <li tabindex="0">required_unless</li>
+        <li tabindex="0">required_with</li>
+        <li tabindex="0">required_with_all</li>
+        <li tabindex="0">required_without</li>
+        <li tabindex="0">required_without_all</li>
+        <li tabindex="0">same</li>
+        <li tabindex="0">size</li>
+        <li tabindex="0">string</li>
+        <li tabindex="0">timezone</li>
+        <li tabindex="0">unique</li>
+        <li tabindex="0">url</li>
     </ul>
 <script>
         var curent_val_input = null;
@@ -101,9 +101,16 @@
                 console.log(curent_val_input.value[--curent_val_input.value.lenght]);
             }
         }
-        function SetFocus(div){
-            $(div.parentElement).animate({
+        function SetFocusTop(div){
+            $(div).animate({
                     scrollTop: $(div).prev().position().top
+                }, 10);
+        //$(div).focus();
+        }
+
+        function SetFocusDown(div){
+            $(div).animate({
+                    scrollTop: $(div).prev().position().bottom
                 }, 10);
         //$(div).focus();
         }
@@ -112,6 +119,7 @@
                 $(this).keydown(function (e) {
                     ///// up
                     if (e.which == 38) {
+                        //debugger;
                         if (activeButton > 0) {
                             console.log('up');
                             var all = $($($(this).parent().children()[1]).children()).length;
@@ -119,7 +127,8 @@
                             $(classThis[activeButton]).removeClass('active');
                             activeButton--;
                             $(classThis[activeButton]).addClass('active');
-                            SetFocus(classThis[activeButton]);
+                            SetFocusDown(classThis[activeButton]);
+                            classThis[activeButton].scrollIntoView(false);
                         }
                     }
                     /////enter
@@ -132,12 +141,14 @@
                         var all = $($($(this).parent().children()[1]).children()).length;
 
                         console.log('down');
+                        //debugger;
                         if ($($($(this).parent().children()[1]).children()).length > 0 && activeButton < all - 1) {
                             var classThis = $($($(this).parent().children()[1]).children());
                             $(classThis[activeButton]).removeClass('active');
                             activeButton++;
-                            SetFocus(classThis[activeButton]);
+                            SetFocusTop(classThis[activeButton]);
                             $(classThis[activeButton]).addClass('active');
+                            classThis[activeButton].scrollIntoView(false);
                         }
                     }
                 });

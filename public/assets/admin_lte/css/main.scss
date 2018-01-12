@@ -6,6 +6,76 @@ textarea {
     resize: none;
 }
 
+.nopadding{
+    padding: 0;
+}
+
+/*=================================
+        Dashboard
+=================================*/
+
+.info-box-content_dashbord{
+    text-transform: uppercase;
+}
+
+.info-box_dashboard, .small-box_dashboard{
+    background: #ecf0f5;
+}
+
+.icon_dashboard{
+    font-size: 45px;
+    color: rgba(0,0,0,0.15);
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.small-box__title{
+    margin-bottom: 0 !important;
+    font-size: 25px !important;
+    display: inline-block;
+    white-space:normal !important;
+}
+
+.inner_flex-wrap{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+}
+
+.small-box__date{
+    margin-top: 5px;
+}
+
+@media (max-width: 1199px){
+    .info-box_dashboard .info-box-icon{
+        width: 63px;
+    } 
+    .info-box_dashboard .info-box-content{
+        margin-left: 63px;
+    }
+}
+
+@media (max-width: 500px){
+    .info-box_dashboard-wrap{
+        width: 100%;
+    }
+    
+    .inner_flex-wrap{
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap; 
+    }
+}
+
 /*=================================
         Main page (login) 
 =================================*/
@@ -100,4 +170,48 @@ textarea {
 
 .tables-header__buttons{
 	text-align: right;
+}
+
+/*================================
+        Settings page
+================================*/
+
+.settings{
+    &__title{
+        margin: 0;
+        font-weight: 600;
+    }
+    &__flex-wrap{
+        display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    /*-webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;*/
+        & label{
+            margin-bottom: 0;
+            margin-left: 5px;
+            font-weight: 400;
+        }
+    }
+    &__btn{
+        width: 150px;
+    }
+}
+
+@media (max-width: 500px){
+    .settings{
+        &__block{
+            width: 100%;
+        }
+    }
 }
