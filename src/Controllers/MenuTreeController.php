@@ -81,7 +81,7 @@ class MenuTreeController extends Controller
             }
         }
 
-\
+
         if (request()->has('modify')) {
             $langs = Languages::all()->pluck('name', 'id');
            $edit =  Menus::where('id','=',request()->get('modify'))->first();
