@@ -58,7 +58,6 @@ class VerticalMenuController extends Controller
                 if (count($node->children()->get()) > 0) {
                     $submenu .= VerticalMenuController::ShowGroup($node,$url_array,$system_types);
                 } else {
-                    $submenu.= $node->item_type;
                     if($node->item_type !=12 &&$node->item_type !=13) {
 //                    $type_id = key(MenuTreeController::findType($node['item_type']));
                         $submenu .= '<li class="' . VerticalMenuController::active($node, $url_array, $system_types) . '">' .
