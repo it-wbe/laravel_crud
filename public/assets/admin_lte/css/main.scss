@@ -106,7 +106,7 @@ textarea {
 }
 
 .sidebar{
-	padding: 0 10px 10px;
+	padding: 0 0 10px;
 }
 
 .box-info_add-content, .box-info_tables, .box-info_filters{
@@ -214,4 +214,23 @@ textarea {
             width: 100%;
         }
     }
+}
+
+/*=====================================
+        Main menu
+=====================================*/
+
+.sidebar-menu>li.menu-label{
+    color: #4b646f;
+    background: #1a2226;
+    padding: 10px 25px 10px 15px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.sidebar-menu>li.menu-delimiter{
+    display: block;
+    background: #3c8dbc;
+    width: 100%;
+    height: 3px;
 }

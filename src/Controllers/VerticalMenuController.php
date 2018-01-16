@@ -58,9 +58,8 @@ class VerticalMenuController extends Controller
                 if (count($node->children()->get()) > 0) {
                     $submenu .= VerticalMenuController::ShowGroup($node,$url_array,$system_types);
                 } else {
+                    $submenu.= $node->item_type;
                     if($node->item_type !=12 &&$node->item_type !=13) {
-
-
 //                    $type_id = key(MenuTreeController::findType($node['item_type']));
                         $submenu .= '<li class="' . VerticalMenuController::active($node, $url_array, $system_types) . '">' .
                             '<a href="' . url($node->href) . '">' .
@@ -68,11 +67,13 @@ class VerticalMenuController extends Controller
                             $node->MenusDescriptionLang->title .
                             '</a>' .
                             '</li>';
-                    }elseif($node->item_type==12){
+                    }
+                    if($node->item_type==12){
                         $submenu .= '<li class="menu-label">' .
                             $node->MenusDescriptionLang->title .
                             '</li>';
-                    }elseif($node->item_type==13){
+                    }
+                    if($node->item_type==13){
                         $submenu .= '<li class="menu-delimiter">' .
                             $node->MenusDescriptionLang->title .
                             '</li>';
@@ -132,6 +133,9 @@ class VerticalMenuController extends Controller
                 return true;
                 break;
             case MenuTreeController::$item_types["label"]['id']: // label
+                return true;
+                break;
+            case MenuTreeController::$item_types["delimeter"]['id']: // label
                 return true;
                 break;
             //// ROOT
@@ -219,5 +223,6 @@ class VerticalMenuController extends Controller
 //"Additional_group"=>['id'=>10,'icon'=>'glyphicon glyphicon-cog'],
 //"Additional_item"=>['id'=>11,'icon'=>'fa fa-link'],
 //"lable"=>['id'=>12,'icon'=>''],
+//"delimetr"=>['id'=>13,'icon'=>''],
 
 }
