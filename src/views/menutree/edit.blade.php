@@ -16,8 +16,8 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="title">{{$langs[$edit_val['lang_id']]}}</label>
-                        <input type="text" class="form-control" name="title[{{$edit_val['lang_id']}}][title]" value="{{$edit_val['title']}}" required id="title">
-                        <input type="hidden"  name="title[{{$edit_val['lang_id']}}][lang_id]" value="{{$edit_val['lang_id']}}" required >
+                        <input type="text" class="form-control" name="title[{{$edit_val['lang_id']}}][title]" value="{{$edit_val['title']}}" id="title">
+                        <input type="hidden"  name="title[{{$edit_val['lang_id']}}][lang_id]" value="{{$edit_val['lang_id']}}" >
                     </div>
                 </div>
             @endforeach
