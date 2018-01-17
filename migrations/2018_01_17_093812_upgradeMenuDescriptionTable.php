@@ -14,7 +14,7 @@ class UpgradeMenuDescriptionTable extends Migration
     public function up()
     {
         Schema::table('menus_description', function (Blueprint $table) {
-            $table->string('title')->default('')->nullable();
+            $table->string('title')->default('')->nullable()->change();
         });
     }
 
