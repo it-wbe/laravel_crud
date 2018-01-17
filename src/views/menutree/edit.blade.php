@@ -10,7 +10,7 @@
     </style>
     @if(isset($edit))
         {{--{!! dd($edit) !!}--}}
-        <form method="post" class="form">
+        <form method="post" class="form" id="new_node">
             {{ csrf_field() }}
             @foreach($edit['description'] as $edit_val)
                 <div class="col-md-3">

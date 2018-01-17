@@ -73,9 +73,7 @@ class VerticalMenuController extends Controller
                             '</li>';
                     }
                     if($node->item_type==13){
-                        $submenu .= '<li class="menu-delimiter">' .
-                            $node->MenusDescriptionLang->title .
-                            '</li>';
+                        $submenu .= '<li class="menu-delimiter"></li>';
                     }
                 }
 

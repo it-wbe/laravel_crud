@@ -12,24 +12,24 @@
         margin: 6px 0px;
     }
 </style>
-    <div class="flash-message">
-        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-            @if(Session::has('alert-' . $msg))
-                <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-            @endif
-        @endforeach
-    </div> <!-- end .flash-message -->
+    {{--<div class="flash-message">--}}
+        {{--@foreach (['danger', 'warning', 'success', 'info'] as $msg)--}}
+            {{--@if(Session::has('alert-' . $msg))--}}
+                {{--<p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>--}}
+            {{--@endif--}}
+        {{--@endforeach--}}
+    {{--</div> <!-- end .flash-message -->--}}
 
     <h4>{!! __("crud::common.menu_add_node") !!}</h4>
     <div class="container-fluid" style="border-bottom: 1px solid grey; margin-bottom: 30px; padding-bottom: 10px;">
-    <form method="post" action="{!! route('menu.addCustomNode') !!}" class="form"  >
+    <form method="post" action="{!! route('menu.addCustomNode') !!}" class="form" id="new_node">
         {{ csrf_field() }}
         @foreach($langs as $lang_id=>$lang_name)
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="title">{{$lang_name}}</label>
-                    <input type="text" class="form-control" name="title[{{$lang_id}}][title]" required id="title">
-                    <input type="hidden"  name="title[{{$lang_id}}][lang_id]" value="{!! $lang_id!!}" required >
+                    <input type="text" class="form-control" name="title[{{$lang_id}}][title]" id="title">
+                    <input type="hidden"  name="title[{{$lang_id}}][lang_id]" value="{!! $lang_id!!}" >
                 </div>
             </div>
         @endforeach
