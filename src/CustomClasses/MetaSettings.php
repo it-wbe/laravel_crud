@@ -19,7 +19,8 @@ class MetaSettings
      * @return bool
      */
     public static function NeedMeta($content_type_id){
-        if(\DB::table('content_type')->where('id','=',$content_type_id)->pluck('need_meta')){
+//        dd(\DB::table('content_type')->where('id','=',$content_type_id)->pluck('need_meta')->first());
+        if(\DB::table('content_type')->where('id','=',$content_type_id)->pluck('need_meta')->first()){
             return true;
         }
         else{
@@ -35,7 +36,7 @@ class MetaSettings
      */
     public function AddMetaFieldsTo($content){
         try{
-        if(MetaSettings::NeedMeta($content->id)){
+        if(MetaSettings::NeedMeta($content->id) && $content->is_system ==0){
             $created = false;
             if(MetaSettings::is_description_table($content->table)){
                 // add columns to description table
@@ -62,6 +63,7 @@ class MetaSettings
         }else{
             // delete meta if exist
             $this->columns_delete($content->table);
+            return false;
         }
         }catch (\Exception $ex){
             Globals::$messages[2][] = $ex->getMessage();
@@ -158,6 +160,10 @@ class MetaSettings
      * @param null $data_description - new description_data
      */
     public static function GenerateMeta($content,$all_data=null,$lang_id=null,$data_description=null){
+        if(!MetaSettings::NeedMeta($content->id)){
+            return null;
+        }
+
         $settings = MetaSettings::get_settings_meta($content->id);
         if($lang_id){/// for description
             if(!MetaSettings::is_description_table($content->table)){
@@ -200,18 +206,18 @@ class MetaSettings
         return $temp;
     }
 
-    public static function  set_meta_to_form($filds , $table_name){
-        $colection = [];
-        foreach (MetaSettings::$columns as $col){
-            $colection[$col] = new ContentTypeFields;
-//            dd($colection[$col]);
-            $colection[$col]->type="text";
-            $colection[$col]->name=$col;
-            $colection[$col]->title=$col;
-            $filds->put($col,$colection[$col]);
+    public static function  set_meta_to_form($content,$filds){
+//        dd($content);
+        if(MetaSettings::NeedMeta($content->id)) {
+            $colection = [];
+            foreach (MetaSettings::$columns as $col) {
+                $colection[$col] = new ContentTypeFields;
+                $colection[$col]->type = "text";
+                $colection[$col]->name = $col;
+                $colection[$col]->title = $col;
+                $filds->put($col, $colection[$col]);
+            }
         }
-
-//        return $colection;
     }
 
     public static function get_settings_meta($content_type_id){

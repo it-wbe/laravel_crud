@@ -346,8 +346,11 @@ class EditController extends Controller
     private function save_meta_data($content,$data){
 //        $data->update();
 //        dd($data);
-        foreach (MetaSettings::$columns as $col){
-            \DB::table($content->table)->where('id','=',$data->id)->update([$col=>$data[$col]]);
+//        dd($content);
+        if($content->is_system==0){
+            foreach (MetaSettings::$columns as $col){
+                \DB::table($content->table)->where('id','=',$data->id)->update([$col=>$data[$col]]);
+            }
         }
 //        dump($data['meta_title']);
 //        dd('save data meta',$data);

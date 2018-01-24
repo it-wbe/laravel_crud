@@ -37,6 +37,7 @@ class FieldsDescriptorController extends Controller
         //////////////////////////////////////////// META  ////////////////////////////////////////
         $Meta  = new MetaSettings();
         $meta = $Meta->AddMetaFieldsTo($content);
+
         $is_description = MetaSettings::is_description_table($content->name);
         ////////////////////////////////////////////////////////// END ///////////////////////////////
         ModelGenerator::generateModelByTable($content->table, $content->table . '_description', $content->model);

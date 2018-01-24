@@ -55,7 +55,7 @@ class FieldsProcessor
         $ct_fields = ContentTypeFields::getFieldsFromDB($content->id, $where);
 
 ////////////////////////////////////////////////////// Meta /////////////////////////
-         MetaSettings::set_meta_to_form($ct_fields,$content->table);
+         MetaSettings::set_meta_to_form($content,$ct_fields);
 /////////////////////////////////////////// END META ///////////////////////////////
 //        $ct_fields->put($a);
         $fields_schema = \Schema::getColumnListing($content->table);
