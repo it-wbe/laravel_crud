@@ -161,7 +161,11 @@ class MetaSettings
      */
     public static function GenerateMeta($content,$all_data=null,$lang_id=null,$data_description=null){
         if(!MetaSettings::NeedMeta($content->id)){
-            return null;
+            if(!is_null($data_description)){
+				return $data_description;
+			}else{
+				return $all_data;
+			}
         }
 
         $settings = MetaSettings::get_settings_meta($content->id);
