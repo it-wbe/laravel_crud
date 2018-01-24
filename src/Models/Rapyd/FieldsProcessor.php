@@ -6,11 +6,11 @@ use App\Models\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Wbe\Crud\Controllers\Rapyd\EditController;
+use Wbe\Crud\CustomClasses\MetaSettings;
 use Wbe\Crud\Models\ContentTypes\Languages;
 use Wbe\Crud\Models\ContentTypes\ContentType;
 use Wbe\Crud\Models\ContentTypes\ContentTypeFields;
 use Wbe\Crud\Models\ModelGenerator;
-use Wbe\Crud\Models\Rapyd\FieldsProcessor;
 use Zofe\Rapyd\DataFilter\DataFilter;
 use Zofe\Rapyd\DataGrid\DataGrid;
 use Zofe\Rapyd\DataEdit\DataEdit;
@@ -53,6 +53,11 @@ class FieldsProcessor
                 die('addFields: unknown type "' . $type . '"');
         }
         $ct_fields = ContentTypeFields::getFieldsFromDB($content->id, $where);
+
+////////////////////////////////////////////////////// Meta /////////////////////////
+         MetaSettings::set_meta_to_form($ct_fields,$content->table);
+/////////////////////////////////////////// END META ///////////////////////////////
+//        $ct_fields->put($a);
         $fields_schema = \Schema::getColumnListing($content->table);
         $fields_desc_schema = \Schema::getColumnListing($content->table . '_description');
         // для фільтра: відображати багатострічкові тектові поля в одну стрічку
@@ -108,9 +113,7 @@ class FieldsProcessor
                         $field->type = 'text';
                         $f = $rapyd->add($display, $field->title != "not set" ? $field->title : $field->name, $field->type);
                         $f->clause = 'custom';
-//                      dd($f);
                     }else {
-//                      dd($content->table);
                         if ($field->type == "image" || $field->type == "file") {
                             if (\Request::input('process')) {
                                 if(!is_null(\Request::file($field->name)))
@@ -129,12 +132,11 @@ class FieldsProcessor
                         }
 
                     }
-//                 dd($f->attributes['tab']);
                     $f->attributes['tab']=0;
                     FieldsProcessor::$cont_tabs[0] = true;
-                    if ($field->validators) {
-//                        $f->rule($field->validators);
-                    }
+//                    if ($field->validators) {
+////                        $f->rule($field->validators);
+//                    }
                 }
             }
         }
@@ -152,13 +154,13 @@ class FieldsProcessor
                 die('unknown type!');
 //            index для масиву needTab
             $index_need_tab = 0;
-
             /// generate description fields
             foreach ($ct_fields as $field) {
                 if (($field->name != 'id') && ($field->name != 'lang_id') && ($field->name != 'content_id') &&
                     in_array($field->name, $fields_desc_schema)
                 ) {
                     FieldsProcessor::$needTab[$index_need_tab] = [];
+//                    dd($languages);
                     foreach ($languages as $lang_k => $lang) {
                         $field_key = $desc_table . '[' . $lang_k . '][' . $field->name . ']';
                         if ($field->type == "image" || $field->type == "file") {
@@ -192,23 +194,17 @@ class FieldsProcessor
                     $index_need_tab++;
                 }
             }
+
+
         }
 
         // пост-обробка доданих полів
         foreach ($rapyd->fields as $f_name => $f){
-//            dd($ct_fields);
             if (isset($ct_fields[$f_name])) {
-//                dd($ct_fields[$f_name]);
                 $field = $ct_fields[$f_name];
                 if ($field->form_attributes) {
                     eval($field->form_attributes);
                 }
-//                if($show&&$field->type == 'image'||$field->type == 'file'){
-////                    dd($f);
-////                    $f->value = ('asdasd');
-//                    $f->old_value = $f->value;
-////                    dd($f);
-//                }
                 // тип поля "select": заповнення
                 if ($field->relation && ($field->type == 'select')) {
                         $model_filename = ContentType::getFilePathByModel($content->model);

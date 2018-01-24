@@ -27,7 +27,7 @@ use Zofe\Rapyd\DataEdit\DataEdit;
 use Zofe\Rapyd\DataForm\DataForm;
 use Zofe\Rapyd\Rapyd;
 use Validator;
-
+use Wbe\Crud\CustomClasses\MetaSettings;
 
 class EditController extends Controller
 {
@@ -41,8 +41,6 @@ class EditController extends Controller
      */
     public function index(Request $r, $content_type, $lang_id = 0)
     {
-        // dd(\App\Models\Portfolios::find(7)->relations()->get());
-        // dump($r->session());
         if($r->exists('update'))
         {
             $r->set('modify',$r->get('update'));
@@ -50,9 +48,7 @@ class EditController extends Controller
 
         EditController::$request = $r;
         if ($r->exists('modify') || $r->exists('insert')||$r->exists('show')) {
-//            dd($content_type);
             $content = ContentType::find($content_type);
-//            dd($content);
             if (!$content)
                 die('content type with id ' . $content_type . ' not found');
 
@@ -64,14 +60,7 @@ class EditController extends Controller
             $content->rec_id = $content_id;
 
             if (!$content) abort('403', 'Content type #' . $content_type . ' not found!');
-
-//            dd($content);
-//            $model->relations
-            //$content_model = 'App\Models\\' . $content->model;
-            $content_model = $content::getCTModel($content->model);
-//             dump($content_model);
-//            dd(\Schema::getColumnListing($content->table)[0], $r->input('modify'));
-            // dd($content_model);
+           $content_model = $content::getCTModel($content->model);
             if (!$content_model)
                 die('model not found: ' . $content->model);
 
@@ -81,31 +70,24 @@ class EditController extends Controller
 
                 } else {
                     $new_content_model = $content_model::where(\Schema::getColumnListing($content->table)[0], $content_id)->first();
-                    //  dd($content_model);
-                }
+                  }
                 if (!$new_content_model)
-//                    dump('if !new content model');
                     $new_content_model = new $content_model;
             } else {
-//                dump('new content model');
                 $new_content_model = (new $content_model);
             }
-//            dd($new_content_model );
             $desc_table = $content->table . '_description';
             $desc_table_exists = \Schema::hasTable($desc_table);
             try {
                 $new_content_model::saved(function ($row) use ($content, $content_id, $desc_table, $desc_table_exists) {
-//                    dd('saved description');
                     $this_contentFilds = ContentTypeFields::getFieldsFromDB($content->id, [['form_show', 1]]);
                     foreach ($this_contentFilds as $filds) {
                         if ($filds->type == 'Wbe\Crud\Models\Rapyd\Fields\Relation') {
                             $languages = Languages::all()->pluck('name', 'id');
                             $contentTypeId = ContentType::where('table', $filds->name)->pluck('id')->first();
-//                        $this->contentFields = \Schema::getColumnListing($filds->name);
                             $desc_table = $filds->name . '_description';
                             $contentFieldsDescription = \Schema::getColumnListing($filds->desc_table);
                             $tableFieldsType = ContentTypeFields::getFieldsFromDB($contentTypeId, [['form_show', '=', 1]]);
-//                        dd($tableFieldsType );
                             /// наш новый тип достаем поля типа делаем новые обекты модельки
                             $contentFields = \Schema::getColumnListing($filds->name);
                             $tableName = $filds->name;
@@ -137,21 +119,15 @@ class EditController extends Controller
                                         $item = $this->fillmodel($item, $contentFields, $tableFieldsType, $tableName);
                                         if ($item['id'] < 0) {
                                             $item['id'] = null;
-//                                        unset($item['id']);
                                         }
-//dd($item);
-//                                    dd($tableName);
-//                                    dd($row->$tableName()->);
-//                                    $newInstance  = \Wbe\Crud\Models\ContentTypes\Relations::create($item);
                                         $newInstance = $row->$tableName()->create($item);
-//                                    dd($item);
                                         $new_typeInstance['id'] = $newInstance->id;
                                         $newInstance->save();
                                     }
                                     $desc_table_cont = $tableName . '_description';
                                     $desc_table_cont_exists_rel = \Schema::hasTable($desc_table);
                                     /// save ower type description
-                                    /// content id
+                                   /// content id
 
                                     if (!isset($new_typeInstance)) {
                                         $key = $key_rel;
@@ -174,23 +150,17 @@ class EditController extends Controller
                                                 $lang_records[$post_lang_id]['lang_id'] = $post_lang_id;
                                             }
                                             foreach ($lang_records as $post_lang_id => $post_lang) {
-//                                                dd('asd');
                                                 $this->createAlias($post_lang);
                                                 \DB::table($desc_table_cont)->updateOrInsert(['content_id' => $key, 'lang_id' => $post_lang_id], $post_lang);
                                             }
                                         }
                                     }
                                 }
-                                //// remove all
-//                            dump($all_id);
                             }/// relation взагалі ніякого нема  /// remova relations
-//                        dd($all_id);
-//                        $aa = array_values($all_id);
-//                        dd($aa);
                             foreach ($all_id as $id) {
                                 \DB::table($filds->name)->where('id', '=', $id)->delete();
                             }
-//                                 remove description end relations table
+                            ////  remove description end relations table
                             foreach ($all_id as $value) {
                                 \DB::table($filds->name . '_description')->where('content_id', '=', $value)->delete();
 
@@ -200,30 +170,35 @@ class EditController extends Controller
                             }
                         }
                     }
+                    /////// generate meta for data
+//                    dd($row);
+                    $row = MetaSettings::GenerateMeta($content,$row,null);
+//                    dd($row);
+//                    /////// end generate meta for data
+//                    ///
+//                    /// need save new meta
+//                    /// save new meta for data
+                    $this->save_meta_data($content,$row);
+                    /// end save new meta for data
+
                     $desc_table = $content->table . '_description';
-//                dd($desc_table);
-
                     // сохранение description для модели
-//                dd($_POST[$desc_table]);
                     if ($desc_table_exists && isset($_POST[$desc_table])) {
-
                         $lang_records = \Request::all()[$desc_table];
-//                    dd($desc_table);
                         foreach ($lang_records as $post_lang_id => $post_lang) {
                             $lang_records[$post_lang_id]['content_id'] = $row->id;
                             $lang_records[$post_lang_id]['lang_id'] = $post_lang_id;
                         }
                         foreach ($lang_records as $post_lang_id => $post_lang) {
-//                        dd($lang_records);/
                             try{
-//                                dump($post_lang );
                                 $this->createAlias($post_lang);
+                                ////// generate Meta description if need
+                      $post_lang = MetaSettings::GenerateMeta($content,$row,$post_lang_id,$post_lang);
+                                ////// end generate
                                 \DB::table($desc_table)->updateOrInsert(['content_id' => $content_id, 'lang_id' => $post_lang_id], $post_lang);
-//                                dd($post_lang);
                             }catch (\Exception $ex){
                                 EditController::$request->session()->flash('message.level', 'danger');
                                 EditController::$request->session()->flash('message.content', 'Error!'.$ex->getMessage());
-//                                dd($ex->getMessage());
                             }
                         }
                     }
@@ -232,8 +207,6 @@ class EditController extends Controller
                 EditController::$request->session()->flash('message.level', 'danger');
                 EditController::$request->session()->flash('message.content', 'Error!'.$ex->getMessage());
             }
-            // var_export($new_content_model);
-            // die;
             $edit = DataForm::source($new_content_model);
             $show = false;
             if($r->exists('show')){
@@ -257,7 +230,6 @@ class EditController extends Controller
                 $lable_name_method = trans('crud::common.content_show');
             }
             $edit->label($content->name . ' > ' .  $lable_name_method);
-//            dump($content);
             FieldsProcessor::addFields($content, $edit, 'form',$show);
             /// $tab  - for description tabs
             $tab = FieldsProcessor::$needTab;
@@ -269,16 +241,7 @@ class EditController extends Controller
                 $edit->link(url('admin/crud/grid/' . $content_type . '/'), trans('crud::common.cancel'), "TR");
                 $edit->submit('Save', 'TR');
             }
-            //           try {
             $edit->saved(function () use ($edit, $content_type, $lang_id) {
-//                $new_conte
-//                dump('saved not foreach');
-//                dd($edit->model->id);//->Model->id);
-                //\Redirect::to(url('admin/'));
-                //redirect()->action('Backend\HomeController@index');
-                //return redirect('admin/');
-                ///die('<meta http-equiv="refresh" content="0; URL=\'' . url('admin/crud/grid/' . $content_type . '/') . '\'" />');
-
                 if (\Request::has('to'))
                     $back_url = \Request::input('to');
                 else{
@@ -294,25 +257,9 @@ class EditController extends Controller
                         }
                     }
                 }
-////
                 header('Location: ' . $back_url);
                 die();
-//                return redirect();
-//                   $edit->link(url('admin/crud/grid/' . $content_type . '/'), "save", "TR");
-//                   $edit->submit('Save', 'TR');
-                //                   return back();
-                //die('<meta http-equiv="refresh" content="0; URL=\'' . $back_url . '\'" />');
             });
-//           }
-//           catch (\Exception $ex){
-//                EditController::$request->session()->flash('message.level', 'danger');
-//                EditController::$request->session()->flash('message.content', 'Error!'.$ex->getMessage());
-////                EditController::$request->flash('error', 'Save was unsuccessful!');
-//            }
-//            if($r->exists('show'))
-//            {
-//                $edit->status('show');
-//            }
             $edit->build();
             return view('crud::crud.form', compact('edit', 'lang_id','tab','cont_tab'));
 
@@ -322,7 +269,6 @@ class EditController extends Controller
             $new_content_model = $content_model::where('id', $r->input('delete'))->first();
             if (!$new_content_model)
                 return 'content type does not exists';
-//            dd($new_content_model->);
             $desc_table_cont = $content->name. '_description';
             $desc_table_cont_exists_rel = \Schema::hasTable($desc_table_cont);
             if($desc_table_cont_exists_rel )
@@ -357,34 +303,20 @@ class EditController extends Controller
      * @param $post_lang *_description some lang
      */
     function createAlias(&$post_lang){
-//dd($post_lang['alias']);
 
         if(array_key_exists('alias',$post_lang)) {
-//            dd('isset');
             if (empty($post_lang['alias'])) {
-//                dd($post_lang['alias']);
                 $post_lang['alias'] = str_slug($post_lang['title'], '-');
             }
         }
-//        dd('end');
     }
 
 
     // for saved
     public function fillmodel($item ,$contentFilds,$contentFildsType,$modelName){
         // наполняем контент
-//        dump($item);
         $newItem = [];
         foreach ($contentFilds as $content_key =>$content_value){
-//            dd($item[$content_value]);
-//            $id = $item[$content_value];
-//            $id--;
-//            dd(EditController::$request->file([$modelName])[$id][$content_value]['val']);
-//            dd(EditController::$request->file([$modelName]));
-//            dd($item);
-            //dd($content_key);
-//               $file = EditController::$request->file([$modelName])[$content_key][$value->name]['val'];
-//            dd($contentFildsType[$content_value]->type);
             $newItem[$content_value] = $this->getValue($item,$content_value,$modelName,$contentFildsType[$content_value]->type);
         }
 
@@ -409,5 +341,16 @@ class EditController extends Controller
             // значення в нас знаходиться в назві поля old_img
             return $item[$content_value]['old_img'];
         }
+    }
+
+    private function save_meta_data($content,$data){
+//        $data->update();
+//        dd($data);
+        foreach (MetaSettings::$columns as $col){
+            \DB::table($content->table)->where('id','=',$data->id)->update([$col=>$data[$col]]);
+        }
+//        dump($data['meta_title']);
+//        dd('save data meta',$data);
+//        \DB::table($content->table)->where()
     }
 }

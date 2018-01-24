@@ -2,6 +2,7 @@
 
 namespace Wbe\Crud\Controllers;
 
+use Wbe\Crud\CustomClasses\MetaSettings;
 use Wbe\Crud\Models\ModelGenerator;
 use Wbe\Crud\Models\Globals;
 use Illuminate\Http\Request;
@@ -22,7 +23,6 @@ class FieldsDescriptorController extends Controller
     const relations_descriptions = ['hasOne', 'hasMany', 'belongsTo (інверсія hasMany)', 'belongsToMany'];
     /** @var array Масив виключених з генерації колонок */
     const excluded_fields = ['lang_id', 'content_id'];
-
     /**
      * Поля контенту (admin/fields_descriptor/content/*)
      * @param Request $r запит із роутів
@@ -32,33 +32,26 @@ class FieldsDescriptorController extends Controller
     public function content_types(Request $r, $content_type)
     {
         $unknown_methods = [];
-
         $content = ContentType::find($content_type);
-
         $generate_fields = \Request::exists('btn-generate-fields');
-
-        //print_r($_POST);
-
-
+        //////////////////////////////////////////// META  ////////////////////////////////////////
+        $Meta  = new MetaSettings();
+        $meta = $Meta->AddMetaFieldsTo($content);
+        $is_description = MetaSettings::is_description_table($content->name);
+        ////////////////////////////////////////////////////////// END ///////////////////////////////
         ModelGenerator::generateModelByTable($content->table, $content->table . '_description', $content->model);
-
-
         if (\Request::isMethod('post')) {
             if (\Request::input('active_tab') == 'fields') {
                 if (\Request::exists('btn-save-fields')) {
-
                     //!!!
                     \DB::table('content_type_fields')->where(['content_type_id' => $content_type])->delete();
-
                     if (\Request::input('name')) {
-
                         if(!is_array(\Request::input('name')))
                             $names = [\Request::input('name')];
                         else
                             $names = \Request::input('name');
-
+                        //dd($names);
                         //print_r(\Request::all());
-
                         foreach ($names as $k => $f) {
                             $field = [
                                 'name' => $names[$k],
@@ -73,11 +66,11 @@ class FieldsDescriptorController extends Controller
                                 'grid_custom_display' => \Request::input('grid_custom_display')[$k],
 //                                'grid_attributes' => \Request::input('grid_attributes')[$k],
                                 'form_show' => (int)(\Request::input('form_show')[$k] == 'on'),
+                                'in_meta' => (int)(\Request::input('in_meta')[$k] == 'on'),
 //                                'form_attributes' => \Request::input('form_attributes')[$k],
 //                                'show' => (int)(\Request::input('show')[$k] == 'on'),
                                 'sort' => (int)\Request::input('sort')[$k],
                             ];
-
                             if (\Request::input('id')[$k]&& \Request::input('id')[$k]>0) {
                                 $field['id'] = \Request::input('id')[$k];
 //                                if($names[$k]=='_default'){
@@ -89,8 +82,6 @@ class FieldsDescriptorController extends Controller
 //                                dump('insert');
                                 ContentTypeFields::insert($field);
                             }
-
-
                             //ContentTypeFields::updateOrInsert(['id' => $field['id']], $field);
                         }
 //                        dd();
@@ -102,16 +93,13 @@ class FieldsDescriptorController extends Controller
                     $this->messages[1][] = 'Поля очищено (no function)';
                 }*/
             } elseif (\Request::input('active_tab') == 'relations') {
-
                 if (\Request::input('existing_relations')) {
                     $req_existing_relations = explode(',', \Request::input('existing_relations'));
                 }
                 else $req_existing_relations = false;
-
                 if (\Request::input('rel_method_name'))
                     $rel_method_names = \Request::input('rel_method_name');
                 else $rel_method_names = [];
-
                 // Видалення існуючих зв'язків
                 if ($req_existing_relations)
                 {
@@ -125,17 +113,14 @@ class FieldsDescriptorController extends Controller
                     if ($left_relations)
                         ModelGenerator::write_content_model($content, $left_relations);
                 }
-
                 $left_relations = [];
                 //XEDIT
                 if ($rel_method_names)
                     foreach ($rel_method_names as $k => $rel_method_name) {
-
                         if (!isset(\Request::input('rel_type')[$k])) {
                             echo 'cannot generate relation';
                             continue;
                         }
-
                         $rp = [
                             'rel_type' => \Request::input('rel_type')[$k],
                             'right_name' => trim(\Request::input('rel_method_name')[$k]),
@@ -223,10 +208,11 @@ class FieldsDescriptorController extends Controller
                     ModelGenerator::write_content_model($content, $left_relations);
 
                 unset($f);
+            }elseif (\Request::input('active_tab') == 'meta'){
+//                dd(\Request::all());
+                $Meta->add(\Request::all(),$content->name);
             }
         }
-
-
         $classname = $content::getCTModel($content->model);
         //if (!$classname) echo '!$classname';
         $model_filename = $content->getClassFilename($classname);
@@ -234,9 +220,6 @@ class FieldsDescriptorController extends Controller
             die('model not found: ' . $content->model);
         //base_path() . '\app\Models\\' . ltrim($content->model, '\\/') . '.php';
         $relation_methods = ModelGenerator::getModelRelationsMethods(file_get_contents($model_filename));
-        //print_r($relation_methods); die();
-
-
         $existing_relations = [];
         $relations = [];
 
@@ -311,21 +294,15 @@ class FieldsDescriptorController extends Controller
                 $unknown_methods[] = $rel_m;
             }
         }
-
-        //print_r($relations);
-
-
         $table = $content->table;
         $table_exists = \Schema::hasTable($table);
-
         $desc_table = $content->table . '_description';
         $desc_table_exists = \Schema::hasTable($desc_table);
-
+//        dump($table,$table_exists,$desc_table_exists);
         //$default_field = ContentTypeFields::find(0);
         $default_field = ContentTypeFields::where(['content_type_id' => -2])->first();
         if (!$default_field || !isset($default_field->name))
             die('Cannot find default field! Check field "_default" into "content_type_fields".');
-
         $fields = ContentTypeFields
             ::where('content_type_id', $content_type)
             ->orderBy('sort')
@@ -338,15 +315,18 @@ class FieldsDescriptorController extends Controller
         if (\Schema::hasTable($desc_table)) {
             $desc_table_fields = \DB::select('SHOW COLUMNS FROM ' . $desc_table);
         } else $desc_table_fields = [];
-
         $table_all_fields = array_merge($table_fields, $desc_table_fields);
         foreach ($table_all_fields as $f) {
-            if (isset($fields[$f->Field]))
-                $fields[$f->Field]->exists_in_table = true;
+            if (isset($fields[$f->Field])){
+                if(!in_array($f->Field,MetaSettings::$columns)){
+                    $fields[$f->Field]->exists_in_table = true;
+                }
+
+            }
         }
         if ($generate_fields)
             foreach ($table_all_fields as $f) {
-                if (!isset($fields[$f->Field]) && (!in_array($f->Field, self::excluded_fields)))
+                if (!isset($fields[$f->Field]) && (!in_array($f->Field, self::excluded_fields))&&(!in_array($f->Field, MetaSettings::$columns)))
                     $fields[$f->Field] = ModelGenerator::autofield($f, $content_type, $default_field);
             }
 
@@ -388,12 +368,9 @@ class FieldsDescriptorController extends Controller
         ];*/
 
         //print_r($fields);
-
-         $content_types = ContentType::get()->where('is_system','=','0')->keyBy('id');
-        //unset($content_types[$content_type]);
-
+        $content_types = ContentType::get()->where('is_system','=','0')->keyBy('id');
         $existing_relations = implode(',', $existing_relations);
-
+        $langs = Languages::get();
         return view('crud::crud.fieldsdescriptor', [
             'default_field' => $default_field,
             'fields' => $fields,
@@ -406,6 +383,10 @@ class FieldsDescriptorController extends Controller
             'message_class' => Globals::$message_class,
             'unknown_methods' => $unknown_methods,
             'left_columns' => \Schema::getColumnListing($content->table),
+            'meta'=>$meta,
+            'langs'=>$langs,
+            'is_description'=>$is_description,
+            'meta_fild' =>MetaSettings::$columns,
         ]);
     }
 }

@@ -174,11 +174,7 @@
         color: #1c2d3f;
         background-color: lightslategrey;
     }
-</style>
 
-
-
-    <style>
         .table-fields input {
             border: 1px solid #ddd;
         }
@@ -207,7 +203,7 @@
         /*.table-fields input:focus {
             width:600px;
         }*/
-    </style>
+</style>
     <script>
         function str_before(haystack, needle) {
             return haystack.substr(0, haystack.indexOf(needle));
@@ -369,12 +365,13 @@
     <ul class="nav nav-tabs">
         <li{!! (!\Request::has('active_tab') || (\Request::input('active_tab') == 'fields')) ? ' class="active"' : '' !!}><a data-toggle="tab" href="#fields">Поля</a></li>
         <li{!! (\Request::input('active_tab') == 'relations') ? ' class="active"' : '' !!}><a data-toggle="tab" href="#relations">Зв'язки</a></li>
-        <!--<li><a data-toggle="tab" href="#menu3">Menu 3</a></li>-->
+        @if($meta)
+            <li{!! (\Request::input('active_tab') == 'meta') ? ' class="active"' : '' !!}><a data-toggle="tab" href="#meta">Meta</a></li>
+        @endif
     </ul>
 
     <div class="tab-content">
         <div id="fields" class="tab-pane fade in{!! (!\Request::has('active_tab') || (\Request::input('active_tab') == 'fields')) ? ' active' : '' !!}">
-
             <form method="POST" action="" class="fd_form">
                 {{ csrf_field() }}
                 <input type="hidden" name="active_tab" value="fields">
@@ -387,10 +384,8 @@
                         <th>grid show</th>
                         <th>grid filter</th>
                         <th>grid custom display</th>
-                        {{--<th>grid attributes</th>--}}
                         <th>form show</th>
-                        {{--<th>form attributes</th>--}}
-                        {{--<th>show</th>--}}
+                        <th>in meta</th>
                         <th>Дії</th>
                     </tr>
                     </thead>
@@ -403,13 +398,11 @@
                     @endforeach
                     </tbody>
                 </table>
-
                 <button type="submit" id="btn-save-fields" name="btn-save-fields" class="btn btn-primary">Зберегти схему</button>
                 <button id="btn-clear-fields" name="btn-clear-fields" class="btn btn-danger">Очистити поля</button>
                 <button type="submit" id="btn-generate-fields" name="btn-generate-fields" class="btn btn-info">Згенерувати опис</button>
                 <button id="btn-add-field" name="btn-add-field" class="btn btn-default pull-right">+ Додати поле</button>
             </form>
-
             <table class="table-field-newitem hidden">
                 <tbody>
                 @include('crud::crud.fd_fields_row', [
@@ -418,17 +411,12 @@
                 ])
                 </tbody>
             </table>
-
         </div>
         <div id="relations" class="tab-pane fade in{!! (\Request::input('active_tab') == 'relations') ? ' active' : '' !!}">
-
-
-
             <form method="POST" action="" class="rel_form">
                 {{ csrf_field() }}
                 <input type="hidden" name="active_tab" value="relations">
                 <input type="hidden" name="existing_relations" value="{{ $existing_relations }}">
-
                 <table class="table table-bordered table-hover table-rel">
                     <thead>
                     <tr>
@@ -449,9 +437,6 @@
                 <button type="submit" id="btn-save-rel" name="btn-save-rel" class="btn btn-primary">Зберегти зв'язки</button>
                 <button id="button-add-rel" name="button-add" class="btn btn-default pull-right">+ Додати зв'язок</button>
             </form>
-
-
-
             <table class="table-rel-newitem hidden">
                 <tbody>
                     @include('crud::crud.fd_relation_row', [
@@ -466,9 +451,6 @@
                     ])
                 </tbody>
             </table>
-
-
-
             @if ($unknown_methods)
                 <br>
                 <h4>Не розпізнано</h4>
@@ -478,14 +460,68 @@
                 @endforeach
                 </code>
             @endif
-
-
-
-
         </div>
-        <!--<div id="menu3" class="tab-pane fade">
-            <h3>Menu 3</h3>
-            <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-        </div>-->
+        @if($meta)
+        <div id="meta" class="tab-pane fade in{!! (\Request::input('active_tab') == 'meta') ? ' active' : '' !!}">
+            <form method="POST" action="" class="meta_form col-md-8">
+            {{ csrf_field() }}
+                <input type="hidden" name="active_tab" value="meta">
+                <input type="hidden" name="content_type_id" value="{{$content->id}}">
+                <div class="pull-left">
+                    @if($is_description)
+                        <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                    @foreach($langs as $lang)
+                        <li @if($loop->index==0){{ "class=active"}}@endif ><a data-toggle="tab" href="#{{$lang->code}}">{{$lang->name}}</a></li>
+                    @endforeach
+                    </ul>
+                        </div>
+                    <div class="tab-content">
+                        @foreach($langs as $lang)
+                            <div id="{{$lang->code}}" class="tab-pane fade @if($loop->index==0){{' in active'}}@endif">
+                                @foreach($meta->getDescription($meta->id)[$lang->id] as $item_key =>$item_value)
+                                    @if(in_array($item_key,$meta_fild))
+                                    <label for="{{$item_key}}" class="col-md-12"> {{$item_key}}
+                                        <input type="text" class="form-control col-md-12" name="{{$item_key}}[{{$lang->id}}]" value="{{$item_value}}">
+                                    </label>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    @foreach($meta->getDescription($meta->id) as $fild_name =>$value)
+                            @if(in_array($fild_name,$meta_fild))
+                        <label for="{{$fild_name}}" class="col-md-12"> {{$fild_name}}
+                            <input type="text" class="form-control col-md-12" name="{{$fild_name}}[]" value="{{$value}}">
+                        </label>
+                            @endif
+                    @endforeach
+                @endif
+                <button type="submit" id="btn-save-rel" name="btn-save-rel" class="btn btn-primary col-md-2 col-md-offset-4">Зберегти</button>
+            </form>
+        </div>
+            <div class="col-md-4" id="meta_cols">
+            </div>
+        </div>
+        @endif
     </div>
+
+    <script type="text/javascript">
+        $(function(){
+            $('.in_meta').on('ifChecked',regenMeta);
+            $('.in_meta').on('ifUnchecked',regenMeta);
+            regenMeta();
+        });
+
+        function regenMeta(){
+            var selected = $('.in_meta:checked');
+            $('#meta_cols').empty();
+           $.each(selected,function(k,v){
+               $($('#meta_cols')[0]).append("<div class='col-md-2'>["+$(v).attr('id')+"]</div><div class='col-md-10'>"+$(v).attr('id')+"</div>");
+           });
+            //console.log('regen meta');
+        }
+    </script>
 @endsection
+

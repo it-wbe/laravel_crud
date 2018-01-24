@@ -8,7 +8,8 @@
         "laravel/socialite": "*",
         "php": "^5.6 || ^7.0",
         "barryvdh/laravel-elfinder": "^0.3.8",
-        "baum/baum":"*"
+        "baum/baum":"*",
+        "doctrine/dbal":"*"
     },
     "authors": [
         {
