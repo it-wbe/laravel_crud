@@ -42,7 +42,6 @@
             <select name="type" class="form-control">
                 <option value="1">{!! __("crud::common.menu_item") !!}</option>
                 <option value="12">{!! __("crud::common.menu_label") !!}</option>
-                <option value="13">{!! __("crud::common.menu_delimiter") !!}</option>
             </select>
         </div>
         <div class="col-md-6">

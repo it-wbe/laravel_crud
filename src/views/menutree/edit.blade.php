@@ -30,8 +30,7 @@
                 <select name="type" class="form-control">
                     <option value="1" @if($edit->item_type==1){{"selected"}}@endif >{!! __("crud::common.menu_item") !!}</option>
                     <option value="12" @if($edit->item_type==12){{"selected"}}@endif>{!! __("crud::common.menu_label") !!}</option>
-                    <option value="13" @if($edit->item_type==13){{"selected"}}@endif>{!! __("crud::common.menu_delimiter") !!}</option>
-                </select>
+				</select>
             </div>
             <div class="col-md-12 controll">
                 <button type="submit" class="btn btn-primary col-md-4 col-xs-4">{!! __("crud::common.menu_edit_node") !!}</button>
