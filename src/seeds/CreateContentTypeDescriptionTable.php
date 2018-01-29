@@ -748,23 +748,14 @@ class CreateContentTypeDescriptionTable extends Seeder
         $max_cont_id  = \DB::table('content_type_fields')->max('content_type_id');
 
         if(!is_null($max_cont_id)) {
-            echo 'not null'.PHP_EOL;
             $cont_type_id = \DB::table('content_type')->where('id', '>', $max_cont_id)->get(['id']);
-
             if (empty($cont_type_id)) {
-                echo 'empty id set insert'.$data->name.PHP_EOL;
                 \DB::table('content_type_fields')->insert($data);
             } else { // меняем значения id
                 $collect = collect($data)->groupBy('content_type_id');
-                echo 'groupBy all data'.PHP_EOL;
-
-//                dump($data);
-                echo PHP_EOL;
                 $data_new_arr = $collect->slice($collect->count() - count($cont_type_id));
                 $data_new_arr->all();
                 $i = 0;
-                echo 'slice data'.PHP_EOL;
-//                dump($data);
                 foreach ($data_new_arr as $data_temp_key => $data_temp_value) {
                     echo 'first foreach '.$data_temp_key.PHP_EOL;
                     foreach ($data_temp_value as $row_value) {
@@ -783,11 +774,7 @@ class CreateContentTypeDescriptionTable extends Seeder
             }
         }
         $need_meta = $data[2];
-//        dump($need_meta);
-//        exit;
         $db_meta = \DB::table('content_type_fields')->where([['content_type_id','=',$need_meta['content_type_id']],['name','=',$need_meta['name']]])->first();
-//        dump($db_meta);
-//        exit;
         if(is_null($db_meta)){
             \DB::table('content_type_fields')->insert($need_meta);
         }

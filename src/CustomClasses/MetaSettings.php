@@ -140,7 +140,7 @@ class MetaSettings
      * @param $data   varible with data
      * @param null $langs if $description true need langs
      */
-    private function checkNULL($description,$data,$langs = null){
+    private function checkNULL($description,&$data,$langs = null){
         if($description){
                 foreach (MetaSettings::$columns as $col){
                     foreach ($langs as $lang){
@@ -220,7 +220,6 @@ class MetaSettings
                 return $all_data;
             }
         }
-//        dump($lang_id);
         $settings = MetaSettings::get_settings_meta($content->id);
             if(MetaSettings::is_description_table($content->table)){
                 /// for multi language
@@ -261,7 +260,6 @@ class MetaSettings
     }
 
     public static function  set_meta_to_form($content,$filds){
-//        dd($content);
         if(MetaSettings::NeedMeta($content->id)) {
             $colection = [];
             foreach (MetaSettings::$columns as $col) {
