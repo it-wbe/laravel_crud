@@ -15,25 +15,42 @@ class Meta extends \Eloquent
     public $table = "crud_settings";
 
         public function description(){
-//            return \DB::table('crud_settings_description')->where('content_id','=',$content_id);
             return $this->hasMany('Wbe\Crud\Models\Meta\MetaDescription','content_id');
         }
 
-        public function getDescription(){
+        public function getDescription($table = null){
             $data = \DB::table('crud_settings_description')->where('content_id','=',$this->id)->get();
-            if(count($data)>1) {
-                $temp = [];
-                $lang = Languages::pluck('id');
-                foreach ($lang as $lang) {
-                    $temp[$lang] = $data->where('lang_id', '=', $lang)->first();
+            if(MetaSettings::is_description_table($table)) {
+                $langs = Languages::pluck('id');
+                if($data->count()==0){
+                    $temp = [];
+                    foreach ($langs as $lang){
+                        $temp[$lang] = [];
+                        foreach (MetaSettings::$columns as $col){
+                            $temp[$lang][$col]="";
+                        }
+                    }
+                    return $temp;
+                }else{
+                    $temp = [];
+                    foreach ($langs as $lang) {
+                        $temp[$lang] = $data->where('lang_id', '=', $lang)->first();
+                    }
+                    return $temp;
                 }
-                return $temp;
             }
             else{
-                $temp = (array)$data[0];
-                unset($temp['content_id']);
-                unset($temp['lang_id']);
-                return $temp;
+                if($data->count()==0){
+                    $settings =[];
+                    foreach (MetaSettings::$columns as $col){
+                        $settings[$col] = "";
+                    }
+                    return $settings;
+                }else{
+                    return $data[0];
+                }
+
+
             }
         }
 }

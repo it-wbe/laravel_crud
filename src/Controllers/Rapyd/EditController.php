@@ -185,6 +185,7 @@ class EditController extends Controller
                     // сохранение description для модели
                     if ($desc_table_exists && isset($_POST[$desc_table])) {
                         $lang_records = \Request::all()[$desc_table];
+//                        dd($lang_records);
                         foreach ($lang_records as $post_lang_id => $post_lang) {
                             $lang_records[$post_lang_id]['content_id'] = $row->id;
                             $lang_records[$post_lang_id]['lang_id'] = $post_lang_id;
@@ -344,16 +345,15 @@ class EditController extends Controller
     }
 
     private function save_meta_data($content,$data){
-//        $data->update();
-//        dd($data);
-//        dd($content);
-        if($content->is_system==0){
-            foreach (MetaSettings::$columns as $col){
-                \DB::table($content->table)->where('id','=',$data->id)->update([$col=>$data[$col]]);
+        if(MetaSettings::NeedMeta($content->id)) {
+            if (!MetaSettings::is_description_table($content->table)) {
+                dd('not description');
+                if ($content->is_system == 0) {
+                    foreach (MetaSettings::$columns as $col) {
+                        \DB::table($content->table)->where('id', '=', $data->id)->update([$col => $data[$col]]);
+                    }
+                }
             }
         }
-//        dump($data['meta_title']);
-//        dd('save data meta',$data);
-//        \DB::table($content->table)->where()
     }
 }

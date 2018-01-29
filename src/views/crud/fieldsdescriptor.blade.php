@@ -385,7 +385,9 @@
                         <th>grid filter</th>
                         <th>grid custom display</th>
                         <th>form show</th>
+                        @if($meta)
                         <th>in meta</th>
+                        @endif
                         <th>Дії</th>
                     </tr>
                     </thead>
@@ -479,8 +481,8 @@
                     <div class="tab-content">
                         @foreach($langs as $lang)
                             <div id="{{$lang->code}}" class="tab-pane fade @if($loop->index==0){{' in active'}}@endif">
-                                @foreach($meta->getDescription($meta->id)[$lang->id] as $item_key =>$item_value)
-                                    @if(in_array($item_key,$meta_fild))
+                                @foreach($meta->getDescription($content->table)[$lang->id] as $item_key=>$item_value)
+                                @if(in_array($item_key,$meta_fild))
                                     <label for="{{$item_key}}" class="col-md-12"> {{$item_key}}
                                         <input type="text" class="form-control col-md-12" name="{{$item_key}}[{{$lang->id}}]" value="{{$item_value}}">
                                     </label>
@@ -490,10 +492,10 @@
                         @endforeach
                     </div>
                 @else
-                    @foreach($meta->getDescription($meta->id) as $fild_name =>$value)
+                    @foreach($meta->getDescription($content->table) as $fild_name =>$value)
                             @if(in_array($fild_name,$meta_fild))
                         <label for="{{$fild_name}}" class="col-md-12"> {{$fild_name}}
-                            <input type="text" class="form-control col-md-12" name="{{$fild_name}}[]" value="{{$value}}">
+                            <input type="text" class="form-control col-md-12" name="{{$fild_name}}" value="{{$value}}">
                         </label>
                             @endif
                     @endforeach

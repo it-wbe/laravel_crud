@@ -32,7 +32,8 @@ class MetaSettings
     /**
      * Add meta columns to table
      *
-     * @param $table_name Content_Type
+     * @param $content Content_Type
+     * @return object  data
      */
     public function AddMetaFieldsTo($content){
         try{
@@ -50,10 +51,11 @@ class MetaSettings
                 if($settings){
                     return $settings;
                 }else{
-                    $settings =[];
                     /// create new obj
+                    $settings = new Meta;
                     foreach (MetaSettings::$columns as $col){
-                        $settings[$col] = "";
+
+                        $settings->$col = "";
                     }
                     return $settings;
                 }
@@ -81,12 +83,20 @@ class MetaSettings
     public static function is_description_table($table_name){
         $table_name_desc = $table_name."_description";
         if(\Schema::hasTable($table_name_desc)){
+//            dd(true);
             return true;
         }else{
+//            dd(false);
             return false;
         }
     }
 
+
+    /**
+     * Save settings
+     * @param array $data
+     * @param $table_name
+     */
     public function add(array $data,$table_name){
         $add =  Meta::where(['content_type_id'=>$data['content_type_id']])->first();
         if(empty($add)){
@@ -94,9 +104,11 @@ class MetaSettings
             $add->content_type_id  = $data['content_type_id'];
             $add->save();
         }
-        $langs = Languages::pluck('id');
-        $temp = \DB::table(MetaSettings::$table_name_meta.'_description')->where('content_id','=',$add->id)->get();
+
         if($this->is_description_table($table_name)){ /// for multi lang
+            $langs = Languages::pluck('id');
+             $this->checkNULL(true,$data,$langs);
+            $temp = \DB::table(MetaSettings::$table_name_meta.'_description')->where('content_id','=',$add->id)->get();
             if(empty(count($temp))){/// insert
                 foreach ($langs as $lang_id){
                     \DB::table(MetaSettings::$table_name_meta.'_description')
@@ -109,13 +121,40 @@ class MetaSettings
                 }
             }
         }else{// one lang
-           if(empty(count($temp))){// insert
+            $temp = \DB::table(MetaSettings::$table_name_meta.'_description')->where('content_id','=',$add->id)->first();
+            $this->checkNULL(false,$data);
+           if(empty($temp)){// insert
                \DB::table(MetaSettings::$table_name_meta.'_description')
-                   ->insert(['content_id'=>$add->id,'lang_id'=>'"-1"','meta_title'=>$data['meta_title'][0],'meta_description'=>$data['meta_description'][0]]);
+                   ->insert(['content_id'=>$add->id,'lang_id'=>'-1','meta_title'=>$data['meta_title'],'meta_description'=>$data['meta_description']]);
            }else{// update
-               \DB::table(MetaSettings::$table_name_meta.'_description')->where([['content_id','=',$add->id],['lang_id','=','-1']])
-                   ->update(['meta_title'=>$data['meta_title'][0],'meta_description'=>$data['meta_description'][0]]);
+               \DB::table(MetaSettings::$table_name_meta.'_description')->where([['content_id','=',$temp->id],['lang_id','=','-1']])
+                   ->update(['meta_title'=>$data['meta_title'],'meta_description'=>$data['meta_description']]);
            }
+        }
+    }
+
+    /**
+     * Check if null for insert udpate settings
+     *
+     * @param $description   true or false
+     * @param $data   varible with data
+     * @param null $langs if $description true need langs
+     */
+    private function checkNULL($description,$data,$langs = null){
+        if($description){
+                foreach (MetaSettings::$columns as $col){
+                    foreach ($langs as $lang){
+                    if(is_null($data[$col][$lang])){
+                        $data[$col][$lang] = "";
+                    }
+                }
+            }
+        }else{
+            foreach (MetaSettings::$columns as $col){
+                if(is_null($data[$langs][$col])){
+                    $data[$langs][$col] = "";
+                }
+            }
         }
     }
 
@@ -136,18 +175,32 @@ class MetaSettings
     }
 
     private function columns_delete($table_name){
-        if(\Schema::hasTable($table_name)){
-            foreach (MetaSettings::$columns as $column){
-                if(\Schema::hasColumn($table_name, $column)){
-                    \Schema::table($table_name, function (Blueprint $table,$column)
-                    {
-                        $table->dropColumn($column);
-                    });
+        if(MetaSettings::is_description_table($table_name)){
+            if (\Schema::hasTable($table_name."_description")) {
+                foreach (MetaSettings::$columns as $column) {
+                    if (\Schema::hasColumn($table_name."_description", $column)) {
+                        \Schema::table($table_name."_description", function (Blueprint $table)use($column) {
+                            $table->dropColumn($column);
+                        });
+                    }
                 }
+                return true;
+            } else {
+                throw new \Exception("not table " . $table_name."_description");
             }
-            return true;
-        }else{
-            throw new \Exception("not table ".$table_name);
+        }else {
+            if (\Schema::hasTable($table_name)) {
+                foreach (MetaSettings::$columns as $column) {
+                    if (\Schema::hasColumn($table_name, $column)) {
+                        \Schema::table($table_name, function (Blueprint $table) use ($column){
+                            $table->dropColumn($column);
+                        });
+                    }
+                }
+                return true;
+            } else {
+                throw new \Exception("not table " . $table_name);
+            }
         }
     }
 
@@ -161,40 +214,37 @@ class MetaSettings
      */
     public static function GenerateMeta($content,$all_data=null,$lang_id=null,$data_description=null){
         if(!MetaSettings::NeedMeta($content->id)){
-            if(!is_null($data_description)){
-				return $data_description;
-			}else{
-				return $all_data;
-			}
-        }
-
-        $settings = MetaSettings::get_settings_meta($content->id);
-        if($lang_id){/// for description
-            if(!MetaSettings::is_description_table($content->table)){
-//                dd('return row in if');
+            if(!empty($data_description)){
                 return $data_description;
+            }else{
+                return $all_data;
             }
-              $description_settings =   $settings->getDescription();
+        }
+//        dump($lang_id);
+        $settings = MetaSettings::get_settings_meta($content->id);
+            if(MetaSettings::is_description_table($content->table)){
+                /// for multi language
+                if(is_null($lang_id)){
+                    return $all_data;
+                }
+              $description_settings =   $settings->getDescription($content->table);
+              $a = "meta_title";
               foreach(MetaSettings::$columns as $col){
-                    if(is_null($data_description[$col])) {
+                    if(empty($data_description[$col])) {
                         $data_description[$col] = MetaSettings::replace($col,$description_settings[$lang_id]->$col,$data_description);
                     }
               }
-//            dd('return all');
               return $data_description;
         }else{/// for data
             if(MetaSettings::is_description_table($content->table)){
                return $all_data;
             }
-//            dd('for data');
             $data_settings = $settings->getDescription();
             foreach(MetaSettings::$columns as $col){
-                if(is_null($all_data[$col])) {
+                if(empty($all_data[$col])) {
                      $all_data[$col] = MetaSettings::replace($col,$data_settings[$col],$all_data);
-//                    dump($col,$all_data[$col]);
                 }
             }
-//            dd($all_data['meta_title']);
             return $all_data;
         }
 

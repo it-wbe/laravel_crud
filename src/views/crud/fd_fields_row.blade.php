@@ -41,10 +41,12 @@
         <input type="checkbox" {{--id="form_show"--}} class="form-control checkbox_autofill" {{ $f->form_show ? 'checked' : '' }}>
         <input type="hidden" name="form_show[]">
     </td>
+    @if($meta)
     <td>
         <input type="checkbox" id="{{$f->name}}"  class="form-control checkbox_autofill in_meta" {{ $f->in_meta ? 'checked' : '' }}>
         <input type="hidden" id="{{$f->name}}" name="in_meta[]">
     </td>
+    @endif
     {{--<td><input type="text" class="form-control" name="form_attributes[]" value="{{ $f->form_attributes }}"></td>--}}
     {{--<td>--}}
         {{--<input type="checkbox" --}}{{--id="show"--}}{{-- class="form-control checkbox_autofill" {{ $f->show ? 'checked' : '' }}>--}}

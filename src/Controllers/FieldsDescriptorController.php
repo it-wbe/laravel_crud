@@ -72,6 +72,9 @@ class FieldsDescriptorController extends Controller
 //                                'show' => (int)(\Request::input('show')[$k] == 'on'),
                                 'sort' => (int)\Request::input('sort')[$k],
                             ];
+                            if(!$meta){
+                                unset ($field['in_meta']);
+                            }
                             if (\Request::input('id')[$k]&& \Request::input('id')[$k]>0) {
                                 $field['id'] = \Request::input('id')[$k];
 //                                if($names[$k]=='_default'){
