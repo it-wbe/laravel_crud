@@ -464,12 +464,12 @@
             @endif
         </div>
         @if($meta)
-        <div id="meta" class="tab-pane fade in{!! (\Request::input('active_tab') == 'meta') ? ' active' : '' !!}">
-            <form method="POST" action="" class="meta_form col-md-8">
+        <div id="meta" class="tab-pane clearfix fade in{!! (\Request::input('active_tab') == 'meta') ? ' active' : '' !!}">
+            <form method="POST" action="" class="meta_form col-md-8 col-sm-12 col-xs-12 clearfix">
             {{ csrf_field() }}
                 <input type="hidden" name="active_tab" value="meta">
                 <input type="hidden" name="content_type_id" value="{{$content->id}}">
-                <div class="pull-left">
+                <div class="pull-left col-xs-12">
                     @if($is_description)
                         <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
@@ -483,8 +483,8 @@
                             <div id="{{$lang->code}}" class="tab-pane fade @if($loop->index==0){{' in active'}}@endif">
                                 @foreach($meta->getDescription($content->table)[$lang->id] as $item_key=>$item_value)
                                 @if(in_array($item_key,$meta_fild))
-                                    <label for="{{$item_key}}" class="col-md-12"> {{$item_key}}
-                                        <input type="text" class="form-control col-md-12" name="{{$item_key}}[{{$lang->id}}]" value="{{$item_value}}">
+                                    <label for="{{$item_key}}" class="col-md-12  col-sm-12 col-xs-12"> {{$item_key}}
+                                        <input type="text" class="form-control col-md-12  col-sm-12 col-xs-12" name="{{$item_key}}[{{$lang->id}}]" value="{{$item_value}}">
                                     </label>
                                     @endif
                                 @endforeach
@@ -494,16 +494,16 @@
                 @else
                     @foreach($meta->getDescription($content->table) as $fild_name =>$value)
                             @if(in_array($fild_name,$meta_fild))
-                        <label for="{{$fild_name}}" class="col-md-12"> {{$fild_name}}
-                            <input type="text" class="form-control col-md-12" name="{{$fild_name}}" value="{{$value}}">
+                        <label for="{{$fild_name}}" class="col-md-12 col-sm-12 col-xs-12"> {{$fild_name}}
+                            <input type="text" class="form-control col-md-12 col-sm-12 col-xs-12" name="{{$fild_name}}" value="{{$value}}">
                         </label>
                             @endif
                     @endforeach
                 @endif
-                <button type="submit" id="btn-save-rel" name="btn-save-rel" class="btn btn-primary col-md-2 col-md-offset-4">Зберегти</button>
+                <button type="submit" id="btn-save-rel" name="btn-save-rel" class="btn btn-primary ">Зберегти</button>
             </form>
         </div>
-            <div class="col-md-4" id="meta_cols">
+            <div class="col-md-4 col-sm-12 col-xs-12" id="meta_cols">
             </div>
         </div>
         @endif
