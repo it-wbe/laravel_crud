@@ -81,6 +81,12 @@ Route::group(['middleware' => 'admin'], function () {
     Route::any('admin/additional/roles/edit/add', 'Wbe\Crud\Controllers\Roles\RolesController@addRole')->name('role.add');
     Route::post('admin/additional/roles/edit/del', 'Wbe\Crud\Controllers\Roles\RolesController@deleteRole')->name('role.del');
 
+	// set default lang in admin panel
+    if(!session('admin_lang_id')) {
+        Session::put('admin_locale', Config::get('app.locale'));
+        Session::put('admin_lang_id', \Wbe\Crud\Models\ContentTypes\Languages::where('code', Config::get('app.locale'))->value('id'));
+    }
+	
 });
 
 /*Route::group(['prefix' => 'admin'], function () {
@@ -96,19 +102,6 @@ Route::get('admin/setlocale/{locale}', function ($locale) {
     }
     return redirect()->back();
 });
-/* 11.1.17
- * if(!session('admin_lang_id')) {
-    Session::put('admin_lang_id', \Wbe\Crud\Models\ContentTypes\Languages::where('code', Config::get('app.locale'))->value('id'));
-}*/
-
-/*Route::group(['domain' => '{lang}.bethintua'], function()
-{
-    Route::get('/', function($lang)
-    {
-        App::setLocale($lang);
-    });
-});*/
-
 
 View::creator('crud::common.menu', 'Wbe\Crud\Controllers\MenuController@index');
 View::creator('crud::common.vertical_menu', 'Wbe\Crud\Controllers\VerticalMenuController@index');
