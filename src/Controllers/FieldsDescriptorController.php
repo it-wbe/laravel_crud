@@ -38,7 +38,7 @@ class FieldsDescriptorController extends Controller
         $Meta  = new MetaSettings();
         $meta = $Meta->AddMetaFieldsTo($content);
 
-        $is_description = MetaSettings::is_description_table($content->name);
+        $is_description = MetaSettings::is_description_table($content->table);
         ////////////////////////////////////////////////////////// END ///////////////////////////////
         ModelGenerator::generateModelByTable($content->table, $content->table . '_description', $content->model);
         if (\Request::isMethod('post')) {
@@ -51,7 +51,6 @@ class FieldsDescriptorController extends Controller
                             $names = [\Request::input('name')];
                         else
                             $names = \Request::input('name');
-                        //dd($names);
                         //print_r(\Request::all());
                         foreach ($names as $k => $f) {
                             $field = [
