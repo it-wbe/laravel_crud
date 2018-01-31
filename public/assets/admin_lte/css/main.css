@@ -175,4 +175,35 @@ textarea {
   width: 100%;
   height: 3px; }
 
+/*=====================================
+        Meta tab
+=====================================*/
+#meta {
+  padding-top: 10px; }
+
+.meta_form {
+  padding-left: 0; }
+
+.meta_form .tab-content label {
+  padding-left: 0;
+  padding-right: 0; }
+
+.meta_form #btn-save-rel {
+  margin-top: 5px; }
+
+#meta_cols div {
+  line-height: 1.5;
+  padding-left: 0;
+  float: left; }
+
+#meta_cols div.col-md-2 {
+  width: 25%; }
+
+#meta_cols div.col-md-10 {
+  width: 75%; }
+
+@media (max-width: 991px) {
+  #meta_cols {
+    margin-top: 10px; } }
+
 /*# sourceMappingURL=main.css.map */
