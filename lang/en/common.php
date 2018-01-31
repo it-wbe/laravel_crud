@@ -43,6 +43,7 @@ return [
 	"menu_edit_node"=>"Edit Node",
 	"menu_regenerate"=>"Regenerate Menu",
 	"menu_delete_node_message"=>"Realy Delete Node ?",
+	"dont_have_access"=>"You don't have access !",
 ];
 
 ?>

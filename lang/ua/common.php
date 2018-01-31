@@ -42,4 +42,5 @@ return [
     "menu_edit_node"=>"Редагувати Пункт Меню",
     "menu_regenerate"=>"Перегенерувати Меню",
     "menu_delete_node_message"=>"Дійсно видалити пункт меню?",
+    "dont_have_access"=>"Ви не маєте прав !",
 ];

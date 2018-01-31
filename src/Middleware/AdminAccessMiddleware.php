@@ -83,7 +83,7 @@ class AdminAccessMiddleware
                 return $next($request);
             }
             else{
-                \Session::flash('access', "You don't have access");
+                \Session::flash('alert-warning', __('crud::common.dont_have_access'));
                 return redirect()->back();
             }
                 return $next($request);
