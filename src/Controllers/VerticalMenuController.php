@@ -26,7 +26,6 @@ class VerticalMenuController extends Controller
         $url_array = explode('/',url()->current());
         $system_types = \DB::table('content_type')->where('is_system','=',1)->pluck('id')->toArray();
         $menu.=  VerticalMenuController::ShowList($root,$url_array,$system_types);
-//        dd($root);
         View::share('vertical_menu', $menu);
 
     }
@@ -86,39 +85,52 @@ class VerticalMenuController extends Controller
     {
         switch ($node->item_type) {
             case MenuTreeController::$item_types["System_Type_Group"]['id']: // content type system group
-                if(\Gate::forUser(\Auth::guard('admin')->user())->allows('edit-crud-system-content-type', 1)){
+                if(self::permission_group($node)){
                     return true;
-                }else{
-                    return false;
                 }
+                return false;
                 break;
             case MenuTreeController::$item_types["Content_SystemType"]['id']: // content type system item
-                $href_arr = explode('/', $node->href);
-                if (\Gate::forUser(\Auth::guard('admin')->user())->allows('edit-crud-system-content-type', $href_arr[3]) || \Gate::forUser(\Auth::guard('admin')->user())->allows('access-content-type', $href_arr[3])) {
+                if(self::permission_node($node)){
                     return true;
-                }else{
-                    return false;
                 }
-
+                return false;
                 break;
             case MenuTreeController::$item_types["Content_Type"]['id']: //// content_type item
-
-                return true;
+                if(self::permission_node($node)){
+                    return true;
+                }
+                return false;
                 break;
             case MenuTreeController::$item_types["Lang_Edit_Group"]['id']: /// Lang file edit  all groups
-                return true;
+                if(self::permission_group($node)){
+                    return true;
+                }
+                return false;
                 break;
             case MenuTreeController::$item_types["Crud_group"]['id']:  // lang group  crud filse
-                return true;
+                if(self::permission_group($node)){
+                    return true;
+                }
+                return false;
                 break;
             case MenuTreeController::$item_types["Site_group"]['id']:  // lang group site filse
-                return true;
+                if(self::permission_group($node)){
+                    return true;
+                }
+                return false;
                 break;
             case MenuTreeController::$item_types["Additional_group"]['id']: // aditional group
-                return true;
+                if(self::permission_group($node)){
+                    return true;
+                }
+                return false;
                 break;
             case MenuTreeController::$item_types["Additional_item"]['id']:  // aditional item list
-                return true;
+                if(self::permission_node($node)){
+                    return true;
+                }
+                return false;
                 break;
             case MenuTreeController::$item_types["Group"]['id']: //// some custome group
                 return true;
@@ -127,7 +139,10 @@ class VerticalMenuController extends Controller
                 return true;
                 break;
             case MenuTreeController::$item_types["FileManager"]['id']: // File manager
-                return true;
+                if(self::permission_node($node)){
+                    return true;
+                }
+                return false;
                 break;
             case MenuTreeController::$item_types["label"]['id']: // label
                 return true;
@@ -141,6 +156,21 @@ class VerticalMenuController extends Controller
                 break;
         }
         return false;
+    }
+
+   static private function permission_group($node){
+       foreach ($node->getDescendants() as $menu){
+               if(self::permission_node($menu)){
+            return true;
+           }
+       }
+    }
+    static private function permission_node($node){
+        if(!is_null($node->href)) {
+            if (\Auth::guard('admin')->user()->role->HasPermission($node->href)) {
+                return true;
+            }
+        }
     }
 
     protected static function active($node,$url_array,$system_types){

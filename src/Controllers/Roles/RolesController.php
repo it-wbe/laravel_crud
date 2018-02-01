@@ -25,32 +25,7 @@ class RolesController extends Controller
 
     public function roleIndex()
     {
-
-
-//        $role_id = 2;//  $r->get('role_id');
-//        $permission_id = 6;//explode('-',$r->get('permission_id'))[0];
-//        $permission = 'w';//explode('-',$r->get('permission_id'))[2];
-//        $permission_rights = Role::find($role_id)->permissions()->where('permissions.id','=',$permission_id)->first();
-//        if($permission_rights){
-//            $this->SetPermission($role_id,$permission_id,$permission,$permission_rights);
-//        }else{
-//            $this->AddPermission($role_id,$permission_id,$permission);
-//        }
-//        Role::permissions()->updateExistingPivot($permission->id,['r' => 1,'w'=>1,'d'=>1]);
-
-
-//        $this->generatePermissions();
         $roles = Role::with('permissions')->where('name','!=','')->get();
-
-
-
-//        $attachPermissions = $admin->permissions()->get();
-//        dd($attachPermissions );
-
-//        $user->roles()->sync($syncData);
-//            dd(URL::previos);
-
-
         $permissions = $this->getPermissions();
         return view::make('crud::roles.index')->with(['roles' => $roles, 'permissions' => $permissions]);
     }
@@ -90,8 +65,7 @@ class RolesController extends Controller
         }
     }
 
-    public function addRole()
-    {
+    public function addRole(){
         if(\request()->ajax()){/// add new role delete all other where no name
             $role_id = \request()->get('role_id');
 
@@ -115,9 +89,7 @@ class RolesController extends Controller
         return view('crud::roles.add')->with('roles',$temp)->with('permissions',$permissions);
     }
 
-    public function generatePermissions()
-    {
-//        $all_items_menu = ContentType::all()->groupBy('is_system');
+    public function generatePermissions(){
         $not_system = ContentType::where('is_system','=','0')->get();
         //// not System
         foreach ($not_system as $item_key => $item_value) {
@@ -218,8 +190,7 @@ class RolesController extends Controller
 
 
 
-    private function get_files($menu_item, $langs)
-    {
+    private function get_files($menu_item, $langs){
         $file_array = [];
         $submenu_lang = '';
         foreach ($langs as $lang_val) {
@@ -234,8 +205,7 @@ class RolesController extends Controller
      * @param $menu_item
      * @param $file_array
      */
-    private function generate_lang_menu_item($path, $menu_item, &$file_array)
-    {
+    private function generate_lang_menu_item($path, $menu_item, &$file_array){
         if ($handle = @opendir(base_path($path))) {
             while (false !== ($entry = readdir($handle))) {
                 if ($entry != "." && $entry != "..") {
@@ -249,19 +219,13 @@ class RolesController extends Controller
     }
 
 
-    public function roleEdit()
-    {
+    public function roleEdit(){
         // role id
         $role_id = \request()->get('role_id');
-
         // name for new role
         $role_name= \request()->get('role_name');
-
         /// array [0] - permission id [1] permission rights
         $temp_arr = explode('-', \request()->get('permission_id'));
-
-//        return response(['role_id'=>$role_id,'role_name'=>$role_name,'temp_arr'=>$temp_arr]);
-
         $permission_id = $temp_arr[0];
 
 
@@ -272,18 +236,31 @@ class RolesController extends Controller
         }else{
             $permission_rights = Role::find($role_id)->permissions()->where('permissions.id', '=', $permission_id)->first();
         }
-
         // if isset is content type else some other permission
         // $temp_arr[1] - r/w/d
         if(isset($temp_arr[1])){
-            /// for content type permission
+            /// for content type permission			
             $permission = $temp_arr[1];
             if ($permission_rights) {
-//            return response(['role_id'=>"set"]);
-                $temp_message = $this->SetPermission($role_id, $permission_id, $permission, $permission_rights);
-                return response(['success' => $temp_message,'perm'=>$permission_rights]);
+				$temp_message = $this->SetPermission($role_id, $permission_id, $permission, $permission_rights);
+				//return response($permission_rights);
+				//todo:: !!!! remove permissions
+				$changed = Role::find($role_id)->permissions()->where('permissions.id', '=', $permission_id)->where(
+				[
+				['permissions_role.w','=',0],
+				['permissions_role.r','=',0],
+				['permissions_role.d','=',0],
+				])->first();
+				//return response($changed);
+				if($changed){
+				$this->DelPermission($role_id, $permission_id);
+					return response(['del'=>"some"]);
+				}else{
+					return response(['success' => $temp_message,'perm'=>$permission_rights]);			
+				}
+				
+				
             } else {
-//            return response(['role_id'=>"add"]);
                 $temp_message =   $this->AddPermission($role_id, $permission_id, $permission);
                 return response(['success' => $temp_message]);
             }
@@ -311,9 +288,6 @@ class RolesController extends Controller
 
     protected function DelPermission($role_id,$permissions_id,$right=null){
         $role = Role::where('id','=',$role_id)->first();
-//        $permissions = Permissions::where('id','=',$permissions_id)->first();
-
-//        return response(['$permissions->id'=>$permissions->id,'$permissions_id'=>$permissions_id]);
             $role->permissions()->detach($permissions_id);
         return $role->save();
     }
@@ -326,7 +300,5 @@ class RolesController extends Controller
             $value = 1;
         }
        return Role::find($role_id)->permissions()->updateExistingPivot($permissions_id,[$permission => $value]);
-//        return response(['role_id'=>$permission_rights->pivot]);
-
     }
 }
