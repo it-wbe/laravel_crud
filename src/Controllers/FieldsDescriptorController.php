@@ -213,7 +213,7 @@ class FieldsDescriptorController extends Controller
                 unset($f);
             }elseif (\Request::input('active_tab') == 'meta'){
 //                dd(\Request::all());
-                $Meta->add(\Request::all(),$content->name);
+                $Meta->add(\Request::all(),$content->table);
             }
         }
         $classname = $content::getCTModel($content->model);
