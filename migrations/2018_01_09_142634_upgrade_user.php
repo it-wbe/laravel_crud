@@ -13,7 +13,7 @@ class UpgradeUser extends Migration
      */
     public function up()
     {
-		if (Schema::hasColumn('users', 'settings'))
+		if (!Schema::hasColumn('users', 'settings'))
 		{
 			Schema::table('users', function($table) {
 				$table->text('settings')->nullable();

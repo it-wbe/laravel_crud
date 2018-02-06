@@ -83,10 +83,13 @@ Route::group(['middleware' => 'admin'], function () {
 
 	// set default lang in admin panel
     if(!session('admin_lang_id')) {
+		try{
 		if(\Schema::hasTable('users')){			
 			Session::put('admin_locale', Config::get('app.locale'));
 			Session::put('admin_lang_id', \Wbe\Crud\Models\ContentTypes\Languages::where('code',"\"".Config::get('app.locale')."\"")->value('id'));
 		}
+		}
+		catch(Exception $ex){}
 	}
 	
 });

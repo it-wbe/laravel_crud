@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateUsersTable extends Migration
+class CrudCreateUsersTable extends Migration
 {
 
     /**
@@ -14,17 +14,23 @@ class CreateUsersTable extends Migration
     public function up()
     {
         if (!Schema::hasTable('users')){
-            Schema::table('users', function ($table) {
-                //$table->integer('id', true);
-                $table->string('email')->nullable()->change();
-                //$table->string('name');
-                //$table->string('password');
-                $table->string('remember_token')->nullable()->change();
+            Schema::create('users', function (Blueprint $table) {
+                $table->integer('id', true);
+                $table->string('email')->nullable();
+                $table->string('name');
+                $table->string('password');
+                $table->string('remember_token')->nullable();
                 $table->integer('role_id');
                 $table->text('settings')->nullable();
-                //$table->timestamps();
+                $table->timestamps();
                 $table->softDeletes();
             });
+		}else{
+			Schema::table('users',function($table){
+				$table->text('settings')->nullable();
+				
+			});
+			
 		}
     }
 
