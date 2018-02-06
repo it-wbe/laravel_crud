@@ -44,6 +44,7 @@ return [
     "menu_regenerate"=>"Перегенерировать Меню",
     "menu_delete_node_message"=>"Действительно удалить пункт меню?",
     "dont_have_access"=>"У вас нет прав !",
+	"href"=>"Ссылка",
 ];
 
 ?>

@@ -44,6 +44,7 @@ return [
 	"menu_regenerate"=>"Regenerate Menu",
 	"menu_delete_node_message"=>"Realy Delete Node ?",
 	"dont_have_access"=>"You don't have access !",
+	"href"=>"Link",
 ];
 
 ?>

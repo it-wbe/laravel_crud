@@ -39,6 +39,7 @@ class MenuTreeController extends Controller
         $title = request()->input('title');
         $item_type = request()->input('type');
         $icon = request()->input('icon');
+        $href = request()->input('href');
         if(empty($icon)){
             if($item_type  == 1){/// menu_item
                 $icon =  MenuTreeController::$item_types['Default_list_item']['icon'];
@@ -46,7 +47,7 @@ class MenuTreeController extends Controller
                 $icon =  MenuTreeController::$item_types['label']['icon'];
             }
         }
-        $child1 = $root->children()->create(['href' => "",'item_type'=>$item_type,'icon'=>$icon]);
+        $child1 = $root->children()->create(['href' => $href,'item_type'=>$item_type,'icon'=>$icon]);
         foreach ($title as $title_val)
             \DB::table('menus_description')->insert(['content_id' => $child1->id, 'lang_id' => $title_val['lang_id'], 'title' => $title_val['title']]);
 
@@ -61,6 +62,7 @@ class MenuTreeController extends Controller
                 $id = request()->get('modify');
                 $icon = request()->get('icon');
                 $type = request()->get('type');
+				$href = request()->get('href');
                 if(empty($icon)){
                     if($type == 1){/// menu_item
                         $icon =  MenuTreeController::$item_types['Default_list_item']['icon'];
@@ -68,7 +70,7 @@ class MenuTreeController extends Controller
                         $icon =  MenuTreeController::$item_types['label']['icon'];
                     }
                 }
-                \DB::table('menus')->where('id','=',$id)->update(['icon'=>request()->get('icon'),'item_type'=>$type]);
+                \DB::table('menus')->where('id','=',$id)->update(['href'=>$href,'icon'=>$icon,'item_type'=>$type]);
                 foreach (request()->get('title') as $desc_val)
                     \DB::table('menus_description')->where([['lang_id', $desc_val['lang_id']], ['content_id', $id]])->update(['title' => $desc_val['title']]);
                 request()->session()->flash('alert-success', 'Node was updated successful !');

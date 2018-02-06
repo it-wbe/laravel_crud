@@ -44,6 +44,10 @@
                 <option value="12">{!! __("crud::common.menu_label") !!}</option>
             </select>
         </div>
+		 <div class="col-md-12 ">
+            <label for="href">{!! __("crud::common.href") !!}</label>
+            <input type="text" name="href" class="form-control">
+        </div>
         <div class="col-md-6">
             <button type="submit" class="btn btn-primary col-md-4 col-xs-4">{!! __("crud::common.menu_add_node") !!}</button>
         </div>

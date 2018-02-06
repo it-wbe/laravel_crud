@@ -36,7 +36,12 @@
                     <option value="12" @if($edit->item_type==12){{"selected"}}@endif>{!! __("crud::common.menu_label") !!}</option>
 				</select>
             </div>
-            <div class="col-md-12 controll">
+			  <div class="col-md-12">
+                <label for="href">{!! __("crud::common.href") !!}</label>
+                <span  aria-hidden="true"></span>
+				<input type="text" name="href" value="{!! $edit->href !!}" class="form-control">
+            </div>
+			 <div class="col-md-12 controll">
                 <button type="submit" class="btn btn-primary col-md-4 col-xs-4">{!! __("crud::common.menu_edit_node") !!}</button>
                 <a href="{{route('Menu Edit')}}" class="btn btn-default col-md-4 col-xs-4 pull-right">{!! __("crud::common.back") !!}</a>
             </div>
