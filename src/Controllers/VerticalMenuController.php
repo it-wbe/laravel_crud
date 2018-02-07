@@ -59,8 +59,13 @@ class VerticalMenuController extends Controller
                 } else {
                     if($node->item_type !=12 &&$node->item_type !=13) {
 //                    $type_id = key(MenuTreeController::findType($node['item_type']));
+						if(!is_null($node->href)){
+						$url = url($node->href);
+						}else{
+							$url=$node->href;
+						}
                         $submenu .= '<li class="' . VerticalMenuController::active($node, $url_array, $system_types) . '">' .
-                            '<a href="' . url($node->href) . '">' .
+                            '<a href="' . $url . '">' .
                             '<i class="' . $node->icon . '"></i>' .
                             $node->MenusDescriptionLang->title .
                             '</a>' .
