@@ -3,13 +3,21 @@
 @section('header', 'CRUD')
 
 @section('content')
+<link rel="stylesheet" type="text/css" href="/packages/wbe/crud/assets/admin_lte/libs/AdminLTE/plugins/select2/select2.css">
     <style>
         .controll{
         margin: 5px;
         }
+             .select2-wrapper {
+    width: 300px;
+}
+/* Optional styling to the right */ 
+ .select2-results {
+    position: relative;
+    line-height: 20px;
+}
     </style>
     @if(isset($edit))
-        {{--{!! dd($edit) !!}--}}
         <form method="post" class="form" id="new_node">
             {{ csrf_field() }}
             @foreach($edit['description'] as $edit_val)
@@ -27,7 +35,11 @@
             @endforeach
             <div class="col-md-6 ">
                 <label for="icon">{!! __("crud::common.menu_icon") !!}</label>
-                <span class="{{$edit->icon}} col-md-1"  aria-hidden="true"></span><input type="text" name="icon" value="{!! $edit->icon !!}" class="form-control">
+                <span class="{{$edit->icon}} col-md-1"  aria-hidden="true"></span>
+                {{--<input type="text" name="icon" value="{!! $edit->icon !!}" class="form-control">--}}
+                <select name="icon" class="form-control select2 select2-hidden-accessible" id="icons">
+                    @include("crud::menutree.icons")
+                </select>
             </div>
             <div class="col-md-6 ">
                 <label for="type">{!! __("crud::common.menu_type") !!}</label>
@@ -57,6 +69,42 @@
             {{ csrf_field() }}
             <button type="submit" class="btn btn-primary col-md-4 col-xs-4 pull-right">{!! __("crud::common.delete") !!}</button>
         </form>
-
     @endif
+@endsection
+
+@section('scripts')
+<script src="/packages/wbe/crud/assets/admin_lte/libs/AdminLTE/plugins/select2/select2.full.js"></script>
+<script type="text/javascript">
+   
+    function formatState (state) {
+          if (!state.id) {
+            return state.text;
+          }
+          var $state = $(
+            '<span class="'+state.element.value+'">   ' +  state.text + '</span>'
+          );
+          return $state;
+        };
+    function format(icon) {
+        if(!icon.disabled&&icon.text!=""){
+                return  $('<span class="'+icon.id+'">   ' + icon.text+'</span>');
+        }
+    }
+
+ $( document ).ready(function() {
+    $.each($("#icons option"),function(index,value){
+        if(index>0){
+            if($(value).val() == "{{$edit->icon}}"){
+                $(value).prop('selected',true);
+            }
+        }
+    });
+           $("#icons").select2({
+            width:"100%",
+            templateSelection: formatState,
+            templateResult: format,
+        });
+    });
+</script>
+
 @endsection
