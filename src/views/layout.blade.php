@@ -63,8 +63,8 @@
     @if (Auth::guard('admin')->check())
     <header class="main-header clearfix">
         <a href="{{ url('admin/') }}" class="logo">
-            <span class="logo-mini">CRUD</span>
-            <span class="logo-lg">CRUD</span>
+            <span class="logo-mini"><img class="img img-responsive" src="/packages/wbe/crud/assets/LaraSmart.png"></span>
+            <span class="logo-lg"><img class="img img-responsive" src="/packages/wbe/crud/assets/LaraSmart.png"></span>
         </a>
         <nav class="navbar navbar-static-top" role="navigation">
             <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
