@@ -215,9 +215,8 @@ class FieldsProcessor
                             $field->display_column ? $field->display_column : 'name',
                                 $relation_model->getQualifiedKeyName()
                             )->toArray();
-                            unset($options[count($options)+2]);
-//                            dd($options);
-                            array_unshift($options,"- Select -");
+                            $options[0] = "- Select -";
+                            ksort($options);
                             $f->options($options);
                         } else echo 'Relation not found! (' . $field->relation . ')';
                     // тип поля "tags": задяння ajax обробника
