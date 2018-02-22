@@ -21,7 +21,7 @@ class AdminAccessMiddleware
         $request_segments = \Request::segments();
         if(!empty($request_segments[0])&& $request_segments[0]=='admin') {
             if (!empty($request_segments[1])) {
-                if ($request_segments[1] == 'login' || $request_segments[1] == 'logout' || $request_segments[1] == 'password'|| $request_segments[1] == 'setlocale') {
+                if ($request_segments[1] == 'login' || $request_segments[1] == 'logout' || $request_segments[1] == 'password'|| $request_segments[1] == 'setlocale'||$request_segments[1]=="autocomplete") {
                         return $next($request);
                     }
                 }elseif(empty($request_segments[1])){ // index admin
