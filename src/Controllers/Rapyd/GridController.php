@@ -112,6 +112,9 @@ class GridController extends Controller
 
         });*/
         $show_rows_crud =  \Request::input('show_rows_crud');
+		if(!$show_rows_crud){
+			$show_rows_crud = 10;
+		}
         $grid->paginate($show_rows_crud );
         return view('crud::crud.grid', compact('content', 'filter', 'grid'));
     }
