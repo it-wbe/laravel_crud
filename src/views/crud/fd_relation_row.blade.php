@@ -27,7 +27,7 @@
             <input type="text" class="form-control rel_table_to" name="rel_table_to[]" value="{{ $rel_table_to }}">
         </span>
     </td>
-    <? /*<td><input type="text" class="form-control rel_left_column" name="rel_left_column[]" original_value="{{ $rel_left_column }}" value="{{ $rel_left_column }}"></td>*/ ?>
+<!--    --><?// /*<td><input type="text" class="form-control rel_left_column" name="rel_left_column[]" original_value="{{ $rel_left_column }}" value="{{ $rel_left_column }}"></td>*/ ?>
     <td>
         Вибрано:<br>
         <input type="text" class="form-control rel_left_column" name="rel_left_column[]" value="{{ $rel_left_column }}">
