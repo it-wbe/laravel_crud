@@ -27,8 +27,9 @@ class CrudCreateUsersTable extends Migration
             });
 		}else{
 			Schema::table('users',function($table){
+                $table->timestamp('deleted_at')->nullable();
 				$table->text('settings')->nullable();
-				
+                $table->integer('role_id');
 			});
 			
 		}

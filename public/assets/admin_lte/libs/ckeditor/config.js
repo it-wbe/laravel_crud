@@ -3,30 +3,34 @@
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
-CKEDITOR.editorConfig = function( config ) {
+CKEDITOR.editorConfig = function (config) {
     // Define changes to default configuration here.
     // For complete reference see:
     // http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
     // The toolbar groups arrangement, optimized for two toolbar rows.
     config.toolbarGroups = [
-        { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-        { name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
-        { name: 'links' },
-        { name: 'insert' },
-        { name: 'forms' },
-        { name: 'tools' },
-        { name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
-        { name: 'others' },
+        {name: 'clipboard', groups: ['clipboard', 'undo']},
+        {name: 'editing', groups: ['find', 'selection', 'spellchecker']},
+        {name: 'links'},
+        {name: 'insert'},
+        {name: 'forms'},
+        {name: 'tools'},
+        {name: 'document', groups: ['mode', 'document', 'doctools']},
+        {name: 'others'},
         '/',
-        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-        { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
-        { name: 'styles' },
-        { name: 'colors' },
+        {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+        {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi']},
+        {name: 'styles'},
+        {name: 'colors'},
         // { name: 'about' }
     ];
-    config.protectedSource.push( /<a[\s\S]*?\>/g ); //// don't edit any tags
-    config.protectedSource.push( /<\/a[\s\S]*?\>/g ); //// don't edit any tags
+    config.allowedContent = true;
+    config.protectedSource.push(/<a[\s\S]*?\>/g); //// don't edit a tag
+    config.protectedSource.push(/<\/a[\s\S]*?\>/g); //// don't edit a tag
+    config.protectedSource.push(/<span[\s\S]*?\>/g); //// don't edit span tag
+    config.protectedSource.push(/<\/span[\s\S]*?\>/g); //// don't edit span tag
+
     // Remove some buttons provided by the standard plugins, which are
     // not needed in the Standard(s) toolbar.
     config.removeButtons = 'Underline,Subscript,Superscript';
