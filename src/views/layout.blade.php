@@ -36,10 +36,10 @@
     {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/bootstrap/dist/js/bootstrap.min.js') !!}
     {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/AdminLTE/dist/js/app.min.js') !!}
     {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') !!}
-		{{--{!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/ckeditor.js') !!}--}}
-		{{--{!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/config.js') !!}--}}
-	{!! Html::script('packages/zofe/rapyd/assets/ckeditor/ckeditor.js') !!}
-	{!! Html::script('packages/zofe/rapyd/assets/ckeditor/config.js') !!}
+		{!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/ckeditor.js') !!}
+		{!! Html::script('packages/wbe/crud/assets/admin_lte/libs/ckeditor/config.js') !!}
+	{{--{!! Html::script('packages/zofe/rapyd/assets/ckeditor/ckeditor.js') !!}--}}
+	{{--{!! Html::script('packages/zofe/rapyd/assets/ckeditor/config.js') !!}--}}
     {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/datatables.net/js/jquery.dataTables.min.js') !!}
     {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/datatables.net-bs/js/dataTables.bootstrap.min.js') !!}
     {!! Html::script('packages/wbe/crud/assets/admin_lte/libs/datatables.net-responsive/js/dataTables.responsive.min.js') !!}
