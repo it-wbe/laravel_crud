@@ -4,9 +4,9 @@
     "type": "project",
     "require": {
         "wbe/rapyd": "*",
-        "laravel/framework": "^5.5",
+        "laravel/framework": "^5.6",
         "laravel/socialite": "*",
-        "php": "^5.6 || ^7.0",
+        "php": "^7.1",
         "barryvdh/laravel-elfinder": "^0.3.8",
         "baum/baum":"*",
         "doctrine/dbal":"*"
