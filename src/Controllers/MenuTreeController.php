@@ -4,12 +4,15 @@ namespace Wbe\Crud\Controllers;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
+use Wbe\Crud\Controllers\Roles\RolesController;
 use Wbe\Crud\Models\ContentTypes\ContentType;
 use Wbe\Crud\Models\ContentTypes\Menus;
 use Wbe\Crud\Models\ContentTypes\MenusDescription;
 use View;
 use Wbe\Crud\Models\ContentTypes\Languages;
 use Lang;
+use Wbe\Crud\Models\Roles\Permissions;
+
 class MenuTreeController extends Controller
 {
     /**
@@ -97,6 +100,7 @@ class MenuTreeController extends Controller
     public function tree_generate($regenerate = false,$redirect = true)
     {
 //        $regenerate = true;
+//        $redirect=false;
         if ($regenerate) { // delete all menu items with description
             Menus::truncate();
             MenusDescription::truncate();
@@ -104,6 +108,7 @@ class MenuTreeController extends Controller
         $root = Menus::root();
         $langs = Languages::select('name', 'id', 'code')->get()->toArray();
             $root = $this->AddNew($langs);
+
         if($redirect)
         return redirect()->back();
     }
@@ -152,6 +157,7 @@ class MenuTreeController extends Controller
         /// files
         $lang_edit_group =$this->findNode_ItemType($root,MenuTreeController::$item_types["Lang_Edit_Group"]['id']);
             //// create group Lang Edit if not exist
+//        dd($lang_edit_group);
         if(is_null($lang_edit_group)) {
             $lang_edit_group  = $root->children()->create(['href' => '', 'item_type' => MenuTreeController::$item_types["Lang_Edit_Group"]['id'], 'icon' => MenuTreeController::$item_types["Lang_Edit_Group"]['icon']]);
             foreach ($langs as $lang_val)
@@ -161,9 +167,9 @@ class MenuTreeController extends Controller
         /// site
         $site_files = $this->generate_lang_menu('site', $langs);
 
-//        $lang_site_group =$this->findNode_ItemType($root,MenuTreeController::$item_types["Site_group"]['id']);
+        $lang_site_group = Menus::select('*')->where('item_type', '=', MenuTreeController::$item_types["Site_group"]['id'])->first();
         /// create group for Site if not exist
-         if(is_null(Menus::select('*')->where('item_type', '=', MenuTreeController::$item_types["Site_group"]['id'])->first())) {
+         if(is_null($lang_site_group)) {
              $lang_site_group = $lang_edit_group->children()->create(['href' => '', 'item_type' => MenuTreeController::$item_types["Site_group"]['id'],'icon'=>MenuTreeController::$item_types["Site_group"]['icon']]);
              foreach ($langs as $lang_val)
                  \DB::table("menus_description")->insert(['content_id' => $lang_site_group->id, 'lang_id' => $lang_val['id'], 'title' => 'Site']);
@@ -174,20 +180,31 @@ class MenuTreeController extends Controller
                 /// create group if not exist
                 $temp = $lang_site_group->children()->create(['href' => 'admin/lang_edit/site/' . $file_name,'item_type'=>MenuTreeController::$item_types["Default_list_item"]['id'],'icon'=>MenuTreeController::$item_types["Default_list_item"]['icon']]);
                 $file_name_temp = explode('.', $file_name);
+                /// add permission if not
+                if (is_null(Permissions::select('href')->where('href', '=', 'admin/lang_edit/site/' . $file_name)->first())) {
+                    $per = new  Permissions(['href' => 'admin/lang_edit/site/' . $file_name, 'name' => ucwords($file_name_temp[0])]);
+                    $per->save();
+                    //add new permission to admin
+                    RolesController::UpdateAdminPermissions();
+                }
+                /// end add permission
                 foreach ($langs as $lang_val)
                     \DB::table("menus_description")->insert(['content_id' => $temp->id, 'lang_id' => $lang_val['id'], 'title' => ucwords($file_name_temp[0])]);
             }
         }
+
+
+
         /// crud
         ///
         ///
 
         $site_files = $this->generate_lang_menu('crud', $langs);
 
-//        $lang_crud_group  =$this->findNode_ItemType($root,MenuTreeController::$item_types['Crud_group']['id']);
+        $lang_crud_group  =Menus::select('*')->where('item_type', '=', MenuTreeController::$item_types["Crud_group"]['id'])->first();
         /// create group for Site if not exist
         ///
-        if(is_null(Menus::select('*')->where('item_type', '=', MenuTreeController::$item_types["Crud_group"]['id'])->first())) {
+        if(is_null($lang_crud_group)) {
             $lang_crud_group = $lang_edit_group->children()->create(['href' => '', 'item_type' => MenuTreeController::$item_types["Crud_group"]['id'], 'icon' => MenuTreeController::$item_types["Crud_group"]['icon']]);
             foreach ($langs as $lang_val)
                 \DB::table("menus_description")->insert(['content_id' => $lang_crud_group ->id, 'lang_id' => $lang_val['id'], 'title' => 'Crud']);
@@ -276,6 +293,7 @@ class MenuTreeController extends Controller
      */
     private function generate_lang_menu_item($path, $menu_item, &$file_array)
     {
+//        dump(base_path($path));
         if ($handle = @opendir(base_path($path))) {
             while (false !== ($entry = readdir($handle))) {
                 if ($entry != "." && $entry != "..") {

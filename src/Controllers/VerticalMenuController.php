@@ -13,7 +13,7 @@ use Wbe\Crud\Models\ContentTypes\Menus;
 class VerticalMenuController extends Controller
 {
 
-//    for add new category vartical menu add this category to checkMeddelware swich
+//    for add new category vartical menu add this category to checkMiddleware swich
 
 
     /**
@@ -33,7 +33,6 @@ class VerticalMenuController extends Controller
 
 
     static  protected function ShowGroup($node,$url_array,$system_types){
-
      $submenu = '';
             $submenu .="<li class='treeview ".VerticalMenuController::active($node,$url_array,$system_types)."' >".
                 "<a href='#'>".
@@ -53,7 +52,7 @@ class VerticalMenuController extends Controller
     static protected function ShowList($node,$url_array,$system_types){
         $submenu='';
         foreach ($node->children()->get() as $node) {
-            if (VerticalMenuController::checkMeddelware($node)) {
+            if (VerticalMenuController::checkMiddleware($node)) {
                 if (count($node->children()->get()) > 0) {
                     $submenu .= VerticalMenuController::ShowGroup($node,$url_array,$system_types);
                 } else {
@@ -86,7 +85,7 @@ class VerticalMenuController extends Controller
         return $submenu;
     }
 
-    static protected function checkMeddelware($node)
+    static protected function checkMiddleware($node)
     {
         switch ($node->item_type) {
             case MenuTreeController::$item_types["System_Type_Group"]['id']: // content type system group

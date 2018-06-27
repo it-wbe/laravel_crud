@@ -41,6 +41,11 @@ class RolesController extends Controller
         }
     }
 
+    public static function UpdateAdminPermissions(){
+        $role_controller = new RolesController();
+        $role_controller->AddAdminPermissions();
+    }
+
 
     protected function getPermissions()
     {
